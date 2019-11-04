@@ -1,6 +1,10 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+  createDrawerNavigator,
+} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -8,6 +12,9 @@ import SearchScreen from '../screens/SearchScreen';
 import ShoppingCardScreen from '../screens/ShoppingCardScreen';
 import GiftScreen from '../screens/GiftScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import MenuLevel1Screen from '../screens/MenuLevel1Screen';
+import MenuLevel2Screen from '../screens/MenuLevel2Screen';
+import ProductDetailScreen from '../screens/ProductDetailScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -17,11 +24,29 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
+    ProductDetail: ProductDetailScreen,
+    MenuLevel2: MenuLevel2Screen,
   },
   config
 );
 
-HomeStack.navigationOptions = {
+HomeStack.path = '';
+
+const HomeDrawerNavigator = createDrawerNavigator(
+  {
+    Initial: HomeStack
+  },
+  {
+    contentComponent: MenuLevel1Screen,
+  },
+  {
+    mode: 'modal',
+    transparentCard: true,
+    cardStyle: {backgroundColor: 'transparent'},
+  }
+);
+
+HomeDrawerNavigator.navigationOptions = {
   tabBarLabel: "Home",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -30,7 +55,7 @@ HomeStack.navigationOptions = {
     />
   ),
 };
-HomeStack.path = '';
+HomeDrawerNavigator.path = '';
 
 const SearchStack = createStackNavigator(
   {
@@ -110,7 +135,7 @@ ProfileStack.path = '';
 
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
+  HomeDrawerNavigator,
   SearchStack,
   ShoppingStack,
   GiftStack,

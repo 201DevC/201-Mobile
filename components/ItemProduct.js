@@ -3,10 +3,14 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
 export default class ItemProduct extends Component {
+
     render() {
         const { data: { name, shop_name, price, order_count, img_product } } = this.props;
         return (
-            <View style={styles.cardContainer}>
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={styles.cardContainer}
+            >
                 <View style={styles.imgCardProduct}>
                     <Image style={styles.img}
                         source={require("../assets/images/img_product.jpg")}
@@ -31,7 +35,7 @@ export default class ItemProduct extends Component {
 
                 </View>
 
-            </View>
+            </TouchableOpacity>
         );
     }
 }
@@ -42,12 +46,12 @@ const styles = StyleSheet.create({
         width: 150,
         height: 180,
         marginRight: 10,
-        marginBottom:10,
+        marginBottom: 10,
         borderRadius: 10,
         borderColor: '#ecf0f1',
-        backgroundColor:'#fff',
+        backgroundColor: '#fff',
         borderWidth: 2,
-        
+
     },
     imgCardProduct: {
         flex: 0.6,

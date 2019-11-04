@@ -5,9 +5,10 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default class ItemProduct extends Component {
     render() {
-        const { data: {name}} = this.props;
+        const { data: { name } } = this.props;
         return (
-            <TouchableOpacity style={styles.container}>
+            <TouchableOpacity
+                style={styles.container}>
                 <Text style={styles.text}>{name}</Text>
             </TouchableOpacity>
         );
@@ -16,19 +17,19 @@ export default class ItemProduct extends Component {
 
 
 const styles = StyleSheet.create({
-    container:{
-        borderWidth:2,
-        paddingHorizontal:15,
-        paddingVertical:3,
-        borderColor:'#7f8c8d',
-        borderRadius:20,
-        alignItems:"center",
-        margin:8
+    container: {
+        borderWidth: 2,
+        paddingHorizontal: 15,
+        paddingVertical: 3,
+        borderColor: '#7f8c8d',
+        borderRadius: 20,
+        alignItems: "center",
+        margin: 8
     },
-    text:{
-        color:"#f39c12",
-        fontSize:16
+    text: {
+        color: "#f39c12",
+        fontSize: 16
     }
-    
+
 
 }); 
