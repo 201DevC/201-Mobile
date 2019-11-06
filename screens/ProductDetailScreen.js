@@ -6,15 +6,58 @@ import {
   StyleSheet,
   ScrollView,
   Image,
-  Dimensions
+  Dimensions,
+  SafeAreaView,
+  FlatList,
 } from 'react-native';
 
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import TabBarIcon from '../components/TabBarIcon';
-import { Rating } from 'react-native-elements';
+import { Card, Rating } from 'react-native-elements'
+import ProductCard from '../components/ProductCart';
+
 
 const width = Dimensions.get('window').width;
+const rating = 4.0;
+
+const DATA = [
+  {
+    id: '1',
+    name: "SỮA ENSURE 400g MẪU 2019",
+    product: "dien may xanh",
+    rating: 4.0,
+    uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+  },
+  {
+    id: '2',
+    name: "iphone x",
+    product: "dien may xanh",
+    rating: 4.1,
+    uri: "https://images.unsplash.com/photo-1503185912284-5271ff81b9a8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+  },
+  {
+    id: '3',
+    name: "iphone x",
+    product: "dien may xanh",
+    rating: 3.5,
+    uri: "https://images.unsplash.com/photo-1504276048855-f3d60e69632f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+  },
+  {
+    id: '4',
+    name: "iphone x",
+    product: "dien may xanh",
+    rating: 5.0,
+    uri: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
+  },
+  {
+    id: '5',
+    name: "iphone x",
+    product: "dien may xanh",
+    rating: 4.8,
+    uri: "https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1533&q=80",
+  },
+]
 
 export default class ProductDetail extends Component {
   constructor(props) {
@@ -22,6 +65,7 @@ export default class ProductDetail extends Component {
     this.state = {
       focusedHeart: 0,
       focusedBookmark: 0,
+      isRating: 0,
     };
   }
 
@@ -35,8 +79,126 @@ export default class ProductDetail extends Component {
     this.setState({ focusedBookmark })
   }
 
+  onPressContentBtn = (isRating) => {
+    this.setState({ isRating });
+  }
+
+  like = (focusedHeart, focusedBookmark) => {
+    return (
+      <View style={styles.like}>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={this.onPressHeart}
+        >
+          <TabBarIcon
+            name='heart-o'
+            focusedColor='#f1797a'
+            defaultColor='black'
+            focused={focusedHeart}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.icon}
+          onPress={this.onPressBookmark}
+        >
+          <TabBarIcon
+            style={styles.icon}
+            name='bookmark'
+            focused={focusedBookmark}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  price = () => {
+    return (
+      <View>
+        <View style={styles.nameProduct}>
+          <View style={{ flex: 0.5, alignItems: 'flex-start' }}>
+            <Text style={{ fontSize: 28 ,fontWeight: 'bold' }} numberOfLines={2}>Màn hình Retina sắc nét và sống động iPhone 4</Text>
+          </View>
+          <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }}>15.000.000 đ</Text>
+          </View>
+        </View>
+        <View style={styles.oldPrice}>
+          <Text style={[styles.fontSize20, styles.oldPriceText]}>19.999.000 đ</Text>
+        </View>
+      </View>
+    );
+  }
+
+  contentBtnWrapper = (colorDetailBtn, colorRatingBtn) => {
+    return (
+      <View style={styles.contentBtnWrapper}>
+        <TouchableOpacity
+          onPress={() => this.onPressContentBtn(0)}
+          style={styles.contentBtn}
+        >
+          <Text style={[styles.contentBtnText, colorDetailBtn]}>Chi tiết</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.onPressContentBtn(1)}
+          style={[
+            styles.contentBtn,
+            { borderLeftColor: 'black', borderLeftWidth: 1, }
+          ]}>
+          <Text style={[styles.contentBtnText, colorRatingBtn]}>Đánh giá</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  recommend = (text) => {
+    return (
+      <SafeAreaView style={styles.recommend}>
+        <View>
+          <Text style={styles.recommendHeader}>{text}</Text>
+        </View>
+        <FlatList
+          data={DATA}
+          renderItem={({ item }) => (
+            <ProductCard
+              width={width * 0.48}
+              id={item.id}
+              item={item}
+              onPress={() => this.props.navigation.push('ProductDetail', { id: item.id })}
+            />
+          )}
+          keyExtractor={item => item.id}
+          horizontal
+        />
+      </SafeAreaView>
+    );
+  }
+
   render() {
-    const { focusedHeart, focusedBookmark } = this.state;
+    const { focusedHeart, focusedBookmark, isRating } = this.state;
+    let content = (
+      <View style={styles.contentWrapper}>
+        <Text>
+          Màn hình Retina sắc nét và sống động iPhone 4 là một bước tiến mới của Apple trong công nghệ màn hình. Với công nghệ màn hình Retina (màn hình võng mạc), Apple đã mang tới cho người dùng một trải nghiệm mới trong việc tận hưởng chất lượng hiển thị trên màn hình smartphone. Với kích cỡ màn hình 3,5inch, cùng độ phân giải 960 x 640, mật độ điểm ảnh lên tới 326 ppi, màn hình iPhone 4 cho hình ảnh hiển thị sắc nét và mịn màng đến mức người dùng sẽ không thể cảm nhận được sự hiện diện của các điểm ảnh trên màn hình.
+        </Text>
+      </View>
+    );
+    let colorDetailBtn = { color: 'black' };
+    let colorRatingBtn = { color: '#cdc6c6' };
+    if (isRating) {
+      colorDetailBtn = { color: '#cdc6c6' };
+      colorRatingBtn = { color: 'black' };
+      content = (
+        <View style={styles.contentWrapper}>
+          <View style={styles.ratingText}>
+            <Text style={{ fontSize: 40, fontWeight: 'bold' }}>{rating.toFixed(1)}</Text>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#f1797a' }}>/5</Text>
+          </View>
+          <Rating readonly startingValue={rating} />
+          <Text>(90 lượt đánh giá)</Text>
+        </View>
+      );
+    }
+
     return (
       <ScrollView style={styles.container}>
         <View style={styles.header}>
@@ -47,47 +209,9 @@ export default class ProductDetail extends Component {
           />
         </View>
         <View style={styles.body}>
-          <View style={styles.like}>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={this.onPressHeart}
-            >
-              <TabBarIcon
-                name='heart-o'
-                focusedColor='#f1797a'
-                defaultColor='black'
-                focused={focusedHeart}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.icon}
-              onPress={this.onPressBookmark}
-            >
-              <TabBarIcon
-                style={styles.icon}
-                name='bookmark'
-                focused={focusedBookmark}
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.nameProduct}>
-            <Text style={{ fontSize: 32, fontWeight: 'bold' }}>Iphone X</Text>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }}>15.000.000 đ</Text>
-          </View>
-          <View style={styles.oldPrice}>
-            <Text style={{ fontSize: 20, textDecorationLine: 'line-through', textDecorationStyle: 'solid' }}>19.999.000 đ</Text>
-          </View>
-          <View style={styles.contentBtnWrapper}>
-            <TouchableOpacity style={{ flex: 0.5, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Chi tiết</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{
-              flex: 0.5, justifyContent: 'center', alignItems: 'center', borderLeftColor: 'black',
-              borderLeftWidth: 1,
-            }}>
-              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Đánh giá</Text>
-            </TouchableOpacity>
-          </View>
+          {this.like(focusedHeart, focusedBookmark)}
+          {this.price(focusedHeart, focusedBookmark)}
+          {this.contentBtnWrapper(colorDetailBtn, colorRatingBtn)}
           <View
             style={{
               borderBottomColor: 'black',
@@ -95,7 +219,9 @@ export default class ProductDetail extends Component {
               marginHorizontal: 16,
             }}
           />
-          <Rating startingValue={3.3} />
+          {content}
+          {this.recommend('Sản phẩm tương tự')}
+          {this.recommend('Bạn có thể thích')}
         </View>
       </ScrollView >
     );
@@ -103,23 +229,30 @@ export default class ProductDetail extends Component {
 }
 
 
-ProductDetail.navigationOptions = {
-  header: (
-    <View style={{
-      flex: 0,
-      justifyContent: "center",
-      alignItems: 'flex-start',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      paddingTop: Constants.statusBarHeight + 4
-    }}>
-      <TouchableOpacity>
-        <FontAwesome size={20} name="chevron-left" />
-      </TouchableOpacity>
-    </View>
-  )
+ProductDetail.navigationOptions = ({ navigation }) => {
+  const tabBarVisible = false;
+  return {
+    header: (
+      <View style={{
+        flex: 0,
+        justifyContent: "center",
+        alignItems: 'flex-start',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        paddingTop: Constants.statusBarHeight + 8,
+        paddingLeft: 8
+      }}>
+        <TouchableOpacity
+          onPress={() => navigation.pop()}
+        >
+          <FontAwesome size={24} name="arrow-left" />
+        </TouchableOpacity>
+      </View >
+    ),
+    tabBarVisible
+  };
 }
 
 const styles = StyleSheet.create({
@@ -128,7 +261,6 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.4,
-    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: Constants.statusBarHeight + 4,
@@ -161,6 +293,49 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-around',
+  },
+  contentWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginVertical: 24,
+  },
+  ratingText: {
+    flexDirection: 'row',
+    color: 'yellow',
+    alignItems: 'flex-end',
+    marginBottom: 8,
+  },
+  fontSize20: {
+    fontSize: 20,
+  },
+  fontWeightBold: {
+    fontWeight: 'bold',
+  },
+  contentBtn: {
+    flex: 0.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  oldPriceText: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid'
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  contentBtnText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  recommend: {
+    marginVertical: 12,
+    marginHorizontal: 16,
+  },
+  recommendHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
   }
 });
 

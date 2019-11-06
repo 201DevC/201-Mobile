@@ -145,7 +145,6 @@ const tabNavigator = createBottomTabNavigator({
   ShoppingStack,
   GiftStack,
   ProfileStack,
-
 });
 
 tabNavigator.path = '';

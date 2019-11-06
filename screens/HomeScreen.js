@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, TouchableHighlight, ImageBackground } from 'react-native';
-import Constants from 'expo-constants'
-import { Icon, SocialIcon, Button } from 'react-native-elements'
-import { AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground } from 'react-native';
+import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
 import Categorylv1 from '../components/CategoryLv1';
 import { CATEGORY } from "../data/listcategory";
