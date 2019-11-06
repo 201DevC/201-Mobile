@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, AsyncStorage, Button } from 'react-native';
 
 import TabBarIcon from '../components/TabBarIcon';
 
@@ -20,10 +20,18 @@ export default class ProfileScreen extends Component {
     ),
   }
 
+  onPressLogoutBtn = async () => {
+    await AsyncStorage.removeItem('userToken');
+    this.props.navigation.navigate('AuthLoading');
+  }
+
   render() {
     return (
       <View>
-        <Text> ProfileScreen </Text>
+        <Button
+          onPress={this.onPressLogoutBtn}
+          title="Logout"
+        />
       </View>
     );
   }

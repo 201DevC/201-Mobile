@@ -52,6 +52,7 @@ HomeDrawerNavigator.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'home'}
+      focusedColor='#f1797a'
     />
   ),
 };
@@ -70,6 +71,7 @@ SearchStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'search'}
+      focusedColor='#f1797a'
     />
   ),
 };
@@ -89,6 +91,7 @@ ShoppingStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'shopping-cart'}
+      focusedColor='#f1797a'
     />
   ),
 };
@@ -108,6 +111,7 @@ GiftStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'gift'}
+      focusedColor='#f1797a'
     />
   ),
 };
@@ -127,6 +131,7 @@ ProfileStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'user'}
+      focusedColor='#f1797a'
     />
   ),
 };
