@@ -50,13 +50,12 @@ export default class App extends Component {
   }
 
   render() {
-    const {maxSlider} = this.state;
     return (
       <View style={styles.container}>
 
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           <FlatList
-           getItemLayout={(data, index) => { return {length: maxSlider, index, offset: maxSlider * index} }}
+            getItemLayout={(data, index) => { return { length: width, index, offset: width * index } }}
             ref={this.setRef}
             data={this.state.banners}
             horizontal
@@ -65,7 +64,7 @@ export default class App extends Component {
             keyExtractor={item => item._id}
             renderItem={({ item, i }) => (
               <View key={i} style={{ height, width }}>
-                <Image style={{ height, width }} source={{ uri: item.imageUrl }} />
+                <Image resizeMode='stretch' style={{ height, width }} source={{ uri: item.imageUrl }} />
               </View>
             )}
             onMomentumScrollEnd={(event) => {

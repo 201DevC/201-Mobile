@@ -26,6 +26,9 @@
     "ios": {
       "supportsTablet": true
     },
+    "android": {
+      "package": "com.yourcompany.yourappname"
+    },
     "description": "",
     "githubUrl": "https://github.com/201DevC/201-Mobile"
   }

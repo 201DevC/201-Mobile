@@ -22,9 +22,12 @@ export default class HomeScreen extends Component {
         this.props.navigation.navigate('ProductDetail', { id: id });
     }
 
-    onFocusSearch= () => {
-        Keyboard.dismiss();
+    onPressSearch = () => {
         this.props.navigation.navigate('Search');
+    }
+
+    onPressMenu = () => {
+        this.props.navigation.openDrawer();
     }
 
     render() {
@@ -34,14 +37,18 @@ export default class HomeScreen extends Component {
                     <View style={styles.header}>
                         <View style={styles.tabBar}>
                             <View style={styles.buger}>
-                                <TouchableOpacity >
+                                <TouchableOpacity
+                                    onPress={this.onPressMenu}
+                                >
                                     <FontAwesome size={25} name={"bars"} />
                                 </TouchableOpacity>
                             </View>
-                            <View style={styles.warpperSearch}>
+                            <TouchableOpacity
+                                onPress={this.onPressSearch}
+                                style={styles.warpperSearch}
+                            >
                                 <TextInput
-                                    enablesReturnKeyAutomatically={false}
-                                    onFocus={this.onFocusSearch}
+                                    editable={false}
                                     style={styles.searchInput}
                                 />
                                 <TouchableOpacity>
@@ -51,7 +58,7 @@ export default class HomeScreen extends Component {
                                         color='black'
                                     />
                                 </TouchableOpacity>
-                            </View>
+                            </TouchableOpacity>
                         </View>
 
                         <Slideshow />
