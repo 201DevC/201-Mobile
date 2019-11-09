@@ -3,7 +3,7 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
 
-export default class ItemProduct extends Component {
+export default class CategoryLv1 extends Component {
     render() {
         const { data: { name } } = this.props;
         return (
@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
         borderColor: '#7f8c8d',
         borderRadius: 20,
         alignItems: "center",
-        margin: 8
+        margin: 5
     },
     text: {
         color: "#f39c12",
-        fontSize: 16
+        fontSize: 15
     }
 
 
