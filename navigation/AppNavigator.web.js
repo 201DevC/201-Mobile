@@ -4,7 +4,7 @@ import { createSwitchNavigator } from 'react-navigation';
 import MainTabNavigator from './MainTabNavigator';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import AuthNavigator from './AuthNavigator';
-import ProductDetailScreen from '../screens/ProductDetailScreen';
+
 
 const switchNavigator = createSwitchNavigator(
   {
@@ -13,8 +13,6 @@ const switchNavigator = createSwitchNavigator(
     AuthLoading: AuthLoadingScreen,
     Main: MainTabNavigator,
     Auth: AuthNavigator,
-    ChooseLikeProduct: ChooseLikeProductScreen,
-    ProductDetail: ProductDetailScreen,
   },
   {
     initialRouteName: 'AuthLoading',

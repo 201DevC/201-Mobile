@@ -7,15 +7,26 @@ export default function ProductCard(props) {
     return (
         <TouchableOpacity
             onPress={onPress}
+            // style={{
+            //     shadowColor: "#fff",
+            //     shadowOffset: {
+            //         width: 0,
+            //         height: 12,
+            //     },
+            //     shadowOpacity: 0.58,
+            //     shadowRadius: 16.00,
+
+            //     elevation: 24,
+            // }}
         >
             <Card
                 image={{ uri: uri }}
                 width={width}
                 imageProps={{ resizeMode: 'cover' }}
                 imageStyle={{ width: width * 0.9, height: width * 0.9 }}
-                height = {width*1.3}
+                height={width * 1.3}
             >
-                <View style={{marginTop: 24}}>
+                <View style={{ marginTop: 24 }}>
                     <View style={{
                         flex: 1,
                         flexDirection: 'row',
@@ -34,7 +45,7 @@ export default function ProductCard(props) {
                     </View>
                     <View style={{ justifyContent: 'flex-start', alignItems: 'flex-end', flexDirection: 'row' }}>
                         <Rating readonly startingValue={rating} imageSize={18} />
-                        <Text style={{ fontSize: 18 }}>(90)</Text>
+                        <Text style={{ fontSize: 14, marginLeft: 4 }}>(90)</Text>
                     </View>
                 </View>
             </Card>

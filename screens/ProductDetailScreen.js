@@ -24,7 +24,7 @@ const rating = 4.0;
 const DATA = [
   {
     id: '1',
-    name: "SỮA ENSURE 400g MẪU 2019",
+    name: "SỮA ENSURE 400g MẪU 2019-2020",
     product: "dien may xanh",
     rating: 4.0,
     uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
@@ -71,6 +71,7 @@ export default class ProductDetail extends Component {
 
   onPressHeart = () => {
     const focusedHeart = this.state.focusedHeart ? 0 : 1;
+    this.props.navigation.pop(1);
     this.setState({ focusedHeart })
   }
 
@@ -116,7 +117,7 @@ export default class ProductDetail extends Component {
       <View>
         <View style={styles.nameProduct}>
           <View style={{ flex: 0.5, alignItems: 'flex-start' }}>
-            <Text style={{ fontSize: 28 ,fontWeight: 'bold' }} numberOfLines={2}>Màn hình Retina sắc nét và sống động iPhone 4</Text>
+            <Text style={{ fontSize: 28, fontWeight: 'bold' }} numberOfLines={2}>Màn hình Retina sắc nét và sống động iPhone 4</Text>
           </View>
           <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
             <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }}>15.000.000 đ</Text>
@@ -251,7 +252,7 @@ ProductDetail.navigationOptions = ({ navigation }) => {
         </TouchableOpacity>
       </View >
     ),
-    tabBarVisible
+    tabBarVisible: false,
   };
 }
 

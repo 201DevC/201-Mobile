@@ -24,10 +24,10 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    ProductDetail: ProductDetailScreen,
+    // ProductDetail: ProductDetailScreen,
     MenuLevel2: MenuLevel2Screen,
   },
-  config
+  config,
 );
 
 HomeStack.path = '';
