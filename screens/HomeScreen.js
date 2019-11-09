@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput, Keyboard } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
@@ -22,6 +22,11 @@ export default class HomeScreen extends Component {
         this.props.navigation.navigate('ProductDetail', { id: id });
     }
 
+    onFocusSearch= () => {
+        Keyboard.dismiss();
+        this.props.navigation.navigate('Search');
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -35,6 +40,8 @@ export default class HomeScreen extends Component {
                             </View>
                             <View style={styles.warpperSearch}>
                                 <TextInput
+                                    enablesReturnKeyAutomatically={false}
+                                    onFocus={this.onFocusSearch}
                                     style={styles.searchInput}
                                 />
                                 <TouchableOpacity>

@@ -50,11 +50,13 @@ export default class App extends Component {
   }
 
   render() {
+    const {maxSlider} = this.state;
     return (
       <View style={styles.container}>
 
         <ScrollView style={styles.scrollContainer} showsVerticalScrollIndicator={false}>
           <FlatList
+           getItemLayout={(data, index) => { return {length: maxSlider, index, offset: maxSlider * index} }}
             ref={this.setRef}
             data={this.state.banners}
             horizontal
@@ -117,7 +119,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
-
   },
   sliderBtnSelected: {
     height: 12,
