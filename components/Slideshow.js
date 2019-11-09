@@ -5,7 +5,7 @@ import {
   FlatList,
   ScrollView,
   Dimensions,
-  Image
+  Image,
 } from 'react-native'
 
 const { width } = Dimensions.get('window');
@@ -105,18 +105,19 @@ const styles = StyleSheet.create({
   sliderContainer: {
     flexDirection: 'row',
     position: 'absolute',
-    top: 80,
+    bottom: 5,
     alignSelf: 'center'
   },
   sliderBtn: {
-    height: 13,
-    width: 13,
+    height: 12,
+    width: 12,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10
+    marginRight: 10,
+    
   },
   sliderBtnSelected: {
     height: 12,

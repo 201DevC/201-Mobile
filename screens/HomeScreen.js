@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput } from 'react-native';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import {FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
 import Categorylv1 from '../components/CategoryLv1';
 import Slideshow from '../components/Slideshow';
 import { CATEGORY } from "../data/listcategory";
 import { PRODUCT } from "../data/product";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { Input } from 'react-native-elements';
 
 
 export default class HomeScreen extends Component {
@@ -41,25 +39,13 @@ export default class HomeScreen extends Component {
                                     style={styles.searchInput}
                                 />
                                 <TouchableOpacity>
-                                    <Icon
+                                    <FontAwesome
                                         name='search'
                                         size={20}
                                         color='black'
                                     />
                                 </TouchableOpacity>
                             </View>
-                            {/* <Input
-                                containerStyle={styles.searchInput}
-                                leftIconContainerStyle={{paddingRight:10}}
-                                placeholder='Tìm kiếm'
-                                leftIcon={
-                                    <Icon
-                                        name='search'
-                                        size={20}
-                                        color='black'
-                                    />
-                                }
-                            /> */}
                         </View>
 
                         <Slideshow />
@@ -168,7 +154,7 @@ const styles = StyleSheet.create({
 
     },
     buger: {
-        justifyContent:"center",
+        justifyContent: "center",
         marginHorizontal: 5,
         width: '10%'
 
