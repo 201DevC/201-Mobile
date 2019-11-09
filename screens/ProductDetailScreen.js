@@ -159,7 +159,7 @@ export default class ProductDetail extends Component {
         </View>
         <FlatList
           data={DATA}
-          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <ProductCard
               width={width * 0.48}

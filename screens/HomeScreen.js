@@ -8,6 +8,8 @@ import Slideshow from '../components/Slideshow';
 import { CATEGORY } from "../data/listcategory";
 import { PRODUCT } from "../data/product";
 
+import axios from "axios";
+
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);

@@ -35,18 +35,24 @@ export default class App extends Component {
     this.listRef && this.listRef.scrollToIndex({ index, animated })
   }
 
+  _autoScroll = setInterval(function () {
+    const { sliderIndex, maxSlider } = this.state
+    let nextIndex = 0
+
+    if (sliderIndex < maxSlider) {
+      nextIndex = sliderIndex + 1
+    }
+
+    this.scrollToIndex(nextIndex, true)
+    this.setState({ sliderIndex: nextIndex })
+  }.bind(this), 3000);
+
   componentWillMount() {
-    setInterval(function () {
-      const { sliderIndex, maxSlider } = this.state
-      let nextIndex = 0
+    this._autoScroll;
+  }
 
-      if (sliderIndex < maxSlider) {
-        nextIndex = sliderIndex + 1
-      }
-
-      this.scrollToIndex(nextIndex, true)
-      this.setState({ sliderIndex: nextIndex })
-    }.bind(this), 3000)
+  componentWillUnmount() {
+    clearInterval(this._autoScroll);
   }
 
   render() {
