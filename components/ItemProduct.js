@@ -5,8 +5,8 @@ import { AntDesign } from '@expo/vector-icons';
 export default class ItemProduct extends Component {
 
     render() {
-        const { data: { name, shop_name, price, order_count, images } } = this.props;
-        // console.log(images[0])
+        // console.log("---------",this.props.data.images[0])
+        const { data: { name, shop_info, price, order_count, images } } = this.props;
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
@@ -14,7 +14,7 @@ export default class ItemProduct extends Component {
             >
                 <View style={styles.imgCardProduct}>
                     <Image style={styles.img}
-                        source={{uri: 'https://media3.scdn.vn/img1/2015/7_5/1ed1a0_simg_de2fe0_500x500_maxb.jpg'}}
+                        source={{uri: images[0]}}
                         resizeMode="cover" />
                 </View >
                 <View style={styles.warpperProductResponse}>
@@ -27,7 +27,7 @@ export default class ItemProduct extends Component {
                 </View>
                 <View style={styles.warpperProductResponse}>
                     <View style={styles.ShopName}>
-                        <Text style={styles.txtShopName}>{shop_name}</Text>
+                        <Text style={styles.txtShopName}>{shop_info.name}</Text>
                     </View>
                     <View style={styles.Price}>
                         <Text style={styles.txtPrice}>{price} vnđ</Text>

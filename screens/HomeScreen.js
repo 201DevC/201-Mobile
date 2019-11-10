@@ -7,7 +7,7 @@ import Categorylv1 from '../components/CategoryLv1';
 import Slideshow from '../components/Slideshow';
 import { CATEGORY } from "../data/listcategory";
 import { PRODUCT } from "../data/product";
-
+// import axios from "axios";
 
 const axios = require('axios');
 export default class HomeScreen extends Component {
@@ -30,7 +30,8 @@ export default class HomeScreen extends Component {
         return data.data.data.content;
     }
     _getDataFlashSale = async () => {
-        const data = await axios.get('http://35.240.241.27:8080/flash?page=1');
+        const data = await axios.get('http://35.240.241.27:8080/flash?offset=1');
+        // console.log("----------",data.data.data.content[0].images[0]);
         return data.data.data.content;
     }
     _getDataProductTrend = async () => {
@@ -40,6 +41,7 @@ export default class HomeScreen extends Component {
     async componentDidMount() {
         const listcategoryLv1 = await this._getDataCategoryLv1();
         const listFlashSale = await this._getDataFlashSale();
+        // console.log("+++++++++++",listFlashSale[0].images[0])
         const listProductTrend = await this._getDataFlashSale();
         this.setState({
             listcategoryLv1,
@@ -64,8 +66,10 @@ export default class HomeScreen extends Component {
     }
 
     render() {
-        console.log(this.state.listcategoryLv1)
-        console.log(this.state.listFlashSale.keys(1))
+        // console.log(this.state.listcategoryLv1)
+        // console.log(this.state.listFlashSale.keys(1))
+        
+
 
         const { isLoading } = this.state
         if (isLoading) {
@@ -152,7 +156,7 @@ export default class HomeScreen extends Component {
 
                             <View style={styles.warpperYourLikeItem}>
                                 {
-                                    this.state.listproduct.map(item => {
+                                    this.state.listFlashSale.map(item => {
                                         return <ItemProduct
                                             onPress={() => this._goToProductDetail(item.id)}
                                             key={item.id}

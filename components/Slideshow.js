@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 
 const { width } = Dimensions.get('window');
-const height = width * 0.4;
+const height = width * 0.44;
 
 export default class App extends Component {
   constructor(props) {
@@ -35,18 +35,24 @@ export default class App extends Component {
     this.listRef && this.listRef.scrollToIndex({ index, animated })
   }
 
+  _autoScroll = setInterval(function () {
+    const { sliderIndex, maxSlider } = this.state
+    let nextIndex = 0
+
+    if (sliderIndex < maxSlider) {
+      nextIndex = sliderIndex + 1
+    }
+
+    this.scrollToIndex(nextIndex, true)
+    this.setState({ sliderIndex: nextIndex })
+  }.bind(this), 3000);
+
   componentWillMount() {
-    setInterval(function () {
-      const { sliderIndex, maxSlider } = this.state
-      let nextIndex = 0
+    this._autoScroll;
+  }
 
-      if (sliderIndex < maxSlider) {
-        nextIndex = sliderIndex + 1
-      }
-
-      this.scrollToIndex(nextIndex, true)
-      this.setState({ sliderIndex: nextIndex })
-    }.bind(this), 3000)
+  componentWillUnmount() {
+    clearInterval(this._autoScroll);
   }
 
   render() {
@@ -110,9 +116,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   sliderBtn: {
-    height: 12,
-    width: 12,
-    borderRadius: 12,
+    height: 8,
+    width: 8,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: 'white',
     alignItems: 'center',
@@ -120,12 +126,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   sliderBtnSelected: {
-    height: 12,
-    width: 12,
-    borderRadius: 6,
+    height: 8,
+    width: 8,
+    borderRadius: 4,
     backgroundColor: 'white',
   },
   sliderBtnContainer: {
-    flexDirection: 'row', marginBottom: 24
+    flexDirection: 'row', marginBottom: 12
   },
 });
