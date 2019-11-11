@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Image } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
 export default class ItemProduct extends Component {
@@ -15,7 +16,9 @@ export default class ItemProduct extends Component {
                 <View style={styles.imgCardProduct}>
                     <Image style={styles.img}
                         source={{uri: images[0]}}
-                        resizeMode="cover" />
+                        resizeMode="cover" 
+                        PlaceholderContent={<ActivityIndicator />}
+                        />
                 </View >
                 <View style={styles.warpperProductResponse}>
                     <View style={styles.NameProduct}>
@@ -27,7 +30,7 @@ export default class ItemProduct extends Component {
                 </View>
                 <View style={styles.warpperProductResponse}>
                     <View style={styles.ShopName}>
-                        <Text style={styles.txtShopName}>{shop_info.name}</Text>
+                        <Text style={styles.txtShopName} numberOfLines={2}>{shop_info.name}</Text>
                     </View>
                     <View style={styles.Price}>
                         <Text style={styles.txtPrice}>{price} vnđ</Text>
