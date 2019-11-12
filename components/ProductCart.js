@@ -7,38 +7,31 @@ export default function ProductCard(props) {
     return (
         <TouchableOpacity
             onPress={onPress}
-            // style={{
-            //     shadowColor: "#fff",
-            //     shadowOffset: {
-            //         width: 0,
-            //         height: 12,
-            //     },
-            //     shadowOpacity: 0.58,
-            //     shadowRadius: 16.00,
+            style={{
+                // shadowColor: "#fff",
+                // shadowOffset: {
+                //     width: 0,
+                //     height: 12,
+                // },
+                // shadowOpacity: 0.58,
+                // shadowRadius: 16.00,
 
-            //     elevation: 24,
-            // }}
+                // elevation: 24,
+                // borderRadius: 24,
+            }}
         >
             <Card
                 image={{ uri: uri }}
                 width={width}
                 imageProps={{ resizeMode: 'cover' }}
-                imageStyle={{ width: width * 0.9, height: width * 0.9 }}
-                height={width * 1.3}
+                imageStyle={{ maxWidth: width, height: width * 0.9 }}
             >
-                <View style={{ marginTop: 24 }}>
-                    <View style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-end',
-                    }}>
-                        <View style={{ flex: 0.5, alignItems: 'flex-start' }}>
-                            <Text style={{ fontWeight: 'bold' }} numberOfLines={2}>{name}</Text>
-                        </View>
-                        <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-                            <Text style={{ fontWeight: 'bold', color: '#f1797a' }}>15.000.000 đ</Text>
-                        </View>
+                <View>
+                    <View >
+                        <Text style={{ fontWeight: 'bold' }} numberOfLines={1}>{name}</Text>
+                    </View>
+                    <View >
+                        <Text style={{ fontWeight: 'bold', color: '#f1797a' }} numberOfLines={1}>300.000.000 đ</Text>
                     </View>
                     <View>
                         <Text style={{ color: '#cdc6c6', fontSize: 10 }} numberOfLines={1}>{product}</Text>

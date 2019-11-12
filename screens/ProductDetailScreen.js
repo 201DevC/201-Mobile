@@ -71,7 +71,6 @@ export default class ProductDetail extends Component {
 
   onPressHeart = () => {
     const focusedHeart = this.state.focusedHeart ? 0 : 1;
-    this.props.navigation.pop(1);
     this.setState({ focusedHeart })
   }
 
@@ -120,11 +119,11 @@ export default class ProductDetail extends Component {
             <Text style={{ fontSize: 28, fontWeight: 'bold' }} numberOfLines={2}>Màn hình Retina sắc nét và sống động iPhone 4</Text>
           </View>
           <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }}>15.000.000 đ</Text>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }} numberOfLines={1}>15.000.000 đ</Text>
           </View>
         </View>
         <View style={styles.oldPrice}>
-          <Text style={[styles.fontSize20, styles.oldPriceText]}>19.999.000 đ</Text>
+          <Text style={[styles.fontSize20, styles.oldPriceText]} numberOfLines={1}>19.999.000 đ</Text>
         </View>
       </View>
     );
