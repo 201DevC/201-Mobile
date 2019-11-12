@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput, Keyboard, ActivityIndicator } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
@@ -7,18 +7,51 @@ import Categorylv1 from '../components/CategoryLv1';
 import Slideshow from '../components/Slideshow';
 import { CATEGORY } from "../data/listcategory";
 import { PRODUCT } from "../data/product";
+// import axios from "axios";
 
-import axios from "axios";
-
+const axios = require('axios');
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isLoading: true,
             username: 'UserName',
             listcategory: CATEGORY,
             listproduct: PRODUCT,
+            listcategoryLv1: [],
+            listFlashSale: [],
+            listProductTrend: []
+
         };
     }
+
+    _getDataCategoryLv1 = async () => {
+        const data = await axios.get('http://35.240.241.27:8080/category/lv1?page=1');
+        return data.data.data.content;
+    }
+    _getDataFlashSale = async () => {
+        const data = await axios.get('http://35.240.241.27:8080/flash?offset=1');
+        // console.log("----------",data.data.data.content[0].images[0]);
+        return data.data.data.content;
+    }
+    _getDataProductTrend = async () => {
+        const data = await axios.get('http://35.240.241.27:8080/product/trend');
+        return data.data.data;
+    }
+    async componentDidMount() {
+        const listcategoryLv1 = await this._getDataCategoryLv1();
+        const listFlashSale = await this._getDataFlashSale();
+        // console.log("+++++++++++",listFlashSale[0].images[0])
+        const listProductTrend = await this._getDataFlashSale();
+        this.setState({
+            listcategoryLv1,
+            listFlashSale,
+            listProductTrend,
+            isLoading: false,
+        })
+    }
+
+
 
     _goToProductDetail = (id) => {
         this.props.navigation.navigate('ProductDetail', { id: id });
@@ -33,109 +66,129 @@ export default class HomeScreen extends Component {
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <ScrollView style={{ flex: 1 }} >
-                    <View style={styles.header}>
-                        <View style={styles.tabBar}>
-                            <View style={styles.buger}>
+        // console.log(this.state.listcategoryLv1)
+        // console.log(this.state.listFlashSale.keys(1))
+        
+
+
+        const { isLoading } = this.state
+        if (isLoading) {
+            return (
+                <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                    <ActivityIndicator size='large' animating={isLoading} />
+                </View>
+            );
+        } else {
+            return (
+                <View style={styles.container}>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
+                        <View style={styles.header}>
+                            <View style={styles.tabBar}>
+                                <View style={styles.buger}>
+                                    <TouchableOpacity
+                                        onPress={this.onPressMenu}
+                                    >
+                                        <FontAwesome size={20} name={"bars"} />
+                                    </TouchableOpacity>
+                                </View>
                                 <TouchableOpacity
-                                    onPress={this.onPressMenu}
+                                    onPress={this.onPressSearch}
+                                    style={styles.warpperSearch}
                                 >
-                                    <FontAwesome size={25} name={"bars"} />
-                                </TouchableOpacity>
-                            </View>
-                            <TouchableOpacity
-                                onPress={this.onPressSearch}
-                                style={styles.warpperSearch}
-                            >
-                                <TextInput
-                                    editable={false}
-                                    style={styles.searchInput}
-                                />
-                                <TouchableOpacity>
                                     <FontAwesome
                                         name='search'
-                                        size={20}
-                                        color='black'
+                                        size={15}
+                                        color='grey'
                                     />
+                                    <TextInput
+                                        editable={false}
+                                        style={styles.searchInput}
+                                        placeholder="Tìm kiếm"
+                                    />
+
+
                                 </TouchableOpacity>
-                            </TouchableOpacity>
-                        </View>
-
-                        <Slideshow />
-
-                    </View>
-                    <ScrollView style={styles.naviLv1} horizontal={true} >
-                        {
-                            this.state.listcategory.map(item => {
-                                return <Categorylv1
-                                    key={item.id}
-                                    data={item}
-                                />
-                            })
-                        }
-                    </ScrollView>
-                    <ImageBackground source={require("../assets/images/bg.jpg")} style={styles.wrapperFlashSale}>
-                        <View >
-                            <View style={styles.titleFlashSale}>
-                                <Text style={styles.textFlashSale}>Flash Sale</Text>
-                                <TouchableOpacity style={styles.moreListFlashSale}>
-                                    <Text >
-                                        XEM THÊM
-                                  </Text>
-                                </TouchableOpacity>
-
                             </View>
-                            <ScrollView style={styles.warpperFlashSaleItem} horizontal={true} >
+
+                            <Slideshow />
+
+                        </View>
+                        <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
+                            {
+                                this.state.listcategoryLv1.map(item => {
+                                    return <Categorylv1
+                                        key={item.id}
+                                        data={item}
+
+                                    />
+
+                                })
+                            }
+                        </ScrollView>
+                        <ImageBackground source={require("../assets/images/bg.jpg")} style={styles.wrapperFlashSale}>
+                            <View >
+                                <View style={styles.titleFlashSale}>
+                                    <Text style={styles.textFlashSale}>Flash Sale</Text>
+                                    <TouchableOpacity style={styles.moreListFlashSale}>
+                                        <Text >
+                                            XEM THÊM
+                                    </Text>
+                                    </TouchableOpacity>
+
+                                </View>
+
+                                <ScrollView style={styles.warpperFlashSaleItem} horizontal={true} showsHorizontalScrollIndicator={false} >
+                                    {
+                                        this.state.listFlashSale.map(item => {
+                                            return <ItemProduct
+                                                onPress={() => this._goToProductDetail(item.id)}
+                                                key={item.id}
+                                                data={item}
+
+                                            />
+                                        })
+                                    }
+                                </ScrollView>
+                            </View>
+                        </ImageBackground>
+                        <View style={styles.wrapperYourLike}>
+                            <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
+
+                            <View style={styles.warpperYourLikeItem}>
                                 {
-                                    this.state.listproduct.map(item => {
+                                    this.state.listFlashSale.map(item => {
                                         return <ItemProduct
                                             onPress={() => this._goToProductDetail(item.id)}
                                             key={item.id}
                                             data={item}
-
                                         />
                                     })
                                 }
-                            </ScrollView>
+                            </View>
                         </View>
-                    </ImageBackground>
-                    <View style={styles.wrapperYourLike}>
-                        <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
+                        <View style={styles.wrapperYourLike}>
+                            <Text style={styles.txtYourLike}>Xu Hướng</Text>
 
-                        <View style={styles.warpperYourLikeItem}>
-                            {
-                                this.state.listproduct.map(item => {
-                                    return <ItemProduct
-                                        onPress={() => this._goToProductDetail(item.id)}
-                                        key={item.id}
-                                        data={item}
-                                    />
-                                })
-                            }
+                            <View style={styles.warpperYourLikeItem}>
+                                {
+                                    this.state.listProductTrend.map(item => {
+                                        return <ItemProduct
+                                            onPress={() => this._goToProductDetail(item.id)}
+                                            key={item.id}
+                                            data={item}
+                                        />
+                                    })
+                                }
+                            </View>
                         </View>
-                    </View>
-                    <View style={styles.wrapperYourLike}>
-                        <Text style={styles.txtYourLike}>Xu Hướng</Text>
-
-                        <View style={styles.warpperYourLikeItem}>
-                            {
-                                this.state.listproduct.map(item => {
-                                    return <ItemProduct
-                                        onPress={() => this._goToProductDetail(item.id)}
-                                        key={item.id}
-                                        data={item}
-                                    />
-                                })
-                            }
-                        </View>
-                    </View>
-                </ScrollView>
-            </View>
+                    </ScrollView>
+                </View>
 
 
-        );
+            );
+        }
+
+
     }
 }
 HomeScreen.navigationOptions = {
@@ -171,19 +224,23 @@ const styles = StyleSheet.create({
     buger: {
         justifyContent: "center",
         marginHorizontal: 5,
-        width: '10%'
-
     },
     warpperSearch: {
-        width: '80%',
+        width: '90%',
         flexDirection: "row",
-        borderWidth: 2,
-        borderRadius: 20,
+        borderRadius: 10,
+        backgroundColor:"white",
         alignItems: "center",
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginHorizontal:5,
+        height:35,
+        opacity:0.8
+
     },
     searchInput: {
-        width: '90%'
+        width: '90%',
+        fontSize:16,
+        marginLeft:10,
     },
     naviCategoryLv1: {
         backgroundColor: 'red'

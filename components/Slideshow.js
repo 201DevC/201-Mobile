@@ -132,6 +132,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   sliderBtnContainer: {
+<<<<<<< HEAD
     flexDirection: 'row', marginBottom: 8
+=======
+    flexDirection: 'row', marginBottom: 12
+>>>>>>> fbd823e87782621b1d7957ed8c95e77fd9ffb4b0
   },
 });
