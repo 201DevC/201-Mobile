@@ -1,11 +1,11 @@
 export const CATEGORY =
     [
-        {
-            id: 1,
-            status:0,
-            name: "Giày",
-            img_source: require("../assets/images/giay.png"),
-        },
+        // {
+        //     id: 1,
+        //     status:0,
+        //     name: "Giày",
+        //     img_source: require("../assets/images/giay.png"),
+        // },
         {
             id: 2,
             status:0,
