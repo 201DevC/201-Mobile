@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 
 const { width } = Dimensions.get('window');
-const height = width * 0.44;
+const height = width * 0.5;
 
 export default class App extends Component {
   constructor(props) {

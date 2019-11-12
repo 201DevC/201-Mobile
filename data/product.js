@@ -1,85 +1,36 @@
 export const PRODUCT =
     [
-        {
-           id:"1",
-           name:"Dây đồng hồ",
-           shop_name:"DW",
-           price:10000,
-           order_count:13,
-           img_product: require("../assets/images/img_product.jpg"),
-        },
-        {
-            id:"2",
-            name:"Quần jean",
-            shop_name:"Kelvin",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
+      {
+         "id": 1,
+         "images": [
+           "https://vinatex.com.vn/wp-content/themes/vinatex/assets/images/default-thumbnail.png",
+         ],
+         "price": 0,
+         "order_count": 0,
+         "shop_info": {
          },
-         {
-            id:"3",
-            name:"Mì tôm Hảo Hảo",
-            shop_name:"Hảo Hảo",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
+       },
+       {
+         "id": 2,
+         "images": [
+           "https://vinatex.com.vn/wp-content/themes/vinatex/assets/images/default-thumbnail.png",
+         ],
+         "price": 0,
+         "order_count": 0,
+         "shop_info": {
          },
-         {
-            id:"4",
-            name:"Thùng 30 mỳ tôm Hảo Hảo",
-            shop_name:"Hảo Hảo",
-            price:1000000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
+       },
+       {
+         "id": 3,
+         "images": [
+           "https://vinatex.com.vn/wp-content/themes/vinatex/assets/images/default-thumbnail.png",
+         ],
+         "price": 0,
+         "order_count": 0,
+         "shop_info": {
          },
-         {
-            id:"5",
-            name:"dây đồng hồ",
-            shop_name:"Hảo Hảo Hảo",
-            price:100000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
-         },
-         {
-            id:"6",
-            name:"dây đồng hồ",
-            shop_name:"Hảo Hảo",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
-         },
-         {
-            id:"7",
-            name:"dây đồng hồ",
-            shop_name:"Hảo Hảo",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
-         },
-         {
-            id:"8",
-            name:"dây đồng hồ",
-            shop_name:"Hảo Hảo",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
-         },
-         {
-            id:"9",
-            name:"dây đồng hồ",
-            shop_name:"Hảo Hảo",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
-         },
-         {
-            id:"10",
-            name:"dây đồng hồ",
-            shop_name:"Hảo Hảo",
-            price:10000,
-            order_count:13,
-            img_product: require("../assets/images/img_product.jpg"),
-         },
-
+       },
+       
+         
         
     ]
