@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 
 const { width } = Dimensions.get('window');
-const height = width * 0.5;
+const height = width * 0.44;
 
 export default class App extends Component {
   constructor(props) {
@@ -132,10 +132,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   sliderBtnContainer: {
-<<<<<<< HEAD
     flexDirection: 'row', marginBottom: 8
-=======
-    flexDirection: 'row', marginBottom: 12
->>>>>>> fbd823e87782621b1d7957ed8c95e77fd9ffb4b0
   },
 });
