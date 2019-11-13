@@ -10,7 +10,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
 import ShoppingCardScreen from '../screens/ShoppingCardScreen';
-import GiftScreen from '../screens/GiftScreen';
+import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MenuLevel1Screen from '../screens/MenuLevel1Screen';
 import MenuLevel2Screen from '../screens/MenuLevel2Screen';
@@ -47,7 +47,7 @@ const HomeDrawerNavigator = createDrawerNavigator(
 );
 
 HomeDrawerNavigator.navigationOptions = {
-  tabBarLabel: "Home",
+  tabBarLabel: "Trang chủ",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -66,7 +66,7 @@ const SearchStack = createStackNavigator(
 );
 
 SearchStack.navigationOptions = {
-  tabBarLabel: "Search",
+  tabBarLabel: "Tìm kiếm",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -86,7 +86,7 @@ const ShoppingStack = createStackNavigator(
 );
 
 ShoppingStack.navigationOptions = {
-  tabBarLabel: "Cart",
+  tabBarLabel: "Giỏ hàng",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -98,25 +98,25 @@ ShoppingStack.navigationOptions = {
 
 ShoppingStack.path = '';
 
-const GiftStack = createStackNavigator(
+const HistoryStack = createStackNavigator(
   {
-    Gift: GiftScreen,
+    History: HistoryScreen,
   },
   config
 );
 
-GiftStack.navigationOptions = {
-  tabBarLabel: "Gift",
+HistoryStack.navigationOptions = {
+  tabBarLabel: "Lịch sử",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={'gift'}
+      name={'history'}
       focusedColor='#f1797a'
     />
   ),
 };
 
-GiftStack.path = '';
+HistoryStack.path = '';
 
 const ProfileStack = createStackNavigator(
   {
@@ -126,7 +126,7 @@ const ProfileStack = createStackNavigator(
 );
 
 ProfileStack.navigationOptions = {
-  tabBarLabel: "Profile",
+  tabBarLabel: "Tài khoản",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -143,7 +143,7 @@ const tabNavigator = createBottomTabNavigator({
   HomeDrawerNavigator,
   SearchStack,
   ShoppingStack,
-  GiftStack,
+  HistoryStack,
   ProfileStack,
 });
 

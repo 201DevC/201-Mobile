@@ -5,59 +5,23 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  Image,
   Dimensions,
   SafeAreaView,
   FlatList,
+  ActivityIndicator,
+  RefreshControl
 } from 'react-native';
 
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import TabBarIcon from '../components/TabBarIcon';
-import { Card, Rating } from 'react-native-elements'
+import { Image, Rating } from 'react-native-elements'
 import ProductCard from '../components/ProductCart';
+import axios from 'axios';
+import NumberFormat from 'react-number-format';
 
 
 const width = Dimensions.get('window').width;
-const rating = 4.0;
-
-const DATA = [
-  {
-    id: '1',
-    name: "SỮA ENSURE 400g MẪU 2019-2020",
-    product: "dien may xanh",
-    rating: 4.0,
-    uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  },
-  {
-    id: '2',
-    name: "iphone x",
-    product: "dien may xanh",
-    rating: 4.1,
-    uri: "https://images.unsplash.com/photo-1503185912284-5271ff81b9a8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  },
-  {
-    id: '3',
-    name: "iphone x",
-    product: "dien may xanh",
-    rating: 3.5,
-    uri: "https://images.unsplash.com/photo-1504276048855-f3d60e69632f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  },
-  {
-    id: '4',
-    name: "iphone x",
-    product: "dien may xanh",
-    rating: 5.0,
-    uri: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
-  },
-  {
-    id: '5',
-    name: "iphone x",
-    product: "dien may xanh",
-    rating: 4.8,
-    uri: "https://images.unsplash.com/photo-1464863979621-258859e62245?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1533&q=80",
-  },
-]
 
 export default class ProductDetail extends Component {
   constructor(props) {
@@ -66,7 +30,49 @@ export default class ProductDetail extends Component {
       focusedHeart: 0,
       focusedBookmark: 0,
       isRating: 0,
+      detail: {},
+      listTrend: [],
+      listRelation: [],
+      isLoading: true,
+      isLoadingTrend: true,
+      isLoadingRelation: true,
     };
+  }
+
+  _getDataDetail = async () => {
+    const id = this.props.navigation.getParam('id');
+    const data = await axios.get('http://35.240.241.27:8080/product/' + id);
+    this.setState({ detail: data.data.data, isLoading: false });
+  }
+
+  _getDataRelation = async () => {
+    const id = this.props.navigation.getParam('id');
+    const data = await axios.get(`http://35.240.241.27:8080/product/${id}/relation`);
+    this.setState({
+      listRelation: data.data.data, isLoadingRelation: false
+    })
+  }
+
+  _getDataTrend = async () => {
+    const data = await axios.get('http://35.240.241.27:8080/product/trend');
+    this.setState({
+      listTrend: data.data.data, isLoadingTrend: false
+    })
+  }
+
+  _getData = async () => {
+    await this._getDataDetail();
+    await this._getDataRelation();
+    await this._getDataTrend();
+  }
+
+  _referData = () => {
+    this.setState({ listRelation: [], listTrend: [], isLoading: true, isLoadingRelation: true, isLoadingTrend: true });
+    this._getData();
+  }
+
+  async componentDidMount() {
+    this._getData();
   }
 
   onPressHeart = () => {
@@ -82,6 +88,8 @@ export default class ProductDetail extends Component {
   onPressContentBtn = (isRating) => {
     this.setState({ isRating });
   }
+
+
 
   like = (focusedHeart, focusedBookmark) => {
     return (
@@ -112,14 +120,27 @@ export default class ProductDetail extends Component {
   }
 
   price = () => {
+    const { detail } = this.state;
+    const new_price = detail ? detail.price : 0;
     return (
       <View>
         <View style={styles.nameProduct}>
           <View style={{ flex: 0.5, alignItems: 'flex-start' }}>
-            <Text style={{ fontSize: 28, fontWeight: 'bold' }} numberOfLines={2}>Màn hình Retina sắc nét và sống động iPhone 4</Text>
+            <Text style={{ fontSize: 28, fontWeight: 'bold' }} numberOfLines={2}>{detail.name}</Text>
           </View>
           <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-            <Text style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }} numberOfLines={1}>15.000.000 đ</Text>
+            <NumberFormat
+              value={new_price}
+              displayType={'text'}
+              thousandSeparator={true}
+              prefix={''}
+              renderText={value => <Text
+                style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }}
+                numberOfLines={1}>
+                {value} đ
+                </Text>
+              }
+            />
           </View>
         </View>
         <View style={styles.oldPrice}>
@@ -150,24 +171,24 @@ export default class ProductDetail extends Component {
     );
   }
 
-  recommend = (text) => {
+  recommend = (text, isLoading, data) => {
     return (
       <SafeAreaView style={styles.recommend}>
         <View>
           <Text style={styles.recommendHeader}>{text}</Text>
         </View>
+        {isLoading && <ActivityIndicator />}
         <FlatList
-          data={DATA}
+          data={data}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
             <ProductCard
               width={width * 0.48}
-              id={item.id}
               item={item}
               onPress={() => this.props.navigation.push('ProductDetail', { id: item.id })}
             />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.id.toString()}
           horizontal
         />
       </SafeAreaView>
@@ -175,7 +196,9 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const { focusedHeart, focusedBookmark, isRating } = this.state;
+    const { focusedHeart, focusedBookmark, isRating, isLoading, detail, isLoadingRelation, isLoadingTrend, listRelation, listTrend } = this.state;
+    const total_rated = detail.rating_info ? detail.rating_info.total_rated : 5;
+    const rating =  total_rated/100*5;
     let content = (
       <View style={styles.contentWrapper}>
         <Text>
@@ -195,35 +218,52 @@ export default class ProductDetail extends Component {
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#f1797a' }}>/5</Text>
           </View>
           <Rating readonly startingValue={rating} />
-          <Text>(90 lượt đánh giá)</Text>
+          <Text>({total_rated} lượt đánh giá)</Text>
         </View>
       );
     }
 
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <Image
-            source={{ uri: 'https://media3.scdn.vn/img3/2019/5_14/M3TZ0Q_simg_de2fe0_500x500_maxb.jpg' }}
-            resizeMode='cover'
-            style={{ width: width * 0.8, height: width * 0.8 }}
-          />
-        </View>
-        <View style={styles.body}>
-          {this.like(focusedHeart, focusedBookmark)}
-          {this.price(focusedHeart, focusedBookmark)}
-          {this.contentBtnWrapper(colorDetailBtn, colorRatingBtn)}
-          <View
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 1,
-              marginHorizontal: 16,
-            }}
-          />
-          {content}
-          {this.recommend('Sản phẩm tương tự')}
-          {this.recommend('Bạn có thể thích')}
-        </View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={this._referData} />
+        }
+        horizontal={false}
+        showsVerticalScrollIndicator={false}
+        style={styles.container}
+      >
+        {
+          isLoading ?
+            <View style={{ alignItems: "center", justifyContent: "center", marginTop: Constants.statusBarHeight + 4 }}>
+              <ActivityIndicator size='large' animating={isLoading} />
+              <Text>Dữ liệu đang load, xin vui lòng đợi ...</Text>
+            </View>
+            : <React.Fragment>
+              <View style={styles.header}>
+                <Image
+                  source={{ uri: detail.images[0] }}
+                  resizeMode='cover'
+                  PlaceholderContent={<ActivityIndicator />}
+                  style={{ width: width * 0.8, height: width * 0.8 }}
+                />
+              </View>
+              <View style={styles.body}>
+                {this.like(focusedHeart, focusedBookmark)}
+                {this.price(focusedHeart, focusedBookmark)}
+                {this.contentBtnWrapper(colorDetailBtn, colorRatingBtn)}
+                <View
+                  style={{
+                    borderBottomColor: 'black',
+                    borderBottomWidth: 1,
+                    marginHorizontal: 16,
+                  }}
+                />
+                {content}
+                {this.recommend('Sản phẩm tương tự', isLoadingRelation, listRelation)}
+                {this.recommend('Bạn có thể thích', isLoadingTrend, listTrend)}
+              </View>
+            </React.Fragment>
+        }
       </ScrollView >
     );
   }

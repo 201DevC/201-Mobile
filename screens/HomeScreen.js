@@ -7,12 +7,8 @@ import ItemProduct from '../components/ItemProduct';
 import Categorylv1 from '../components/CategoryLv1';
 import Slideshow from '../components/Slideshow';
 import { CATEGORY } from "../data/listcategory";
-import { PRODUCT } from "../data/product";
-import constants from 'jest-haste-map/build/constants';
-import { bold } from 'ansi-colors';
-// import axios from "axios";
+import axios from "axios";
 
-const axios = require('axios');
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +16,6 @@ export default class HomeScreen extends Component {
             isLoading: true,
             username: 'UserName',
             listcategory: CATEGORY,
-            // listFlashSale: PRODUCT,
             listcategoryLv1: [],
             listFlashSale: [],
             listProductTrend: []
@@ -58,10 +53,12 @@ export default class HomeScreen extends Component {
 
     }
 
-
-
     _goToProductDetail = (id) => {
         this.props.navigation.navigate('ProductDetail', { id: id });
+    }
+
+    _goToHistory = () => {
+        this.props.navigation.navigate('History');
     }
 
     onPressSearch = () => {
@@ -156,7 +153,6 @@ export default class HomeScreen extends Component {
                                         return <Categorylv1
                                             key={item.id}
                                             data={item}
-
                                         />
 
                                     })
@@ -191,7 +187,9 @@ export default class HomeScreen extends Component {
                             <View style={styles.wrapperYourLike}>
                                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 10 }}>
                                     <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity
+                                        onPress={() => this._goToHistory()}
+                                    >
                                         <Text style={{ color: "#0984e3", }}> Dựa trên sản phẩm bạn đã xem ></Text>
                                     </TouchableOpacity>
                                 </View>
