@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Image } from 'react-native-elements';
-import { AntDesign } from '@expo/vector-icons';
 
 export default class ItemProduct extends Component {
 
     render() {
-        // console.log("---------",this.props.data.images[0])
         const { data: { name, shop_info, price, order_count, images } } = this.props;
         return (
             <TouchableOpacity
@@ -104,8 +102,4 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: "bold",
     }
-
-
-
-
 }); 

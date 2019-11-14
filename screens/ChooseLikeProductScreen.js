@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, ScrollView, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants'
 import { Button } from 'react-native-elements'
 import { AntDesign } from '@expo/vector-icons';
-import { CATEGORY } from "../data/listcategory";
 import LikeCard from '../components/LikeCard';
-
+import axios from "axios";
 
 export default class ChooseLikeProductScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: 'UserName',
-            listcategory: CATEGORY,
+            listcategory: [],
             count: 0,
+            isLoading: true,
         };
+    }
+
+    _getDataCategoryLv1 = async () => {
+        const data = await axios.get('http://35.240.241.27:8080/category/lv1?page=1');
+        const listcategory = data.data.data.content.map((item) => {
+            item.status = 0;
+            return item;
+        });
+        this.setState({ listcategory, isLoading: false });
+    }
+
+    componentDidMount() {
+        this._getDataCategoryLv1();
     }
 
     onPressContinueBtn = async () => {
@@ -41,25 +53,26 @@ export default class ChooseLikeProductScreen extends Component {
     }
 
     render() {
-        const disabled = this.state.count < 3 ? true : false;
+        const {isLoading, listcategory, count} = this.state;
+        const disabled = count < 3 ? true : false;
 
-        return (
+        return isLoading ? (<View style={styles.container}><ActivityIndicator/></View>) : ( 
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.headerTextWrapper}>
                         <AntDesign
                             name="heart"
-                            size={30}
+                            size={28}
                             color="red"
                         />
                         <Text style={styles.headerText}>
-                            Hãy chọn 3 sản phẩm mà bạn ưa thích
-            </Text>
+                            {`Chào bạn, hãy chọn 3 sản phẩm mà bạn ưa thích`}
+                        </Text>
                     </View>
                     <View style={styles.sloganWrapper}>
                         <Text style={styles.txtSlogan}>
-                            Việc này sẻ giúp chúng tôi những sản phẩm bạn yêu tích dễ dàng hơn !
-              </Text>
+                            {`Việc này sẽ giúp chúng tôi tìm kiếm những sản phẩm mà bạn sẽ thích!`}
+                        </Text>
                     </View>
 
                     <View style={styles.headerButtonWrapper}>
@@ -69,8 +82,10 @@ export default class ChooseLikeProductScreen extends Component {
                                 onPress={this.onPressContinueBtn}
                                 title="Tiếp tục"
                                 type="outline"
-                                buttonStyle={styles.btnNext}
-                                titleStyle={{ color: 'black', fontWeight: "bold", fontSize: 16 }}
+                                raised
+                                containerStyle={styles.btnNext}
+                                buttonStyle={styles.btnNextOutline}
+                                titleStyle={{ color: 'black', fontWeight: "500", fontSize: 16 }}
                             />
                         </View>
                     </View>
@@ -78,7 +93,7 @@ export default class ChooseLikeProductScreen extends Component {
                 <ScrollView style={styles.body}>
                     <View style={styles.groupListCategory}>
                         {
-                            this.state.listcategory.map(item => {
+                            listcategory.map(item => {
                                 return <LikeCard
                                     key={item.id}
                                     data={item}
@@ -112,12 +127,15 @@ const styles = StyleSheet.create({
     },
     headerText: {
         marginLeft: 10,
-        fontSize: 18
-
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: '500'
     },
     txtSlogan: {
-        marginTop: 10,
-        fontSize: 16
+        marginTop: 8,
+        fontSize: 16,
+        paddingHorizontal: 4,
+        textAlign: 'center'
     },
     body: {
         flex: 0.72,
@@ -128,9 +146,12 @@ const styles = StyleSheet.create({
     },
     btnNext: {
         width: 160,
-        padding: 12,
+        backgroundColor: 'white',
         marginTop: 10,
-        borderRadius: 10
+        borderRadius: 8
+    },
+    btnNextOutline: {
+        borderRadius: 8
     },
     groupListCategory: {
         flexWrap: "wrap",

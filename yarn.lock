@@ -2611,6 +2611,11 @@ expo-constants@^7.0.0, expo-constants@~7.0.0:
   dependencies:
     ua-parser-js "^0.7.19"
 
+expo-facebook@~7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/expo-facebook/-/expo-facebook-7.0.0.tgz#532b42d67ec91df051fa1f41ee8a1322154fba2b"
+  integrity sha512-R/ogRMxFqUCh08f575IR8aPy8q5463E5Sg/Ef7nasuqKKh1tEcVh4JoRXN3pEnZ9hivnRsXvJOchmPsy+L1upw==
+
 expo-file-system@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-7.0.0.tgz#ac98233b18774cce299fffd9451f08f21b116564"
@@ -5869,6 +5874,13 @@ react-navigation@^3.12.0:
     react-navigation-drawer "~1.4.0"
     react-navigation-stack "1.5.3"
     react-navigation-tabs "~1.2.0"
+
+react-number-format@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-4.3.1.tgz#eccfc851d88d74c894ba463620ccb467defbdefb"
+  integrity sha512-ze6Lp7SGM71Jr0uZhUaN6grthv08NKTfJezS26zAWZq63ubmJ++FOX7ueGSK27EvpT7/e3ce9L3jlqr1YMFS7Q==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-proxy@^1.1.7:
   version "1.1.8"

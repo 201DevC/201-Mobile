@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 import TabBarIcon from '../components/TabBarIcon';
 
-export default class GiftScreen extends Component {
+export default class HistoryScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,6 +29,6 @@ export default class GiftScreen extends Component {
   }
 }
 
-GiftScreen.navigationOptions = {
+HistoryScreen.navigationOptions = {
   header: null,
 };
