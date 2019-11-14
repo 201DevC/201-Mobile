@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput, Keyboard, ActivityIndicator } from 'react-native';
+import { View, Hr, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, TextInput, Keyboard, ActivityIndicator } from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -115,50 +115,53 @@ export default class HomeScreen extends Component {
                 <View style={styles.warpperContainer}>
                     <View style={styles.container}>
                         <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
-                            <View style={styles.header}>
-                                <View style={styles.tabBar}>
-                                    <View style={styles.buger}>
-                                        <TouchableOpacity
-                                            onPress={this.onPressMenu}
-                                        >
-                                            <FontAwesome size={20} name={"bars"} />
-                                        </TouchableOpacity>
-                                    </View>
-
-                                    <TouchableOpacity
-                                        onPress={this.onPressSearch}
-                                        style={styles.warpperSearch}
-                                    >
-                                        <View style={styles.warpperTxt}>
-                                            <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
-                                            <Text style={styles.txtSendo}>Sendo</Text>
+                            <View style={{backgroundColor: '#ff7675', borderBottomEndRadius:10, borderBottomStartRadius:10}}>
+                                <View style={styles.header}>
+                                    <View style={styles.tabBar}>
+                                        <View style={styles.buger}>
+                                            <TouchableOpacity
+                                                onPress={this.onPressMenu}
+                                            >
+                                                <FontAwesome size={20} name={"bars"} />
+                                            </TouchableOpacity>
                                         </View>
 
-                                    </TouchableOpacity>
-                                    <FontAwesome
-                                        name='search'
-                                        size={17}
-                                        color='grey'
-                                    />
+                                        <TouchableOpacity
+                                            onPress={this.onPressSearch}
+                                            style={styles.warpperSearch}
+                                        >
+                                            <View style={styles.warpperTxt}>
+                                                <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
+                                                <Text style={styles.txtSendo}>Sendo</Text>
+                                            </View>
+
+                                        </TouchableOpacity>
+                                        <FontAwesome
+                                            name='search'
+                                            size={17}
+                                            color='grey'
+                                        />
+                                    </View>
+
+                                    <Slideshow />
+
+
                                 </View>
 
-                                <Slideshow />
+                                <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
+                                    {
+                                        this.state.listcategoryLv1.map(item => {
+                                            return <Categorylv1
+                                                key={item.id}
+                                                data={item}
 
+                                            />
 
+                                        })
+                                    }
+                                </ScrollView>
                             </View>
-
-                            <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
-                                {
-                                    this.state.listcategoryLv1.map(item => {
-                                        return <Categorylv1
-                                            key={item.id}
-                                            data={item}
-                                        />
-
-                                    })
-                                }
-                            </ScrollView>
-                            <ImageBackground source={require("../assets/images/bg.jpg")} style={styles.wrapperFlashSale}>
+                            <View style={styles.wrapperFlashSale}>
                                 <View >
                                     <View style={styles.titleFlashSale}>
                                         <Text style={styles.textFlashSale}>Flash Sale</Text>
@@ -183,7 +186,7 @@ export default class HomeScreen extends Component {
                                         }
                                     </ScrollView>
                                 </View>
-                            </ImageBackground>
+                            </View>
                             <View style={styles.wrapperYourLike}>
                                 <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 10 }}>
                                     <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
@@ -240,7 +243,9 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
     warpperContainer: {
         flex: 1,
-        backgroundColor: '#ff7675'
+        // backgroundColor: '#ff7675'
+        backgroundColor: '#fff'
+
     },
     container: {
         flex: 1,
@@ -263,7 +268,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         width: "97%",
         borderRadius: 5,
-        height: 42
+        height: 42,
     },
     buger: {
         justifyContent: "center",
@@ -296,7 +301,9 @@ const styles = StyleSheet.create({
     },
     wrapperFlashSale: {
         flex: 0.34,
-        marginBottom: 8
+        marginBottom: 8,
+        borderBottomWidth:1,
+        paddingBottom:10
     },
     titleFlashSale: {
         flexDirection: "row",
