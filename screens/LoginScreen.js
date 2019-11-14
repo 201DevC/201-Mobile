@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage, KeyboardAvoidingView } from 'react-native';
 import Constants from 'expo-constants';
 import { Button, Icon, Input } from 'react-native-elements';
+
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
 
@@ -9,6 +10,8 @@ export default class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            username: '14696583431883801',
+            password: '',
         };
     }
 
@@ -30,7 +33,7 @@ export default class LoginScreen extends Component {
                 const data = response.data;
                 data.username = data.id + 10;
                 data.gender = data.gender === 'male' ? true : false;
-                data.survey = true;
+                data.survey = false;
                 data.birthday = data.birthday.replace(/\//g, '-');
                 const res = await axios.post('http://35.240.241.27:8080/user', data);
                 if (res.data.header.successful) {
@@ -51,25 +54,37 @@ export default class LoginScreen extends Component {
         }
     }
 
+    // chưa phát triển
     logInGoogle = async () => {
+        // // First- obtain access token from Expo's Google API
+        // const { type, accessToken, user } = await Google.logInAsync(config);
 
+        // if (type === 'success') {
+        //     // Then you can use the Google REST API
+        //     let userInfoResponse = await fetch('https://www.googleapis.com/userinfo/v2/me', {
+        //         headers: { Authorization: `Bearer ${accessToken}` },
+        //     });
+        // }
     }
 
-    _signInAsync = async () => {
-        await AsyncStorage.setItem('userToken', 'abc');
-        await AsyncStorage.setItem('newUser', '0');
-        this.props.navigation.navigate('AuthLoading');
-    };
-
-    _signInAsyncNewUser = () => {
-        // await AsyncStorage.setItem('userToken', 'abc');
-        // await AsyncStorage.setItem('newUser', '1');
-        // this.props.navigation.navigate('AuthLoading');
-        this._logIn();
-    };
-
-    _signInGeneral = () => {
-
+    _signInGeneral = async () => {
+        try {
+            const data = {
+                username : this.state.username,
+            }
+            const res = await axios.post('http://35.240.241.27:8080/login', data);
+            if (res.data.header.successful) {
+                const newUser = '0';
+                await AsyncStorage.setItem('username', res.data.data.username);
+                await AsyncStorage.setItem('newUser', newUser);
+                this.props.navigation.navigate('AuthLoading');
+            } else {
+                alert('Đăng nhập không thành công');
+            }
+        } catch ({ message }) {
+            //   alert(`Facebook Login Error: ${message}`);
+            alert('Vui lòng kiểm tra lại kết nối mạng!');
+        }
     }
 
     _signInFb = () => {
@@ -80,13 +95,19 @@ export default class LoginScreen extends Component {
         this.logInGoogle();
     }
 
-    _chooseLikeProduct = () => {
-        this.props.navigation.navigate('ChooseLikeProduce');
+    _onChangeUsername = (username) => {
+        this.setState({ username })
+    }
+
+    _onChangePassword = (password) => {
+        this.setState({ password });
     }
 
     render() {
+        const { username, password } = this.state;
+
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
                 <View>
                     <Text style={styles.logo}>SenDo</Text>
                 </View>
@@ -107,7 +128,9 @@ export default class LoginScreen extends Component {
                         type="outline"
 
                     />
-                    <Button buttonStyle={[styles.btn, styles.btnGg]}
+                    <Button
+                        onPress={this._signInGoogle}
+                        buttonStyle={[styles.btn, styles.btnGg]}
                         icon={
                             <Icon
                                 name='google'
@@ -136,6 +159,8 @@ export default class LoginScreen extends Component {
                             />
                         }
                         leftIconContainerStyle={{ marginRight: 20 }}
+                        value={username}
+                        onChangeText={this._onChangeUsername}
                     />
                 </View>
                 <View style={styles.input}>
@@ -150,11 +175,14 @@ export default class LoginScreen extends Component {
                             />
                         }
                         leftIconContainerStyle={{ marginRight: 20 }}
+                        secureTextEntry={true}
+                        value={password}
+                        onChangeText={this._onChangePassword}
                     />
                 </View>
 
                 <Button
-                    onPress={this._signInAsync}
+                    onPress={this._signInGeneral}
                     buttonStyle={styles.btnLogin}
                     title='Đăng nhập'
                     titleStyle={{ color: 'black' }}
@@ -168,7 +196,7 @@ export default class LoginScreen extends Component {
                         <Text style={{ color: 'red', fontSize: 15 }}>Quên mật khẩu ?</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
@@ -179,7 +207,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: Constants.statusBarHeight,
         justifyContent: "center",
-
     },
     logo: {
         fontSize: 50,
@@ -215,9 +242,6 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         justifyContent: "space-around",
-
     }
-
-
 });
 
