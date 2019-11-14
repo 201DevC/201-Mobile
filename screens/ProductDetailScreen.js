@@ -63,7 +63,7 @@ export default class ProductDetail extends Component {
   _getData = async () => {
     await this._getDataDetail();
     await this._getDataRelation();
-    await this._getDataTrend();
+    this._getDataTrend();
   }
 
   _referData = () => {
@@ -236,7 +236,7 @@ export default class ProductDetail extends Component {
           isLoading ?
             <View style={{ alignItems: "center", justifyContent: "center", marginTop: Constants.statusBarHeight + 4 }}>
               <ActivityIndicator size='large' animating={isLoading} />
-              <Text>Dữ liệu đang load, xin vui lòng đợi ...</Text>
+              <Text>Dữ liệu đang tải, vui lòng đợi trong giây lát...</Text>
             </View>
             : <React.Fragment>
               <View style={styles.header}>

@@ -3,13 +3,13 @@ import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 
 export default function LikeCard(props) {
-    const { data: { name, img_source, status }, onPressShowHeart } = props;
+    const { data: { name, image, status }, onPressShowHeart } = props;
 
     return (
         <View style={styles.cardContainer}>
             <View style={styles.imgCard}>
                 <Image style={styles.img}
-                    source={img_source}
+                    source={{uri: image}}
                     resizeMode="contain" />
             </View>
             <Text style={styles.txtCard}>{name}</Text>
@@ -22,12 +22,6 @@ export default function LikeCard(props) {
                     <View >
                     </View>
                 </View>
-                {/* <View style={styles.overlay}></View> */}
-                {/* { status == 1 && <AntDesign
-                        name="heart"
-                        style={styles.heart}
-                    /> }
-                    { status == 1 && <Text>show</Text>} */}
             </TouchableOpacity>
         </View>
     );
@@ -37,9 +31,9 @@ export default function LikeCard(props) {
 const styles = StyleSheet.create({
     cardContainer: {
         width: 112,
-        height: 140,
+        height: 148,
         alignItems: "center",
-        borderRadius: 10,
+        borderRadius: 8,
         margin: 4,
         backgroundColor: '#fff',
         shadowColor: 'black',
@@ -51,22 +45,22 @@ const styles = StyleSheet.create({
         shadowRadius: 4.65,
 
         elevation: 4,
-
     },
     imgCard: {
         width: '100%',
-        flex: 0.8,
+        flex: 0.68,
         justifyContent: 'center',
         alignItems: "center",
     },
     img: {
         width: "80%",
         height: "80%",
-
     },
     txtCard: {
         fontSize: 18,
-        flex: 0.2
+        flex: 0.32,
+        justifyContent: 'center',
+        textAlign: 'center'
     },
     overlayContainer: {
         position: 'absolute',
@@ -76,32 +70,21 @@ const styles = StyleSheet.create({
         height: '100%',
         alignItems: "center",
         justifyContent: "center",
+        borderRadius: 8,
     },
-    // overlayContainerBefore:{
-    //     position: 'absolute',
-    //     left: 0,
-    //     top: 0,
-    //     width: '100%',
-    //     height: '100%',
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    //     opacity:0.7
-    // },
     heart: {
         color: 'red',
         fontSize: 40,
         opacity: 0.7,
     },
     overlay: {
-        // position: 'absolute',
-        // left: 0,
-        // top: 0,
         width: '100%',
         height: '100%',
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: 'black',
-        opacity: 0.7,
-        // borderRadius:10
+        opacity: 0.8,
+        borderRadius: 8,
+
     }
 }); 

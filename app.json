@@ -27,7 +27,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.yourcompany.yourappname"
+      "package": "com.devc.devc201"
     },
     "description": "",
     "githubUrl": "https://github.com/201DevC/201-Mobile"

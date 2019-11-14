@@ -12,24 +12,25 @@ export default function ProductCard(props) {
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={{
-                // shadowColor: "#fff",
-                // shadowOffset: {
-                //     width: 0,
-                //     height: 12,
-                // },
-                // shadowOpacity: 0.58,
-                // shadowRadius: 16.00,
-
-                // elevation: 24,
-                // borderRadius: 24,
-            }}
+            style={{ marginBottom: 4 }}
         >
             <Card
                 image={{ uri: item.images[0] }}
                 width={width}
-                imageProps={{ resizeMode: 'cover' }}
+                imageProps={{ resizeMode: 'cover', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
                 imageStyle={{ maxWidth: width, height: width * 0.9 }}
+                containerStyle={{
+                    shadowColor: "#000",
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.23,
+                    shadowRadius: 2.62,
+
+                    elevation: 4,
+                    borderRadius: 8,
+                }}
             >
                 <View>
                     <View >

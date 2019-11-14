@@ -21,7 +21,7 @@ export default class ProfileScreen extends Component {
   }
 
   onPressLogoutBtn = async () => {
-    await AsyncStorage.removeItem('userToken');
+    await AsyncStorage.removeItem('username');
     this.props.navigation.navigate('AuthLoading');
   }
 

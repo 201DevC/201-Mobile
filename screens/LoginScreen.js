@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage } from 'react-native';
 import Constants from 'expo-constants';
 import { Button, Icon, Input } from 'react-native-elements';
+import * as Facebook from 'expo-facebook';
+import axios from 'axios';
 
 export default class LoginScreen extends Component {
     constructor(props) {
@@ -10,17 +12,73 @@ export default class LoginScreen extends Component {
         };
     }
 
+    logInFb = async () => {
+        try {
+            const {
+                type,
+                token,
+                expires,
+                permissions,
+                declinedPermissions,
+            } = await Facebook.logInWithReadPermissionsAsync('547317426051487', {
+                permissions: ['user_birthday', 'public_profile', 'user_gender', 'user_location'],
+            });
+            if (type === 'success') {
+                // Get the user's name using Facebook's Graph API
+                const response = await axios.get(`https://graph.facebook.com/me?fields=birthday,location,gender,name&access_token=${token}`);
+                // format data
+                const data = response.data;
+                data.username = data.id + 10;
+                data.gender = data.gender === 'male' ? true : false;
+                data.survey = true;
+                data.birthday = data.birthday.replace(/\//g, '-');
+                const res = await axios.post('http://35.240.241.27:8080/user', data);
+                if (res.data.header.successful) {
+                    const newUser = res.data.data.survey ? '0' : '1';
+                    await AsyncStorage.setItem('username', res.data.data.username);
+                    await AsyncStorage.setItem('newUser', newUser);
+                    this.props.navigation.navigate('AuthLoading');
+                } else {
+                    alert('Đăng nhập không thành công');
+                }
+            } else {
+                // type === 'cancel'
+                alert('Đăng nhập không thành công');
+            }
+        } catch ({ message }) {
+            //   alert(`Facebook Login Error: ${message}`);
+            alert('Xác thực tài khoản không thành công');
+        }
+    }
+
+    logInGoogle = async () => {
+
+    }
+
     _signInAsync = async () => {
         await AsyncStorage.setItem('userToken', 'abc');
         await AsyncStorage.setItem('newUser', '0');
         this.props.navigation.navigate('AuthLoading');
     };
 
-    _signInAsyncNewUser = async () => {
-        await AsyncStorage.setItem('userToken', 'abc');
-        await AsyncStorage.setItem('newUser', '1');
-        this.props.navigation.navigate('AuthLoading');
+    _signInAsyncNewUser = () => {
+        // await AsyncStorage.setItem('userToken', 'abc');
+        // await AsyncStorage.setItem('newUser', '1');
+        // this.props.navigation.navigate('AuthLoading');
+        this._logIn();
     };
+
+    _signInGeneral = () => {
+
+    }
+
+    _signInFb = () => {
+        this.logInFb();
+    }
+
+    _signInGoogle = () => {
+        this.logInGoogle();
+    }
 
     _chooseLikeProduct = () => {
         this.props.navigation.navigate('ChooseLikeProduce');
@@ -34,7 +92,7 @@ export default class LoginScreen extends Component {
                 </View>
                 <View style={styles.boxBtnLogin}>
                     <Button
-                        onPress={this._signInAsyncNewUser}
+                        onPress={this._signInFb}
                         buttonStyle={[styles.btn, styles.btnFb]}
                         icon={
                             <Icon
