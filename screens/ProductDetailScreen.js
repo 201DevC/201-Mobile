@@ -42,21 +42,26 @@ export default class ProductDetail extends Component {
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
     const data = await axios.get('http://35.240.241.27:8080/product/' + id);
-    this.setState({ detail: data.data.data, isLoading: false });
+    this.setState({
+      detail: data.data.data,
+      isLoading: false
+    });
   }
 
   _getDataRelation = async () => {
     const id = this.props.navigation.getParam('id');
     const data = await axios.get(`http://35.240.241.27:8080/product/${id}/relation`);
     this.setState({
-      listRelation: data.data.data, isLoadingRelation: false
+      listRelation: data.data.data,
+      isLoadingRelation: false
     })
   }
 
   _getDataTrend = async () => {
     const data = await axios.get('http://35.240.241.27:8080/product/trend');
     this.setState({
-      listTrend: data.data.data, isLoadingTrend: false
+      listTrend: data.data.data,
+      isLoadingTrend: false
     })
   }
 
@@ -198,7 +203,7 @@ export default class ProductDetail extends Component {
   render() {
     const { focusedHeart, focusedBookmark, isRating, isLoading, detail, isLoadingRelation, isLoadingTrend, listRelation, listTrend } = this.state;
     const total_rated = detail.rating_info ? detail.rating_info.total_rated : 5;
-    const rating =  total_rated/100*5;
+    const rating = total_rated / 100 * 5;
     let content = (
       <View style={styles.contentWrapper}>
         <Text>
