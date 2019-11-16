@@ -17,7 +17,7 @@ export default class ChooseLikeProductScreen extends Component {
     }
 
     _getDataCategoryLv1 = async () => {
-        const data = await axios.get('http://35.240.241.27:8080/category/lv1?page=1');
+        const data = await axios.get('http://hellodoctor.tech:8080/category/lv1?page=1');
         const listcategory = data.data.data.content.map((item) => {
             item.status = 0;
             return item;

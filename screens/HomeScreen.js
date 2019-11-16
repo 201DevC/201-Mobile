@@ -24,19 +24,19 @@ export default class HomeScreen extends Component {
     }
 
     _getDataCategoryLv1 = async () => {
-        const data = await axios.get('http://35.240.241.27:8080/category/lv1?page=1');
+        const data = await axios.get('http://hellodoctor.tech:8080/category/lv1?page=1');
         return this.setState({
             listcategoryLv1: data.data.data.content
         })
     }
     _getDataFlashSale = async () => {
-        const data = await axios.get('http://35.240.241.27:8080/flash?offset=1&size=15');
+        const data = await axios.get('http://hellodoctor.tech:8080/flash?offset=1&size=15');
         return this.setState({
             listFlashSale: data.data.data.content
         })
     }
     _getDataProductTrend = async () => {
-        const data = await axios.get('http://35.240.241.27:8080/product/trend');
+        const data = await axios.get('http://hellodoctor.tech:8080/product/trend');
         return this.setState({
             listProductTrend: data.data.data
         })

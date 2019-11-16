@@ -37,31 +37,32 @@ export default class ProductDetail extends Component {
       isLoadingTrend: true,
       isLoadingRelation: true,
     };
+    this._isMounted = false;
   }
 
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get('http://35.240.241.27:8080/product/' + id);
-    this.setState({ detail: data.data.data, isLoading: false });
+    const data = await axios.get('http://hellodoctor.tech:8080/product/' + id);
+    this._isMounted && this.setState({ detail: data.data.data, isLoading: false });
   }
 
   _getDataRelation = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get(`http://35.240.241.27:8080/product/${id}/relation`);
-    this.setState({
+    const data = await axios.get(`http://hellodoctor.tech:8080/product/${id}/relation`);
+    this._isMounted && this.setState({
       listRelation: data.data.data, isLoadingRelation: false
     })
   }
 
   _getDataTrend = async () => {
-    const data = await axios.get('http://35.240.241.27:8080/product/trend');
-    this.setState({
+    const data = await axios.get('http://hellodoctor.tech:8080/product/trend');
+    this._isMounted && this.setState({
       listTrend: data.data.data, isLoadingTrend: false
     })
   }
 
   _getData = async () => {
-    await this._getDataDetail();
+    this._getDataDetail();
     await this._getDataRelation();
     this._getDataTrend();
   }
@@ -71,8 +72,13 @@ export default class ProductDetail extends Component {
     this._getData();
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this._isMounted = true;
     this._getData();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   onPressHeart = () => {
@@ -197,12 +203,13 @@ export default class ProductDetail extends Component {
 
   render() {
     const { focusedHeart, focusedBookmark, isRating, isLoading, detail, isLoadingRelation, isLoadingTrend, listRelation, listTrend } = this.state;
-    const total_rated = detail.rating_info ? detail.rating_info.total_rated : 5;
-    const rating =  total_rated/100*5;
+    const total_rated = detail.rating_info ? detail.rating_info.total_rated : 0;
+    const percent_number = detail.rating_info ? detail.rating_info.percent_number : 100;
+    const rating =  percent_number/100*5;
     let content = (
       <View style={styles.contentWrapper}>
         <Text>
-          Màn hình Retina sắc nét và sống động iPhone 4 là một bước tiến mới của Apple trong công nghệ màn hình. Với công nghệ màn hình Retina (màn hình võng mạc), Apple đã mang tới cho người dùng một trải nghiệm mới trong việc tận hưởng chất lượng hiển thị trên màn hình smartphone. Với kích cỡ màn hình 3,5inch, cùng độ phân giải 960 x 640, mật độ điểm ảnh lên tới 326 ppi, màn hình iPhone 4 cho hình ảnh hiển thị sắc nét và mịn màng đến mức người dùng sẽ không thể cảm nhận được sự hiện diện của các điểm ảnh trên màn hình.
+          {detail.short_description}
         </Text>
       </View>
     );

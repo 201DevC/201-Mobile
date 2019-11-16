@@ -31,11 +31,11 @@ export default class LoginScreen extends Component {
                 const response = await axios.get(`https://graph.facebook.com/me?fields=birthday,location,gender,name&access_token=${token}`);
                 // format data
                 const data = response.data;
-                data.username = data.id + 10;
+                data.username = data.id;
                 data.gender = data.gender === 'male' ? true : false;
                 data.survey = false;
                 data.birthday = data.birthday.replace(/\//g, '-');
-                const res = await axios.post('http://35.240.241.27:8080/user', data);
+                const res = await axios.post('http://hellodoctor.tech:8080/user', data);
                 if (res.data.header.successful) {
                     const newUser = res.data.data.survey ? '0' : '1';
                     await AsyncStorage.setItem('username', res.data.data.username);
@@ -72,7 +72,7 @@ export default class LoginScreen extends Component {
             const data = {
                 username : this.state.username,
             }
-            const res = await axios.post('http://35.240.241.27:8080/login', data);
+            const res = await axios.post('http://hellodoctor.tech:8080/login', data);
             if (res.data.header.successful) {
                 const newUser = '0';
                 await AsyncStorage.setItem('username', res.data.data.username);

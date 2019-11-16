@@ -6,8 +6,9 @@ import NumberFormat from 'react-number-format';
 export default function ProductCard(props) {
     const { width, item, onPress } = props;
     const new_price = item ? item.price : 0;
-    const total_rated = item.rating_info ? item.rating_info.total_rated : 5;
-    const rating = total_rated / 100 * 5;
+    const total_rated = item.rating_info ? item.rating_info.total_rated : 0;
+    const percent_number = item.rating_info ? item.rating_info.percent_number : 100;
+    const rating =  percent_number/100*5;
     const shop_name = item.shop_info.name;
     return (
         <TouchableOpacity
