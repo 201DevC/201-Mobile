@@ -8,7 +8,7 @@ import { PRODUCT } from "../data/product";
 import axios from "axios";
 
 
-const IP_API = "35.240.241.27:8080";
+const IP_API = "hellodoctor.tech:8080";
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -78,7 +78,8 @@ export default class SearchScreen extends React.Component {
   }
 
   renderFooter = () => {
-    if (this.state.listSearch.length === 0 ) {
+    const {listSearch, totalResults} = this.state
+    if (listSearch.length === 0 && listSearch.length >= totalResults ) {
       return <ActivityIndicator  animating={false} />;  
     }else{
       return <ActivityIndicator  animating={true} />;  

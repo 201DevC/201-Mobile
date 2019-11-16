@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Image } from 'react-native';
 
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -10,10 +10,9 @@ import Slideshow from '../components/Slideshow';
 import axios from "axios";
 import { FlatList } from 'react-native-gesture-handler';
 
-const IP_API = "35.240.241.27:8080";
+const IP_API = "hellodoctor.tech:8080";
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
-
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
     while (numberOfElementsLastRow !== numColumns && numberOfElementsLastRow !== 0) {
         data.push({
@@ -56,14 +55,14 @@ export default class HomeScreen extends Component {
     };
 
     _getDataCategoryLv1 = async () => {
-        const data = await axios.get(`http://${IP_API}/category/lv1?page=1`);
+        const data = await axios.get(`http://${IP_API}/category/lv1`);
         return this.setState({
             listcategoryLv1: data.data.data.content,
 
         })
     }
     _getDataFlashSale = async () => {
-        const data = await axios.get(`http://${IP_API}/flash`);
+        const data = await axios.get(`http://${IP_API}/flash?offset=0`);
         return this.setState({
             listFlashSale: data.data.data.content,
             isLoadingFlashSale: false
@@ -104,134 +103,126 @@ export default class HomeScreen extends Component {
     render() {
 
         const { isLoading, isLoadingFlashSale } = this.state
-        if (isLoadingFlashSale) {
-            return (
-                <View style={{ alignItems: "center", flex: 1, justifyContent: "center", height: "100%" }}>
-                    <ActivityIndicator size='large' animating={isLoadingFlashSale} />
-                    <Text>Dữ liệu đang load, xin vui lòng đợi ...</Text>
-                </View>
-            );
-        } else {
-            return (
-                <View style={styles.warpperContainer}>
-                    <View style={styles.container}>
-                        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
-                            <View style={{ backgroundColor: '#ff7675', borderBottomEndRadius: 10, borderBottomStartRadius: 10 }}>
-                                <View style={styles.header}>
-                                    <View style={styles.tabBar}>
-                                        <View style={styles.buger}>
-                                            <TouchableOpacity
-                                                onPress={this.onPressMenu}
-                                            >
-                                                <FontAwesome size={20} name={"bars"} />
-                                            </TouchableOpacity>
-                                        </View>
-
+        // if (isLoadingFlashSale) {
+        //     return (
+        //         <View style={{ alignItems: "center", flex: 1, justifyContent: "center", height: "100%" }}>
+        //             <ActivityIndicator size='large' animating={isLoadingFlashSale} />
+        //             <Text>Dữ liệu đang load, xin vui lòng đợi ...</Text>
+        //         </View>
+        //     );
+        // } else {
+        return (
+            <View style={styles.warpperContainer}>
+                <View style={styles.container}>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
+                        <View style={{ backgroundColor: '#ff7675', borderBottomEndRadius: 10, borderBottomStartRadius: 10 }}>
+                            <View style={styles.header}>
+                                <View style={styles.tabBar}>
+                                    <View style={styles.buger}>
                                         <TouchableOpacity
-                                            onPress={this.onPressSearch}
-                                            style={styles.warpperSearch}
+                                            onPress={this.onPressMenu}
                                         >
-                                            <View style={styles.warpperTxt}>
-                                                <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
-                                                <Text style={styles.txtSendo}>Sendo</Text>
-                                            </View>
-
+                                            <FontAwesome size={20} name={"bars"} />
                                         </TouchableOpacity>
-                                        <FontAwesome
-                                            name='search'
-                                            size={17}
-                                            color='grey'
-                                        />
                                     </View>
 
-                                    <Slideshow />
+                                    <TouchableOpacity
+                                        onPress={this.onPressSearch}
+                                        style={styles.warpperSearch}
+                                    >
+                                        <View style={styles.warpperTxt}>
+                                            <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
+                                            <Text style={styles.txtSendo}>Sendo</Text>
+                                        </View>
 
+                                    </TouchableOpacity>
+                                    <FontAwesome
+                                        name='search'
+                                        size={17}
+                                        color='grey'
+                                    />
+                                </View>
+                                <Slideshow />
+                            </View>
+                            <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
+                                {
+                                    this.state.listcategoryLv1.map(item => {
+                                        return <Categorylv1
+                                            key={item.id}
+                                            data={item}
+                                        />
+                                    })
+                                }
+                            </ScrollView>
+                        </View>
+                        <View style={styles.wrapperFlashSale}>
+                            <View >
+                                <View style={styles.titleFlashSale}>
+                                    <Text style={styles.textFlashSale}>Flash Sale</Text>
+                                    <TouchableOpacity style={styles.moreListFlashSale}>
+                                        <Text >
+                                            XEM THÊM
+                                    </Text>
+                                    </TouchableOpacity>
 
                                 </View>
 
-                                <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
+                                <ScrollView style={styles.warpperFlashSaleItem} horizontal={true} showsHorizontalScrollIndicator={false} >
                                     {
-                                        this.state.listcategoryLv1.map(item => {
-                                            return <Categorylv1
+                                        this.state.listFlashSale.map(item => {
+                                            return <ItemFlashSale
+                                                onPress={() => this._goToProductDetail(item.id)}
                                                 key={item.id}
                                                 data={item}
-
                                             />
-
                                         })
                                     }
                                 </ScrollView>
                             </View>
-
-                            <View style={styles.wrapperFlashSale}>
-                                <View >
-                                    <View style={styles.titleFlashSale}>
-                                        <Text style={styles.textFlashSale}>Flash Sale</Text>
-                                        <TouchableOpacity style={styles.moreListFlashSale}>
-                                            <Text >
-                                                XEM THÊM
-                                    </Text>
+                        </View>
+                        <View style={styles.wrapperYourLike}>
+                            {this.state.isLoadingTendency ? <ActivityIndicator />
+                                :
+                                <View>
+                                    <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 10 }}>
+                                        <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
+                                        <TouchableOpacity
+                                            onPress={() => this._goToHistory()}
+                                        >
+                                            <Text style={{ color: "#0984e3", }}> Dựa trên sản phẩm bạn đã xem ></Text>
                                         </TouchableOpacity>
-
                                     </View>
-
-                                    <ScrollView style={styles.warpperFlashSaleItem} horizontal={true} showsHorizontalScrollIndicator={false} >
-                                        {
-                                            this.state.listFlashSale.map(item => {
-                                                return <ItemFlashSale
-                                                    onPress={() => this._goToProductDetail(item.id)}
-                                                    key={item.id}
-                                                    data={item}
-
-                                                />
-                                            })
-                                        }
-                                    </ScrollView>
-                                </View>
-                            </View>
-                            <View style={styles.wrapperYourLike}>
-                                {this.state.isLoadingTendency ? <ActivityIndicator />
-                                    :
-                                    <View>
-                                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 10 }}>
-                                            <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
-                                            <TouchableOpacity
-                                                onPress={() => this._goToHistory()}
-                                            >
-                                                <Text style={{ color: "#0984e3", }}> Dựa trên sản phẩm bạn đã xem ></Text>
-                                            </TouchableOpacity>
-                                        </View>
-                                        <FlatList
-                                            data={formatData(this.state.listFlashSale, 2)}
-                                            renderItem={this.renderItem}
-                                            numColumns={2}
-                                            style={{ flex: 1 }}
-                                            keyExtractor={item => item.id}
-                                        />
-                                        <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}><Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}> Xem thêm ></Text></TouchableOpacity>
-                                    </View>
-                                }
-
-                            </View>
-
-                            {this.state.isLoadingTendency ? <ActivityIndicator /> :
-                                <View style={styles.wrapperYourLike}>
-                                    <Text style={styles.txtYourLike}>Xu Hướng</Text>
                                     <FlatList
-                                        data={formatData(this.state.listProductTrend, 2)}
+                                        data={formatData(this.state.listFlashSale, 2)}
                                         renderItem={this.renderItem}
                                         numColumns={2}
                                         style={{ flex: 1 }}
                                         keyExtractor={item => item.id}
                                     />
+                                    <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}><Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}> Xem thêm ></Text></TouchableOpacity>
                                 </View>
                             }
-                        </ScrollView>
-                    </View>
+
+                        </View>
+
+                        {this.state.isLoadingTendency ? <ActivityIndicator /> :
+                            <View style={styles.wrapperYourLike}>
+                                <Text style={styles.txtYourLike}>Xu Hướng</Text>
+                                <FlatList
+                                    data={formatData(this.state.listProductTrend, 2)}
+                                    renderItem={this.renderItem}
+                                    numColumns={2}
+                                    style={{ flex: 1 }}
+                                    keyExtractor={item => item.id}
+                                />
+                            </View>
+                        }
+                    </ScrollView>
                 </View>
-            );
-        }
+            </View>
+        );
     }
+    // }
 }
 HomeScreen.navigationOptions = {
     header: null
@@ -240,14 +231,10 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
     warpperContainer: {
         flex: 1,
-        // backgroundColor: '#ff7675'
         backgroundColor: '#fff'
-
     },
     container: {
         flex: 1,
-        // marginTop: Constants.statusBarHeight
-
     },
     header: {
         position: "relative",
@@ -333,7 +320,8 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: "bold",
         paddingVertical: 5,
-    }
+    },
+
 
 });
 
