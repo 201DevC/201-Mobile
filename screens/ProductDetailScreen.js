@@ -42,20 +42,20 @@ export default class ProductDetail extends Component {
 
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get('http://hellodoctor.tech:8080/product/' + id);
+    const data = await axios.get('http://35.240.241.27:8080/product/' + id);
     this._isMounted && this.setState({ detail: data.data.data, isLoading: false });
   }
 
   _getDataRelation = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get(`http://hellodoctor.tech:8080/product/${id}/relation`);
+    const data = await axios.get(`http://35.240.241.27:8080/product/${id}/relation`);
     this._isMounted && this.setState({
       listRelation: data.data.data, isLoadingRelation: false
     })
   }
 
   _getDataTrend = async () => {
-    const data = await axios.get('http://hellodoctor.tech:8080/product/trend');
+    const data = await axios.get('http://35.240.241.27:8080/product/trend');
     this._isMounted && this.setState({
       listTrend: data.data.data, isLoadingTrend: false
     })

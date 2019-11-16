@@ -35,7 +35,8 @@ export default class LoginScreen extends Component {
                 data.gender = data.gender === 'male' ? true : false;
                 data.survey = false;
                 data.birthday = data.birthday.replace(/\//g, '-');
-                const res = await axios.post('http://hellodoctor.tech:8080/user', data);
+                const res = await axios.post('http://35.240.241.27:8080/user', data);
+                console.log(res);
                 if (res.data.header.successful) {
                     const newUser = res.data.data.survey ? '0' : '1';
                     await AsyncStorage.setItem('username', res.data.data.username);
@@ -72,7 +73,7 @@ export default class LoginScreen extends Component {
             const data = {
                 username : this.state.username,
             }
-            const res = await axios.post('http://hellodoctor.tech:8080/login', data);
+            const res = await axios.post('http://35.240.241.27:8080/login', data);
             if (res.data.header.successful) {
                 const newUser = '0';
                 await AsyncStorage.setItem('username', res.data.data.username);
@@ -82,7 +83,6 @@ export default class LoginScreen extends Component {
                 alert('Đăng nhập không thành công');
             }
         } catch ({ message }) {
-            //   alert(`Facebook Login Error: ${message}`);
             alert('Vui lòng kiểm tra lại kết nối mạng!');
         }
     }

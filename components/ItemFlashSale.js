@@ -4,7 +4,7 @@ import { Image } from 'react-native-elements';
 import { Rating } from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 
-export default class ItemProduct extends Component {
+export default class  ItemFlashSale extends Component {
 
     render() {
         const { data: { name, shop_info, price, order_count, images } } = this.props;
@@ -62,7 +62,7 @@ export default class ItemProduct extends Component {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        flex: 1,
+        width: 170,
         height: 200,
         margin: 5,
         borderRadius: 10,

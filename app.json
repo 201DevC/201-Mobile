@@ -24,17 +24,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "example.expo.googlesignin",
-      "config": {
-        "googleSignIn": {
-          "reservedClientId": "826178362197-gkp80r0tqvmt9rhgpdecuuu6a25arif4.apps.googleusercontent.com"
-        }
-      }
+      "supportsTablet": true
+
     },
     "android": {
-      "package": "com.devc.devc201",
-      "googleServicesFile": "./google-services.json"
+      "package": "com.devc.devc201"
     },
     "description": "",
     "githubUrl": "https://github.com/201DevC/201-Mobile"
