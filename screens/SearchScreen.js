@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
 import { TextInput, FlatList } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
 import { PRODUCT } from "../data/product";
+import { NavigationEvents } from "react-navigation";
 import axios from "axios";
 
 
@@ -37,7 +38,6 @@ export default class SearchScreen extends React.Component {
       totalResults: 0,
       isLoading: false,
       lastPageReached: true,
-
     };
   }
 
@@ -55,7 +55,8 @@ export default class SearchScreen extends React.Component {
     return this.setState({
       listSearch: data.data.data.content,
       totalResults: data.data.data.total,
-      isLoading: false
+      isLoading: false,
+      
     })
   }
 
@@ -88,7 +89,7 @@ export default class SearchScreen extends React.Component {
 
   pressSearch = async () => {
     if (this.state.keyWord === "") {
-      alert("Nhập để tìm kiếm sản phẩm ")
+      // alert("Nhập để tìm kiếm sản phẩm ")
     } else {
       this.setState({
         isLoading: true
@@ -127,10 +128,15 @@ export default class SearchScreen extends React.Component {
   };
 
   render() {
-    
-    return (
+    const {focus} = this.state;
+    return (      
       <View style={styles.container}>
-
+        <NavigationEvents
+        onDidFocus={() => {
+          this.searchTextInput.focus();
+        }}
+      />
+        
         <View style={styles.header}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
@@ -144,12 +150,14 @@ export default class SearchScreen extends React.Component {
               style={styles.warpperSearch}
             >
               <TextInput
+                ref={(input) => {this.searchTextInput = input;}}
+                autoFocus={true}
                 placeholder="Tìm kiếm"
                 style={styles.txtSearch}
                 onChangeText={this.onChangeSearch}
                 value={this.state.keyWord}
-                autoFocus={true}
                 onFocus={this._onForcusInput}
+                onBlur={this.pressSearch}
               />
               <TouchableOpacity
                 onPress={this.pressSearch}
@@ -202,7 +210,7 @@ export default class SearchScreen extends React.Component {
             style={{ flex: 1 }}
             keyExtractor={item => item.id}
             onEndReached={this.onEndReached}
-            onEndReachedThreshold={-0.5}
+            onEndReachedThreshold={1}
             ListFooterComponent={this.renderFooter}
           />
         }

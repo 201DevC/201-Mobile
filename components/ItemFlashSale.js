@@ -4,7 +4,7 @@ import { Image } from 'react-native-elements';
 import { Rating } from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 
-export default class  ItemFlashSale extends Component {
+export default class ItemFlashSale extends Component {
 
     render() {
         const { data: { name, shop_info, price, order_count, images } } = this.props;
@@ -15,7 +15,7 @@ export default class  ItemFlashSale extends Component {
             >
                 <View style={styles.imgCardProduct}>
 
-                    <Image style={styles.img}
+                    <Image containerStyle={styles.img}
                         source={{ uri: images[0] }}
                         resizeMode="cover"
                     />
@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
     },
     imgCardProduct: {
         flex: 0.65,
-        borderRadius: 10
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        overflow: 'hidden'
     },
     img: {
         width: '100%',
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
         flex: 0.15,
         marginHorizontal: 5,
         alignItems: "center",
-        justifyContent:"space-between",
+        justifyContent: "space-between",
     },
     OrderCount: {
         flex: 0.5,
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: "space-between",
-        overflow:"hidden"
+        overflow: "hidden"
     },
     txtOrderCount: {
         fontSize: 12
