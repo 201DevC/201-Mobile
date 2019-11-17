@@ -18,6 +18,7 @@ export default class ItemProduct extends Component {
                     <Image style={styles.img}
                         source={{ uri: images[0] }}
                         resizeMode="cover"
+                        
                     />
 
                 </View >
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     img: {
         width: '100%',
         height: '100%',
+        backgroundColor: 'red',
     },
     warpperNameAndPrice: {
         flex: 0.2,

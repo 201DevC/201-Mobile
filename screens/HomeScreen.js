@@ -76,7 +76,7 @@ export default class HomeScreen extends Component {
         })
     }
     _getData = async () => {
-        await this._getDataFlashSale();
+        // await this._getDataFlashSale();
         await this._getDataProductTrend();
     }
     async componentDidMount() {
