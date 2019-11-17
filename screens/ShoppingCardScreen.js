@@ -56,9 +56,9 @@ export default class MenuLevel1Screen extends Component {
 
     })
     await this._getDataCategoryLv2();
-    // this.setState({
-    //   pressStyles: styles.pressStyles
-    // })
+    this.setState({
+      pressStyles: styles.pressStyles
+    })
   }
 
   render() {
@@ -75,7 +75,7 @@ export default class MenuLevel1Screen extends Component {
                     onPress={() => this._showLv2(item)}
                     key={item.id}
                     data={item}
-                  // pressStyles={pressStyles}
+                  pressStyles={pressStyles}
                   />
                 })
               }

@@ -12,7 +12,7 @@ export default class ItemCategoryLv2 extends Component {
                     resizeMode="cover"
                 />
                 <View style={styles.warpperTxt}>
-                    <Text style={styles.txtCategory}>{name}</Text>
+                    <Text style={styles.txtCategory} numberOfLines={2}>{name}</Text>
                 </View>
             </TouchableOpacity>
         );

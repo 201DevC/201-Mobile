@@ -75,7 +75,7 @@ export default class LoginScreen extends Component {
             }
             const res = await axios.post('http://35.240.241.27:8080/login', data);
             if (res.data.header.successful) {
-                const newUser = '0';
+                const newUser = '1';
                 await AsyncStorage.setItem('username', res.data.data.username);
                 await AsyncStorage.setItem('newUser', newUser);
                 this.props.navigation.navigate('AuthLoading');
