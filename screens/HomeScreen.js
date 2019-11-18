@@ -10,7 +10,7 @@ import Slideshow from '../components/Slideshow';
 import axios from "axios";
 import { FlatList } from 'react-native-gesture-handler';
 
-const IP_API = "35.240.241.27:8080";
+const IP_API = "hellodoctor.tech:8080";
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
