@@ -35,7 +35,7 @@ export default class SearchScreen extends React.Component {
       listSearch: [],
       keyWord: "",
       offset: 0,
-      totalResults: 0,
+      totalResults: "",
       isLoading: false,
       lastPageReached: true,
     };
@@ -48,19 +48,19 @@ export default class SearchScreen extends React.Component {
 
     if (data.data.data.content.length === 0) {
       return this.setState({
-        totalResults: "Không tìm thấy"
+        totalResults: "Không tìm thấy kết quả"
       })
     }
 
     return this.setState({
       listSearch: data.data.data.content,
-      totalResults: data.data.data.total,
+      totalResults: data.data.data.total + " kết quả",
       isLoading: false,
-      
+
     })
   }
 
- 
+
 
   onEndReached = async () => {
     const { offset, listSearch, keyWord } = this.state;
@@ -79,17 +79,16 @@ export default class SearchScreen extends React.Component {
   }
 
   renderFooter = () => {
-    const {listSearch, totalResults} = this.state
-    if (listSearch.length === 0 && listSearch.length >= totalResults ) {
-      return <ActivityIndicator  animating={false} />;  
-    }else{
-      return <ActivityIndicator  animating={true} />;  
+    const { listSearch, totalResults } = this.state
+    if (listSearch.length === 0 && listSearch.length >= totalResults) {
+      return <ActivityIndicator animating={false} />;
+    } else {
+      return <ActivityIndicator animating={true} />;
     }
   };
 
   pressSearch = async () => {
     if (this.state.keyWord === "") {
-      // alert("Nhập để tìm kiếm sản phẩm ")
     } else {
       this.setState({
         isLoading: true
@@ -105,7 +104,7 @@ export default class SearchScreen extends React.Component {
       listSearch: [],
       keyWord: "",
       offset: 0,
-      totalResults: 0,
+      totalResults: "",
       isLoading: false,
     })
   }
@@ -128,15 +127,14 @@ export default class SearchScreen extends React.Component {
   };
 
   render() {
-    const {focus} = this.state;
-    return (      
+    const { focus } = this.state;
+    return (
       <View style={styles.container}>
         <NavigationEvents
-        onDidFocus={() => {
-          this.searchTextInput.focus();
-        }}
-      />
-        
+          onDidFocus={() => {
+            this.searchTextInput.focus();
+          }}
+        />
         <View style={styles.header}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
@@ -150,7 +148,7 @@ export default class SearchScreen extends React.Component {
               style={styles.warpperSearch}
             >
               <TextInput
-                ref={(input) => {this.searchTextInput = input;}}
+                ref={(input) => { this.searchTextInput = input; }}
                 autoFocus={true}
                 placeholder="Tìm kiếm"
                 style={styles.txtSearch}
@@ -183,7 +181,7 @@ export default class SearchScreen extends React.Component {
             <Text>Đề cử</Text>
           </View>
           <View style={styles.respond}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{this.state.totalResults} kết quả</Text>
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{this.state.totalResults}</Text>
           </View>
           <View style={styles.filter}>
             <FontAwesome
@@ -228,7 +226,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#ff7675',
+    backgroundColor: '#ffdee3',
     position: "relative",
     justifyContent: "center",
     alignItems: "center",
@@ -243,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
     justifyContent: "space-between",
-    width: "95%",
+    width: "100%",
     paddingHorizontal: 10
 
   },
@@ -251,19 +249,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   warpperSearch: {
+    backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
-    opacity: 0.8,
     flex: 1,
     justifyContent: "space-between",
-    backgroundColor: "white",
+    height: 42,
+    paddingHorizontal: 10,
     borderRadius: 5,
-    height: 40,
-    marginLeft: 15,
-    paddingHorizontal: 10
+    marginLeft: 15
   },
   txtSearch: {
-    fontSize: 18,
+    fontSize: 17,
     color: "grey",
     flex: 1
   },

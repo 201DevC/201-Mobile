@@ -1,7 +1,7 @@
 export const PRODUCT =
     [
       {
-         "id": 1,
+         "id": "1",
          name:"Dương Quốc Hải",
          "images": [
            "https://vinatex.com.vn/wp-content/themes/vinatex/assets/images/default-thumbnail.png",
@@ -13,7 +13,7 @@ export const PRODUCT =
          },
        },
        {
-         "id": 2,
+         "id": "2",
          name:"Dương Quốc Hải",
          "images": [
            "https://vinatex.com.vn/wp-content/themes/vinatex/assets/images/default-thumbnail.png",
@@ -25,7 +25,7 @@ export const PRODUCT =
          },
        },
        {
-         "id": 3,
+         "id": "3",
          name:"Dương Quốc Hải hhhhhhhhhhhhh",
          "images": [
            "https://vinatex.com.vn/wp-content/themes/vinatex/assets/images/default-thumbnail.png",

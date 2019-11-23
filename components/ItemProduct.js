@@ -7,7 +7,11 @@ import NumberFormat from 'react-number-format';
 export default class ItemProduct extends Component {
 
     render() {
-        const { data: { name, shop_info, price, order_count, images } } = this.props;
+        const { data: { name, shop_info, price, order_count, images, rating_info } } = this.props;
+        // const new_price = item ? item.price : 0;
+        const total_rated = rating_info ? rating_info.total_rated : 0;
+        const percent_number = rating_info ? rating_info.percent_number : 100;
+        const rating =  percent_number/100*5;
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
@@ -47,11 +51,9 @@ export default class ItemProduct extends Component {
                     </View>
 
                     <View style={styles.OrderCount} >
-                        <Rating readonly startingValue={3} imageSize={10} />
+                        <Rating readonly startingValue={rating} imageSize={10} />
                         <Text style={styles.txtOrderCount} numberOfLines={1}>({order_count})</Text>
                     </View>
-
-
                 </View>
 
             </TouchableOpacity>
@@ -69,6 +71,7 @@ const styles = StyleSheet.create({
         borderColor: '#ecf0f1',
         backgroundColor: '#fff',
         borderWidth: 2,
+        overflow:"hidden"
 
     },
     imgCardProduct: {
