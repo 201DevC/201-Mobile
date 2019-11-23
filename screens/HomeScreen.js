@@ -92,9 +92,14 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
-        this._getDataCategoryLv1();
+        // this._getDataCategoryLv1();
         this._getDataFlashSale();
+<<<<<<< HEAD
         this._getData();
+=======
+        // this._getData();
+
+>>>>>>> 91e3a1951f2c9feeec7fd11109b61eb744b4081d
     }
 
     componentWillUnmount() {

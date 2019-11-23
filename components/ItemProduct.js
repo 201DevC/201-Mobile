@@ -19,9 +19,10 @@ export default class ItemProduct extends Component {
             >
                 <View style={styles.imgCardProduct}>
 
-                    <Image style={styles.img}
+                    <Image containerStyle={styles.img}
                         source={{ uri: images[0] }}
                         resizeMode="cover"
+                        
                     />
 
                 </View >
@@ -65,7 +66,7 @@ export default class ItemProduct extends Component {
 const styles = StyleSheet.create({
     cardContainer: {
         flex: 1,
-        height: 200,
+        height: 220,
         margin: 5,
         borderRadius: 10,
         borderColor: '#ecf0f1',
@@ -76,7 +77,9 @@ const styles = StyleSheet.create({
     },
     imgCardProduct: {
         flex: 0.65,
-        borderRadius: 10
+        borderTopRightRadius: 10,
+        borderTopLeftRadius: 10,
+        overflow:"hidden"
     },
     img: {
         width: '100%',
