@@ -10,7 +10,7 @@ import Slideshow from '../components/Slideshow';
 import axios from "axios";
 import { FlatList } from 'react-native-gesture-handler';
 
-const IP_API = "hellodoctor.tech:8080";
+const IP_API = "35.240.241.27:8080";
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
@@ -32,9 +32,6 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // isLoadingFlashSale: true,
-            // isLoadingYourLike: true,
-            // isLoadingTendency: true,
             isLoading: true,
             listcategoryLv1: [],
             listFlashSale: [],
@@ -58,42 +55,35 @@ export default class HomeScreen extends Component {
 
     _getDataCategoryLv1 = async () => {
         const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-        return this.setState({
-            listcategoryLv1: datalv1.data.data.content,
-        })
+
+        return datalv1.data.data.content;
     }
     _getDataFlashSale = async () => {
         const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
-        return this.setState({
-            listFlashSale: dataFlashSale.data.data.content,
-            isLoading: false
-        })
+
+        return dataFlashSale.data.data.content;
     }
 
-    // _getDataProductTrend = async () => {
-    //     const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
-    //     return this.setState({
-    //         listProductTrend: data.data.data,
-    //         isLoading: false
-    //     })
-    // }
-
-    _getData = async () => {
-        // const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-        // const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
+    _getDataProductTrend = async () => {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
-        this._isMounted && this.setState({
-            // listcategoryLv1: datalv1.data.data.content,
-            // listFlashSale: dataFlashSale.data.data.content,
-            listProductTrend: dataTrend.data.data,
 
-        })
+        return dataTrend.data.data;
+    }
+
+    _getData = () => {
+        Promise.all([this._getDataCategoryLv1(), this._getDataFlashSale(), this._getDataProductTrend()]).then((values) =>{
+            this._isMounted && this.setState({
+                listcategoryLv1: values[0],
+                listFlashSale: values[1],
+                listProductTrend: values[2],
+                isLoading: false,
+            })
+        });
     }
 
     componentDidMount() {
-        // this._getDataCategoryLv1();
-        this._getDataFlashSale();
-        // this._getData();
+        this._isMounted = true;
+        this._getData();
 
     }
 
