@@ -12,7 +12,7 @@ export default function LikeCard(props) {
                     source={{uri: image}}
                     resizeMode="contain" />
             </View>
-            <Text style={styles.txtCard}>{name}</Text>
+            <Text style={styles.txtCard} numberOfLines={2}>{name}</Text>
             <TouchableOpacity style={styles.overlayContainer} onPress={onPressShowHeart} >
                 <View style={status == 1 ? styles.overlay : { opacity: 0 }}>
                     <AntDesign
@@ -31,7 +31,7 @@ export default function LikeCard(props) {
 const styles = StyleSheet.create({
     cardContainer: {
         width: 112,
-        height: 148,
+        height:165,
         alignItems: "center",
         borderRadius: 8,
         margin: 4,

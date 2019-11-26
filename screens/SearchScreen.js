@@ -281,14 +281,16 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     justifyContent: "space-around",
     width: '20%',
-    borderColor: "grey"
+    borderColor: "grey",
+    alignItems:'center'
   },
   filter: {
     flexDirection: "row",
     borderLeftWidth: 1,
     width: '20%',
     justifyContent: "space-around",
-    borderColor: "grey"
+    borderColor: "grey",
+    alignItems:'center'
   },
   respond: {
 

@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "rea
 import { Image } from 'react-native-elements';
 import { Rating } from 'react-native-elements';
 import NumberFormat from 'react-number-format';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default class ItemProduct extends Component {
 
@@ -11,7 +12,7 @@ export default class ItemProduct extends Component {
         // const new_price = item ? item.price : 0;
         const total_rated = rating_info ? rating_info.total_rated : 0;
         const percent_number = rating_info ? rating_info.percent_number : 100;
-        const rating =  percent_number/100*5;
+        const rating = percent_number / 100 * 5;
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
@@ -22,121 +23,148 @@ export default class ItemProduct extends Component {
                     <Image containerStyle={styles.img}
                         source={{ uri: images[0] }}
                         resizeMode="cover"
-                        
                     />
 
                 </View >
-                <View style={styles.warpperNameAndPrice}>
-                    <View style={styles.NameProduct}>
-                        <Text style={styles.txtNameProduct} numberOfLines={1}>{name}</Text>
-                    </View>
-                    <View style={styles.Price}>
-                        <NumberFormat
-                            value={price}
-                            displayType={'text'}
-                            thousandSeparator={true}
-                            prefix={''}
-                            renderText={value => <Text
-                                style={styles.txtPrice}
-                                numberOfLines={1}>
-                                {value} vnd
+                <View style={styles.NameProduct}>
+                    <Text style={styles.txtNameProduct} numberOfLines={2}>{name}</Text>
+                </View>
+                <View style={styles.warpperPrice}>
+                    <NumberFormat
+                        value={price}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={''}
+                        renderText={value => <Text
+                            style={styles.txtPrice}
+                            numberOfLines={1}>
+                            {value} đ
                                 </Text>
-                            }
-                        />
-
-                    </View>
+                        }
+                    />
+                    <NumberFormat
+                        value={price}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={''}
+                        renderText={value => <Text
+                            style={styles.txtOldPrice}
+                            numberOfLines={1}>
+                            160000 đ
+                                </Text>
+                        }
+                    />
                 </View>
                 <View style={styles.warpperRateAndOrder}>
-                    <View style={styles.ShopName}>
-                        <Text style={styles.txtShopName} numberOfLines={1}>{shop_info.name}</Text>
-                    </View>
-
-                    <View style={styles.OrderCount} >
+                    <View style={styles.warpperRating}>
                         <Rating readonly startingValue={rating} imageSize={10} />
-                        <Text style={styles.txtOrderCount} numberOfLines={1}>({order_count})</Text>
+                        <Text style={styles.txtOrderCount} numberOfLines={1}>({rating_info.total_rated})</Text>
+                    </View>
+                    <View style={styles.warpperOrderCount}>
+                        <FontAwesome size={10} color='#747d8c' name={"tag"} />
+                        <Text style={styles.txtOrderCount} numberOfLines={1}>{order_count}</Text>
                     </View>
                 </View>
 
+                <View style={styles.warpperShopInfoAndShip}>
+                    <View style={styles.warpperShopInfo}>
+                        <FontAwesome size={15} color='#ff7f50' name={"shield"} />
+                        <Text style={styles.txtShopName} numberOfLines={1}>{shop_info.name}</Text>
+                    </View>
+                    <FontAwesome size={15} color='#2ed573' name={"truck"} />
+                </View>
             </TouchableOpacity>
         );
     }
 }
 
-
 const styles = StyleSheet.create({
     cardContainer: {
         flex: 1,
-        height: 220,
-        margin: 5,
-        borderRadius: 10,
+        margin: 3,
+        borderRadius: 5,
         borderColor: '#ecf0f1',
         backgroundColor: '#fff',
         borderWidth: 2,
-        overflow:"hidden"
+        overflow: "hidden",
+        padding: 5,
 
     },
     imgCardProduct: {
-        flex: 0.65,
-        borderTopRightRadius: 10,
-        borderTopLeftRadius: 10,
-        overflow:"hidden"
+        height: 160,
+        borderRadius: 5,
+        overflow: "hidden",
     },
     img: {
         width: '100%',
         height: '100%',
     },
-    warpperNameAndPrice: {
-        flex: 0.2,
-        borderBottomWidth: 1,
-        marginHorizontal: 5,
-        borderColor: "grey",
-        paddingVertical: 5
-    },
     NameProduct: {
-        flex: 1,
-        marginBottom: 10
+        minHeight: 40,
+        justifyContent: 'center'
     },
     txtNameProduct: {
         color: 'black',
-        fontWeight: "bold",
         flexWrap: "wrap",
-        fontSize: 16
+        fontSize: 15,
     },
-    Price: {
-        flex: 1,
-        alignItems: "flex-end",
-        paddingVertical: 10
+    warpperPrice: {
+        minHeight: 35,
+        justifyContent:'center'
     },
     txtPrice: {
-        color: '#d35400',
+        color: '#eb2f06',
         fontSize: 14,
-        fontWeight: "bold",
+    },
+    txtOldPrice: {
+        textDecorationLine: 'line-through',
+        textDecorationStyle: 'solid',
+        fontSize: 12,
+        color: '#a4b0be'
     },
     warpperRateAndOrder: {
         flexDirection: "row",
-        flex: 0.15,
-        marginHorizontal: 5,
-        alignItems: "center",
-        justifyContent:"space-between",
-    },
-    OrderCount: {
-        flex: 0.5,
-        alignItems: "flex-end",
-        flexDirection: 'row',
         alignItems: "center",
         justifyContent: "space-between",
-        overflow:"hidden"
+        borderBottomWidth:0.5,
+        borderColor:'#a4b0be',
+        paddingBottom:3,
+        marginBottom:3
     },
+
     txtOrderCount: {
-        fontSize: 12
+        fontSize: 12,
+        marginLeft: 3,
+        color:'#747d8c'
+
     },
-    ShopName: {
-        flex: 0.45,
+    warpperRating: {
+        flexDirection: 'row',
+        alignItems: 'center'
+
+    },
+
+    warpperOrderCount: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    warpperShopInfoAndShip: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     txtShopName: {
-        color: '#95a5a6',
-        fontSize: 14,
-        flexWrap: "wrap",
+        color: 'black',
+        fontSize: 12,
+        marginLeft: 5,
+        flex: 0.9,
+        color:'#747d8c'
+    },
+    warpperShopInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        width:'80%'
     },
 
 }); 

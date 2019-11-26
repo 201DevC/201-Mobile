@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#fff",
         flexDirection: 'row',
-        height: 110,
+        height: 125,
         justifyContent: 'space-between',
         margin: 10,
         borderColor: '#dfe4ea'
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 
     },
     txtName: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 'bold'
     },
     OrderCount: {

@@ -92,14 +92,9 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
-        // this._getDataCategoryLv1();
+        this._getDataCategoryLv1();
         this._getDataFlashSale();
-<<<<<<< HEAD
         this._getData();
-=======
-        // this._getData();
-
->>>>>>> 91e3a1951f2c9feeec7fd11109b61eb744b4081d
     }
 
     componentWillUnmount() {
@@ -127,6 +122,7 @@ export default class HomeScreen extends Component {
         const { isLoading, isLoadingTendency } = this.state
         return (
             <View style={styles.warpperContainer}>
+
                 <View style={styles.container}>
                     <View style={styles.warpperTabBar}>
                         <View style={styles.tabBar}>
@@ -183,9 +179,9 @@ export default class HomeScreen extends Component {
                                         <View style={styles.titleFlashSale}>
                                             <Text style={styles.textFlashSale}>Flash Sale</Text>
                                             <TouchableOpacity style={styles.moreListFlashSale}>
-                                                <Text >
-                                                    XEM THÊM
-                                    </Text>
+                                                <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10, }}>
+                                                    Xem thêm >
+                                                </Text>
                                             </TouchableOpacity>
 
                                         </View>
@@ -339,7 +335,7 @@ const styles = StyleSheet.create({
     },
     textFlashSale: {
         fontSize: 20,
-        color: '#d63031',
+        color: '#c54b6c',
         fontWeight: "bold",
         fontStyle: "italic"
     },

@@ -18,18 +18,17 @@ export default class CategoryLv1 extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 2,
         paddingHorizontal: 15,
         paddingVertical: 3,
-        borderColor: '#7f8c8d',
-        borderRadius: 10,
+        borderRadius: 5,
         alignItems: "center",
         marginHorizontal: 5,
         backgroundColor:"#fff"
     },
     text: {
-        color: "#f39c12",
-        fontSize: 15
+        color: "#c47482",
+        fontSize: 15,
+        fontWeight:'bold'
     }
 
 

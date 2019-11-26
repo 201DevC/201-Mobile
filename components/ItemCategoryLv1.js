@@ -15,7 +15,7 @@ export default class ItemCategoryLv1 extends Component {
                     resizeMode="cover"
                 />
                 <View style={styles.warpperTxt}>
-                    <Text style={choose == 0 ? styles.txtCategory : styles.txtCategoryChoose}>{name}</Text>
+                    <Text style={choose == 0 ? styles.txtCategory : styles.txtCategoryChoose} numberOfLines={2}>{name}</Text>
                 </View>
             </TouchableOpacity>
         );

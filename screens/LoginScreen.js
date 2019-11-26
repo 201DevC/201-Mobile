@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage, KeyboardAvoidingView, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Button, Icon, Input } from 'react-native-elements';
 
@@ -71,7 +71,7 @@ export default class LoginScreen extends Component {
     _signInGeneral = async () => {
         try {
             const data = {
-                username : this.state.username,
+                username: this.state.username,
             }
             const res = await axios.post('http://35.240.241.27:8080/login', data);
             if (res.data.header.successful) {
@@ -108,8 +108,13 @@ export default class LoginScreen extends Component {
 
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-                <View>
-                    <Text style={styles.logo}>SenDo</Text>
+                <View style={styles.warpperLogo}>
+                    {/* <Text style={styles.logo}>SenDo</Text> */}
+                    <Image
+                        style={styles.imgLogo}
+                        source={{ uri: 'http://www.logosvectorfree.com/wp-content/uploads/2017/12/Sendo-Logo-Design-Vector-Free-Download.png' }}
+                        resizeMode="cover"
+                    />
                 </View>
                 <View style={styles.boxBtnLogin}>
                     <Button
@@ -208,12 +213,16 @@ const styles = StyleSheet.create({
         paddingTop: Constants.statusBarHeight,
         justifyContent: "center",
     },
-    logo: {
-        fontSize: 50,
-        fontWeight: '500',
-        color: 'red',
-        marginBottom: 40
-
+    warpperLogo: {
+        width: '100%',
+        height: 70,
+        marginBottom: 30,
+        alignItems:'center'
+    },
+    imgLogo: {
+        width: '70%',
+        height: '100%',
+        backgroundColor:'blue'
     },
     boxBtnLogin: {
         flexDirection: 'row',
