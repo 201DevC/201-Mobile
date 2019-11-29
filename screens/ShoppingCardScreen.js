@@ -10,7 +10,7 @@ import { CATEGORY2 } from '../service/categorylv2';
 
 
 
-const IP_API = "hellodoctor.tech:8080";
+const IP_API = "35.240.241.27:8080";
 export default class MenuLevel1Screen extends Component {
   constructor(props) {
     super(props);
@@ -18,11 +18,8 @@ export default class MenuLevel1Screen extends Component {
       listcategoryLv1: [],
       listcategoryLv2: [],
       isLoading: true,
+      isLoadingLv2: false,
       Id: "",
-      // pressStyles: styles.pressStyles
-      pressStyles: "",
-      nameLv1:""
-
     };
   }
 
@@ -31,8 +28,12 @@ export default class MenuLevel1Screen extends Component {
   }
   _getDataCategoryLv1 = async () => {
     const data = await axios.get(`http://${IP_API}/category/lv1`);
+    const listcategoryLv1 = data.data.data.content.map((item) => {
+      item.choose = 0;
+      return item
+    })
     return this.setState({
-      listcategoryLv1: data.data.data.content,
+      listcategoryLv1,
       isLoading: false
     })
   }
@@ -40,32 +41,41 @@ export default class MenuLevel1Screen extends Component {
   _getDataCategoryLv2 = async () => {
     const { Id } = this.state
     const data = await axios.get(`http://${IP_API}/category/lv2?parentId=${Id}`);
-    console.log(data.data.data.content)
     return this.setState({
       listcategoryLv2: data.data.data.content,
+      isLoadingLv2: false
     })
   }
   async componentDidMount() {
     await this._getDataCategoryLv1()
   }
 
-  _showLv2 = async (item) => {
+  _showLv2 = async item => {
+    let { listcategoryLv1 } = this.state;
+
+    const foundIndex = listcategoryLv1.findIndex(category => category.id === item.id);
+    const found = listcategoryLv1[foundIndex];
+
+    if (found.choose === 0) {
+      listcategoryLv1.map((item) => {
+        item.choose = 0;
+      })
+      found.choose = 1;
+    }
     await this.setState({
       Id: item.id,
-      nameLv1 : item.name
-
+      listcategoryLv2: [],
+      isLoadingLv2: true
     })
     await this._getDataCategoryLv2();
-    this.setState({
-      pressStyles: styles.pressStyles
-    })
+
   }
 
   render() {
-    const { isLoading, pressStyles,nameLv1 } = this.state;
+    const { isLoading, isLoadingLv2 } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={{ fontSize: 30, fontWeight: "bold", textAlign: "center", color:"#fff" }}>Danh mục</Text>
+        <Text style={styles.txtTitle}>Danh mục</Text>
         {isLoading ? <ActivityIndicator animating={isLoading} /> :
           <View style={styles.warpperCategory}>
             <ScrollView style={{ width: "25%" }} horizontal={false} showsVerticalScrollIndicator={false} >
@@ -75,23 +85,25 @@ export default class MenuLevel1Screen extends Component {
                     onPress={() => this._showLv2(item)}
                     key={item.id}
                     data={item}
-                  pressStyles={pressStyles}
                   />
                 })
               }
             </ScrollView>
             <View style={{ width: "75%" }}>
-              <Text style={{fontSize:20, textAlign:"center"}}>{nameLv1}</Text>
-              <FlatList
-                style={{ width: "100%" }}
-                data={this.state.listcategoryLv2}
-                renderItem={({ item }) => <ItemCategoryLv2
-
-                  data={item}
-                />}
-                keyExtractor={item => item.id}
-                numColumns={3}
-              />
+              {/* <Text style={{fontSize:20, textAlign:"center"}}>{nameLv1}</Text> */}
+              {
+                isLoadingLv2 ? <ActivityIndicator animating={isLoadingLv2} />
+                  :
+                  <FlatList
+                    style={{ width: "100%" }}
+                    data={this.state.listcategoryLv2}
+                    renderItem={({ item }) => <ItemCategoryLv2
+                      data={item}
+                    />}
+                    keyExtractor={item => item.id}
+                    numColumns={3}
+                  />
+              }
             </View>
           </View>
         }
@@ -108,7 +120,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: "#ff7675"
+    backgroundColor: "#ffdee3"
+  },
+  txtTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "black",
+    textAlign: 'right',
+    marginRight:20,
+    marginBottom:10
   },
   warpperCategory: {
     flex: 1,

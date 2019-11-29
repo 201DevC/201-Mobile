@@ -40,6 +40,7 @@ export default class HomeScreen extends Component {
         };
         this._isMounted = false;
     }
+    
     renderItem = ({ item }) => {
         if (item.emty === true) {
             return <View style={{ flex: 1, margin: 5, }} />;
@@ -71,7 +72,7 @@ export default class HomeScreen extends Component {
     }
 
     _getData = () => {
-        Promise.all([this._getDataCategoryLv1(), this._getDataFlashSale(), this._getDataProductTrend()]).then((values) =>{
+        Promise.all([this._getDataCategoryLv1(), this._getDataFlashSale(), this._getDataProductTrend()]).then((values) => {
             this._isMounted && this.setState({
                 listcategoryLv1: values[0],
                 listFlashSale: values[1],
@@ -84,7 +85,6 @@ export default class HomeScreen extends Component {
     componentDidMount() {
         this._isMounted = true;
         this._getData();
-
     }
 
     componentWillUnmount() {
@@ -109,39 +109,40 @@ export default class HomeScreen extends Component {
 
     render() {
 
-        const { isLoading } = this.state
+        const { isLoading, isLoadingTendency } = this.state
         return (
             <View style={styles.warpperContainer}>
                 <View style={styles.container}>
-                    <View style={styles.tabBar}>
-                        <View style={styles.buger}>
-                            <TouchableOpacity
-                                onPress={this.onPressMenu}
-                            >
-                                <FontAwesome size={20} name={"bars"} />
-                            </TouchableOpacity>
-                        </View>
-
-                        <TouchableOpacity
-                            onPress={this.onPressSearch}
-                            style={styles.warpperSearch}
-                        >
-                            <View style={styles.warpperTxt}>
-                                <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
-                                <Text style={styles.txtSendo}>Sendo</Text>
+                    <View style={styles.warpperTabBar}>
+                        <View style={styles.tabBar}>
+                            <View style={styles.buger}>
+                                <TouchableOpacity
+                                    onPress={this.onPressMenu}
+                                >
+                                    <FontAwesome size={20} name={"bars"} />
+                                </TouchableOpacity>
                             </View>
 
-                        </TouchableOpacity>
-                        <FontAwesome
-                            name='search'
-                            size={17}
-                            color='grey'
-                        />
+                            <TouchableOpacity
+                                onPress={this.onPressSearch}
+                                style={styles.warpperSearch}
+                            >
+                                <View style={styles.warpperTxt}>
+                                    <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
+                                    <Text style={styles.txtSendo}>Sendo</Text>
+                                </View>
+
+                            </TouchableOpacity>
+                            <FontAwesome
+                                name='search'
+                                size={17}
+                                color='grey'
+                            />
+                        </View>
                     </View>
                     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
-                        <View style={{ backgroundColor: '#ff7675', borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
+                        <View style={{ backgroundColor: '#ffdee3', borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
                             <View style={styles.header}>
-
                                 <Slideshow />
                             </View>
                             <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
@@ -156,10 +157,11 @@ export default class HomeScreen extends Component {
                             </ScrollView>
                         </View>
                         {isLoading ?
-                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1, marginTop: 30 }}>
                                 <ActivityIndicator animating={isLoading} />
                                 <Text>Dữ liệu đang tải, xin vui lòng chờ...</Text>
-                            </View> :
+                            </View>
+                            :
                             <View>
                                 <View style={styles.wrapperFlashSale}>
                                     <View >
@@ -186,14 +188,15 @@ export default class HomeScreen extends Component {
                                         </ScrollView>
                                     </View>
                                 </View>
+                                <View style={styles.line}></View>
                                 <View style={styles.wrapperYourLike}>
                                     <View>
-                                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 10 }}>
+                                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                             <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
-                                            <TouchableOpacity
-                                                onPress={() => this._goToHistory()}
-                                            >
-                                                <Text style={{ color: "#0984e3", }}> Dựa trên sản phẩm bạn đã xem ></Text>
+                                            <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}>
+                                                <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}>
+                                                    Xem thêm >
+                                                </Text>
                                             </TouchableOpacity>
                                         </View>
                                         <FlatList
@@ -203,19 +206,31 @@ export default class HomeScreen extends Component {
                                             style={{ flex: 1 }}
                                             keyExtractor={item => item.id}
                                         />
-                                        <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}><Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}> Xem thêm ></Text></TouchableOpacity>
-                                    </View>
 
+                                        <TouchableOpacity onPress={() => this._goToHistory()} style={{ marginVertical: 10 }}>
+                                            <Text style={{ color: "#0984e3", textAlign: "right", paddingHorizontal: 10, fontWeight: 'bold', fontSize: 16 }}>
+                                                Dựa trên sản phẩm bạn đã xem >
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
+                                <View style={styles.line}></View>
+
                                 <View style={styles.wrapperYourLike}>
                                     <Text style={styles.txtYourLike}>Xu Hướng</Text>
-                                    <FlatList
-                                        data={formatData(this.state.listProductTrend, 2)}
-                                        renderItem={this.renderItem}
-                                        numColumns={2}
-                                        style={{ flex: 1 }}
-                                        keyExtractor={item => item.id}
-                                    />
+                                    {isLoadingTendency ?
+                                        <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+                                            <ActivityIndicator animating={isLoadingTendency} />
+                                        </View>
+                                        :
+                                        <FlatList
+                                            data={formatData(this.state.listProductTrend, 2)}
+                                            renderItem={this.renderItem}
+                                            numColumns={2}
+                                            style={{ flex: 1 }}
+                                            keyExtractor={item => item.id}
+                                        />
+                                    }
                                 </View>
                             </View>
                         }
@@ -241,7 +256,20 @@ const styles = StyleSheet.create({
         position: "relative",
         justifyContent: "center",
         alignItems: "center",
-        paddingTop: Constants.statusBarHeight + 65
+        paddingTop: Constants.statusBarHeight + 62
+
+    },
+    warpperTabBar: {
+        width: "100%",
+        paddingTop: Constants.statusBarHeight,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        zIndex: 999,
+        backgroundColor: "#ffdee3",
+        paddingHorizontal: 10,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5
 
     },
     tabBar: {
@@ -251,14 +279,9 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         justifyContent: "space-between",
         paddingHorizontal: 15,
-        width: Dimensions.get("window").width - 20,
+        // width: Dimensions.get("window").width - 20,
         borderRadius: 5,
         height: 42,
-        position: "absolute",
-        top: Constants.statusBarHeight,
-        left: 10,
-        zIndex: 999,
-
     },
     buger: {
         justifyContent: "center",
@@ -291,9 +314,7 @@ const styles = StyleSheet.create({
     },
     wrapperFlashSale: {
         flex: 0.34,
-        marginBottom: 8,
-        borderBottomWidth: 1,
-        paddingBottom: 10
+        borderBottomColor: "grey"
     },
     titleFlashSale: {
         flexDirection: "row",
@@ -310,7 +331,7 @@ const styles = StyleSheet.create({
     wrapperYourLike: {
         flex: 0.6,
         backgroundColor: '#fff',
-        marginBottom: 8
+        borderBottomColor: "grey"
 
     },
     warpperYourLikeItem: {
@@ -325,7 +346,16 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: "bold",
         paddingVertical: 5,
+        marginLeft: 10
     },
+    line: {
+        width: '100%',
+        height: 1,
+        backgroundColor: '#bdc3c7',
+        width: Dimensions.get("window").width - 20,
+        marginHorizontal: 10,
+        marginVertical: 10
+    }
 
 
 });

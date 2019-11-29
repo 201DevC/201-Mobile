@@ -4,12 +4,12 @@ import { TextInput, FlatList } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
-import { PRODUCT } from "../data/product";
-import { NavigationEvents } from "react-navigation";
-import axios from "axios";
+import { PRODUCT } from '../data/product';
+import { NavigationEvents } from 'react-navigation';
+import axios from 'axios';
 
 
-const IP_API = "hellodoctor.tech:8080";
+const IP_API = 'hellodoctor.tech:8080';
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -18,9 +18,9 @@ const formatData = (data, numColumns) => {
     data.push({
       id: `blank-${numberOfElementsLastRow}`,
       emty: true,
-      "images": [
+      'images': [
       ],
-      "shop_info": {
+      'shop_info': {
       },
     });
     numberOfElementsLastRow++;
@@ -33,9 +33,9 @@ export default class SearchScreen extends React.Component {
     super(props);
     this.state = {
       listSearch: [],
-      keyWord: "",
+      keyWord: '',
       offset: 0,
-      totalResults: 0,
+      totalResults: '',
       isLoading: false,
       lastPageReached: true,
     };
@@ -48,19 +48,19 @@ export default class SearchScreen extends React.Component {
 
     if (data.data.data.content.length === 0) {
       return this.setState({
-        totalResults: "Không tìm thấy"
+        totalResults: 'Không tìm thấy kết quả'
       })
     }
 
     return this.setState({
       listSearch: data.data.data.content,
-      totalResults: data.data.data.total,
+      totalResults: data.data.data.total + ' kết quả',
       isLoading: false,
-      
+
     })
   }
 
- 
+
 
   onEndReached = async () => {
     const { offset, listSearch, keyWord } = this.state;
@@ -79,17 +79,16 @@ export default class SearchScreen extends React.Component {
   }
 
   renderFooter = () => {
-    const {listSearch, totalResults} = this.state
-    if (listSearch.length === 0 && listSearch.length >= totalResults ) {
-      return <ActivityIndicator  animating={false} />;  
-    }else{
-      return <ActivityIndicator  animating={true} />;  
+    const { listSearch, totalResults } = this.state
+    if (listSearch.length === 0 && listSearch.length >= totalResults) {
+      return <ActivityIndicator animating={false} />;
+    } else {
+      return <ActivityIndicator animating={true} />;
     }
   };
 
   pressSearch = async () => {
-    if (this.state.keyWord === "") {
-      // alert("Nhập để tìm kiếm sản phẩm ")
+    if (this.state.keyWord === '') {
     } else {
       this.setState({
         isLoading: true
@@ -103,9 +102,9 @@ export default class SearchScreen extends React.Component {
   _onForcusInput = () => {
     this.setState({
       listSearch: [],
-      keyWord: "",
+      keyWord: '',
       offset: 0,
-      totalResults: 0,
+      totalResults: '',
       isLoading: false,
     })
   }
@@ -127,22 +126,27 @@ export default class SearchScreen extends React.Component {
     );
   };
 
+  _onPressBackButton = () => {
+    this.props.navigation.navigate('HomeDrawerNavigator');
+    console.log('back');
+  }
+
   render() {
-    const {focus} = this.state;
-    return (      
+    const { focus } = this.state;
+    return (
       <View style={styles.container}>
         <NavigationEvents
-        onDidFocus={() => {
-          this.searchTextInput.focus();
-        }}
-      />
-        
+          onDidFocus={() => {
+            this.searchTextInput.focus();
+          }}
+        />
         <View style={styles.header}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
               <TouchableOpacity
+                onPress={this._onPressBackButton}
               >
-                <FontAwesome size={20} name={"chevron-left"} />
+                <FontAwesome size={20} name={'chevron-left'} />
               </TouchableOpacity>
             </View>
 
@@ -150,9 +154,9 @@ export default class SearchScreen extends React.Component {
               style={styles.warpperSearch}
             >
               <TextInput
-                ref={(input) => {this.searchTextInput = input;}}
+                ref={(input) => { this.searchTextInput = input; }}
                 autoFocus={true}
-                placeholder="Tìm kiếm"
+                placeholder='Tìm kiếm'
                 style={styles.txtSearch}
                 onChangeText={this.onChangeSearch}
                 value={this.state.keyWord}
@@ -183,7 +187,7 @@ export default class SearchScreen extends React.Component {
             <Text>Đề cử</Text>
           </View>
           <View style={styles.respond}>
-            <Text style={{ fontSize: 16, fontWeight: "bold" }}>{this.state.totalResults} kết quả</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{this.state.totalResults}</Text>
           </View>
           <View style={styles.filter}>
             <FontAwesome
@@ -197,7 +201,7 @@ export default class SearchScreen extends React.Component {
         </View>
         {/* <View style={styles.warpperReturn}> */}
         {this.state.isLoading ?
-          <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
             <ActivityIndicator />
             <Text>Dữ liệu đang tải, xin vui lòng chờ ....</Text>
           </View>
@@ -228,81 +232,80 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#ff7675',
-    position: "relative",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#ffdee3',
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
     paddingTop: Constants.statusBarHeight
 
   },
   tabBar: {
-    flexDirection: "row",
+    flexDirection: 'row',
     width: '100%',
-    alignItems: "center",
+    alignItems: 'center',
     marginVertical: 10,
-    justifyContent: "space-between",
-    width: "95%",
+    justifyContent: 'space-between',
+    width: '100%',
     paddingHorizontal: 10
 
   },
   back: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   warpperSearch: {
-    flexDirection: "row",
-    alignItems: "center",
-    opacity: 0.8,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
-    justifyContent: "space-between",
-    backgroundColor: "white",
+    justifyContent: 'space-between',
+    height: 42,
+    paddingHorizontal: 10,
     borderRadius: 5,
-    height: 40,
-    marginLeft: 15,
-    paddingHorizontal: 10
+    marginLeft: 15
   },
   txtSearch: {
-    fontSize: 18,
-    color: "grey",
+    fontSize: 17,
+    color: 'grey',
     flex: 1
   },
 
   warpperFill: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderBottomWidth: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingHorizontal: 15,
     height: 40,
     marginBottom: 15,
-    borderColor: "grey"
+    borderColor: 'grey'
 
   },
   nominations: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderRightWidth: 1,
-    justifyContent: "space-around",
+    justifyContent: 'space-around',
     width: '20%',
-    borderColor: "grey"
+    borderColor: 'grey'
   },
   filter: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderLeftWidth: 1,
     width: '20%',
-    justifyContent: "space-around",
-    borderColor: "grey"
+    justifyContent: 'space-around',
+    borderColor: 'grey'
   },
   respond: {
 
   },
   // warpperReturn: {
-  //   justifyContent: "center",
-  //   alignItems: "center",
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
   //   flex:1
   // },
   itemInvisible: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
 
   }
 
