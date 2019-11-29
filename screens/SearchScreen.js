@@ -111,8 +111,9 @@ export default class SearchScreen extends React.Component {
 
 
   _goToProductDetail = (id) => {
-    this.props.navigation.navigate('ProductDetail', { id: id });
+    this.props.navigation.navigate('ProductDetail', { id: id, screen: 'Search' });
   }
+
   renderItem = ({ item }) => {
     if (item.emty === true) {
       return <View style={{ flex: 1, margin: 5, }} />;
@@ -127,8 +128,7 @@ export default class SearchScreen extends React.Component {
   };
 
   _onPressBackButton = () => {
-    this.props.navigation.navigate('HomeDrawerNavigator');
-    console.log('back');
+    this.props.navigation.navigate('Home');
   }
 
   render() {
@@ -287,14 +287,16 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     justifyContent: 'space-around',
     width: '20%',
-    borderColor: 'grey'
+    borderColor: "grey",
+    alignItems:'center'
   },
   filter: {
     flexDirection: 'row',
     borderLeftWidth: 1,
     width: '20%',
-    justifyContent: 'space-around',
-    borderColor: 'grey'
+    justifyContent: "space-around",
+    borderColor: "grey",
+    alignItems:'center'
   },
   respond: {
 

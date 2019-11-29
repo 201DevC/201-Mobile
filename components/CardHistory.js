@@ -7,18 +7,20 @@ import NumberFormat from 'react-number-format';
 
 export default class CardHistory extends Component {
     render() {
-        const { data: { name, shop_info, price, order_count, images } } = this.props;
+        const { data: { name, price, order_count, images }, _onPress } = this.props;
         return (
-            <TouchableOpacity
+            <View
                 style={styles.container}>
-                <View style={styles.warpperImg}>
+                <TouchableOpacity
+                    onPress={_onPress}
+                    style={styles.warpperImg}>
                     <Image
                         style={styles.img}
                         source={{ uri: images[0] }}
                         // source={require('../assets/images/img_product.jpg')}
                         resizeMode="cover"
                     />
-                </View>
+                </TouchableOpacity>
                 <View style={styles.warpperContent}>
                     <Text style={styles.txtName} numberOfLines={2}>{name}</Text>
                     <View style={styles.OrderCount} >
@@ -42,7 +44,7 @@ export default class CardHistory extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </TouchableOpacity>
+            </View>
         );
     }
 }
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#fff",
         flexDirection: 'row',
-        height: 110,
+        height: 125,
         justifyContent: 'space-between',
         margin: 10,
         borderColor: '#dfe4ea'
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
 
     },
     txtName: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 'bold'
     },
     OrderCount: {

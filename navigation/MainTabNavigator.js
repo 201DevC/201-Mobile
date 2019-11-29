@@ -3,7 +3,6 @@ import { Platform } from 'react-native';
 import {
   createStackNavigator,
   createBottomTabNavigator,
-  createDrawerNavigator,
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -12,8 +11,6 @@ import SearchScreen from '../screens/SearchScreen';
 import ShoppingCardScreen from '../screens/ShoppingCardScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import MenuLevel1Screen from '../screens/MenuLevel1Screen';
-import MenuLevel2Screen from '../screens/MenuLevel2Screen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
 
 const config = Platform.select({
@@ -24,29 +21,11 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
-    ProductDetail: ProductDetailScreen,
-    MenuLevel2: MenuLevel2Screen,
   },
   config,
 );
 
-HomeStack.path = '';
-
-const HomeDrawerNavigator = createDrawerNavigator(
-  {
-    Initial: HomeStack
-  },
-  {
-    contentComponent: MenuLevel1Screen,
-  },
-  {
-    mode: 'modal',
-    transparentCard: true,
-    cardStyle: {backgroundColor: 'transparent'},
-  }
-);
-
-HomeDrawerNavigator.navigationOptions = {
+HomeStack.navigationOptions = {
   tabBarLabel: "Trang chủ",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -56,7 +35,8 @@ HomeDrawerNavigator.navigationOptions = {
     />
   ),
 };
-HomeDrawerNavigator.path = '';
+
+HomeStack.path = '';
 
 const SearchStack = createStackNavigator(
   {
@@ -140,7 +120,7 @@ ProfileStack.path = '';
 
 
 const tabNavigator = createBottomTabNavigator({
-  HomeDrawerNavigator,
+  HomeStack,
   SearchStack,
   ShoppingStack,
   HistoryStack,

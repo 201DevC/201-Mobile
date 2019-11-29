@@ -9,7 +9,8 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  BackHandler
 } from 'react-native';
 
 import Constants from 'expo-constants';
@@ -38,6 +39,7 @@ export default class ProductDetail extends Component {
       isLoadingRelation: true,
     };
     this._isMounted = false;
+    this.backHandler = null;
   }
 
   _getDataDetail = async () => {
@@ -72,13 +74,26 @@ export default class ProductDetail extends Component {
     this._getData();
   }
 
+  handleBackPress = () => {
+    const { navigation } = this.props;
+    const screen = this.props.navigation.getParam('screen');
+    if (screen) {
+      navigation.navigate(screen);
+    } else {
+      navigation.goBack();
+    }
+    return true;
+  }
+
   componentDidMount() {
     this._isMounted = true;
     this._getData();
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    this.backHandler.remove()
   }
 
   onPressHeart = () => {
@@ -127,7 +142,8 @@ export default class ProductDetail extends Component {
 
   price = () => {
     const { detail } = this.state;
-    const new_price = detail ? detail.price : 0;
+    const old_price = detail ? detail.price_max : '';
+    const sale_price = detail ? detail.price : 0;
     return (
       <View>
         <View style={styles.nameProduct}>
@@ -136,7 +152,7 @@ export default class ProductDetail extends Component {
           </View>
           <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
             <NumberFormat
-              value={new_price}
+              value={sale_price}
               displayType={'text'}
               thousandSeparator={true}
               prefix={''}
@@ -150,7 +166,18 @@ export default class ProductDetail extends Component {
           </View>
         </View>
         <View style={styles.oldPrice}>
-          <Text style={[styles.fontSize20, styles.oldPriceText]} numberOfLines={1}>19.999.000 đ</Text>
+          <NumberFormat
+            value={old_price}
+            displayType={'text'}
+            thousandSeparator={true}
+            prefix={''}
+            renderText={value => <Text
+              style={[styles.fontSize20, styles.oldPriceText]}
+              numberOfLines={1}>
+              {value} đ
+                </Text>
+            }
+          />
         </View>
       </View>
     );
@@ -193,7 +220,8 @@ export default class ProductDetail extends Component {
               item={item}
               onPress={() => this.props.navigation.push('ProductDetail', { id: item.id })}
             />
-          )}
+          )
+          }
           keyExtractor={item => item.id.toString()}
           horizontal
         />
@@ -205,7 +233,7 @@ export default class ProductDetail extends Component {
     const { focusedHeart, focusedBookmark, isRating, isLoading, detail, isLoadingRelation, isLoadingTrend, listRelation, listTrend } = this.state;
     const total_rated = detail.rating_info ? detail.rating_info.total_rated : 0;
     const percent_number = detail.rating_info ? detail.rating_info.percent_number : 100;
-    const rating =  percent_number/100*5;
+    const rating = percent_number / 100 * 5;
     let content = (
       <View style={styles.contentWrapper}>
         <Text>
@@ -257,6 +285,7 @@ export default class ProductDetail extends Component {
               <View style={styles.body}>
                 {this.like(focusedHeart, focusedBookmark)}
                 {this.price(focusedHeart, focusedBookmark)}
+                {this.recommend('Sản phẩm tương tự', isLoadingRelation, listRelation)}
                 {this.contentBtnWrapper(colorDetailBtn, colorRatingBtn)}
                 <View
                   style={{
@@ -266,7 +295,6 @@ export default class ProductDetail extends Component {
                   }}
                 />
                 {content}
-                {this.recommend('Sản phẩm tương tự', isLoadingRelation, listRelation)}
                 {this.recommend('Bạn có thể thích', isLoadingTrend, listTrend)}
               </View>
             </React.Fragment>
@@ -293,7 +321,14 @@ ProductDetail.navigationOptions = ({ navigation }) => {
         paddingLeft: 8
       }}>
         <TouchableOpacity
-          onPress={() => navigation.pop()}
+          onPress={() => {
+            const screen = navigation.getParam('screen');
+            if (screen) {
+              navigation.navigate(screen);
+            } else {
+              navigation.goBack();
+            }
+          }}
         >
           <FontAwesome size={24} name="arrow-left" />
         </TouchableOpacity>

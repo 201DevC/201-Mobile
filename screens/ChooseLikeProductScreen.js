@@ -62,7 +62,7 @@ export default class ChooseLikeProductScreen extends Component {
                     <View style={styles.headerTextWrapper}>
                         <AntDesign
                             name="heart"
-                            size={28}
+                            size={30}
                             color="red"
                         />
                         <Text style={styles.headerText}>
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         marginTop: Constants.statusBarHeight,
+        
     },
     header: {
         flex: 0.28,
@@ -124,12 +125,15 @@ const styles = StyleSheet.create({
     headerTextWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent:'space-between',
+        paddingHorizontal:5
     },
     headerText: {
-        marginLeft: 10,
+        marginLeft: 5,
         fontSize: 20,
         textAlign: 'center',
-        fontWeight: '500'
+        fontWeight: '500',
+        width:'90%'
     },
     txtSlogan: {
         marginTop: 8,
