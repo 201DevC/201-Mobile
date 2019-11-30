@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
-import { PRODUCT } from '../data/product'
 import CardHistory from '../components/CardHistory'
 import axios from "axios";
 
@@ -30,7 +29,14 @@ export default class HistoryScreen extends Component {
   onPressSearch = () => {
     this.props.navigation.navigate('Search');
   }
-  
+
+  _onPressBackButton = () => {
+    this.props.navigation.navigate('Home');
+  }
+
+  _goToProductDetail = (id) => {
+    this.props.navigation.navigate('ProductDetail', {id: id, screen: 'History'});
+}
 
   render() {
     const { isLoading } = this.state
@@ -40,7 +46,9 @@ export default class HistoryScreen extends Component {
         <View style={styles.warpperTabBar}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={this._onPressBackButton}
+              >
                 <FontAwesome size={20} name={"chevron-left"} />
               </TouchableOpacity>
             </View>
@@ -79,6 +87,7 @@ export default class HistoryScreen extends Component {
               <FlatList
                 data={this.state.listHistory}
                 renderItem={({ item }) => <CardHistory
+                  _onPress={() => this._goToProductDetail(item.id)}
                   key={item.id}
                   data={item}
                 />}

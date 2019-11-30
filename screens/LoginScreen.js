@@ -36,7 +36,7 @@ export default class LoginScreen extends Component {
                 data.survey = false;
                 data.birthday = data.birthday.replace(/\//g, '-');
                 const res = await axios.post('http://35.240.241.27:8080/user', data);
-                console.log(res);
+                // console.log(res);
                 if (res.data.header.successful) {
                     const newUser = res.data.data.survey ? '0' : '1';
                     await AsyncStorage.setItem('username', res.data.data.username);

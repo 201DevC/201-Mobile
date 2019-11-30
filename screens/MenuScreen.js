@@ -36,7 +36,6 @@ export default class MenuLevel1Screen extends Component {
   }
   async componentDidMount() {
     await this._getDataCategoryLv1()
-    console.log("+++++++++", this._getDataCategoryLv1())
   }
 
   render() {

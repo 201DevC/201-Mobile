@@ -32,9 +32,6 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // isLoadingFlashSale: true,
-            // isLoadingYourLike: true,
-            isLoadingTendency: true,
             isLoading: true,
             listcategoryLv1: [],
             listFlashSale: [],
@@ -43,6 +40,7 @@ export default class HomeScreen extends Component {
         };
         this._isMounted = false;
     }
+    
     renderItem = ({ item }) => {
         if (item.emty === true) {
             return <View style={{ flex: 1, margin: 3, }} />;
@@ -58,43 +56,35 @@ export default class HomeScreen extends Component {
 
     _getDataCategoryLv1 = async () => {
         const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-        return this.setState({
-            listcategoryLv1: datalv1.data.data.content,
-        })
+
+        return datalv1.data.data.content;
     }
     _getDataFlashSale = async () => {
         const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
-        return this.setState({
-            listFlashSale: dataFlashSale.data.data.content,
-            isLoading: false
-        })
+
+        return dataFlashSale.data.data.content;
     }
 
     _getDataProductTrend = async () => {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
-        return this.setState({
-            listProductTrend: dataTrend.data.data,
-            isLoadingTendency: false
-        })
+
+        return dataTrend.data.data;
     }
 
-    // _getData = async () => {
-    //     // const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-    //     // const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
-    //     const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
-    //     this._isMounted && this.setState({
-    //         // listcategoryLv1: datalv1.data.data.content,
-    //         // listFlashSale: dataFlashSale.data.data.content,
-    //         listProductTrend: dataTrend.data.data,
-    //         isLoadingTendency: false
-
-    //     })
-    // }
+    _getData = () => {
+        Promise.all([this._getDataCategoryLv1(), this._getDataFlashSale(), this._getDataProductTrend()]).then((values) => {
+            this._isMounted && this.setState({
+                listcategoryLv1: values[0],
+                listFlashSale: values[1],
+                listProductTrend: values[2],
+                isLoading: false,
+            })
+        });
+    }
 
     componentDidMount() {
-        this._getDataCategoryLv1();
-        this._getDataFlashSale();
-        this._getDataProductTrend();
+        this._isMounted = true;
+        this._getData();
     }
 
     componentWillUnmount() {
@@ -102,7 +92,7 @@ export default class HomeScreen extends Component {
     }
 
     _goToProductDetail = (id) => {
-        this.props.navigation.navigate('ProductDetail', { id: id });
+        this.props.navigation.navigate('ProductDetail', {id: id, screen: 'Home'});
     }
 
     _goToHistory = () => {
@@ -367,8 +357,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         marginVertical: 10
     }
-
-
 });
 
 
