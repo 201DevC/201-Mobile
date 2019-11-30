@@ -29,7 +29,8 @@ export default class HistoryScreen extends Component {
 
   onPressSearch = () => {
     this.props.navigation.navigate('Search');
-}
+  }
+  
 
   render() {
     const { isLoading } = this.state
@@ -81,7 +82,7 @@ export default class HistoryScreen extends Component {
                   key={item.id}
                   data={item}
                 />}
-                keyExtractor={item => item.id}
+                keyExtractor={item => item.id.toString()}
                 showsVerticalScrollIndicator={false}
               />
           }

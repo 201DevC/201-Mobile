@@ -45,7 +45,7 @@ export default class HomeScreen extends Component {
     }
     renderItem = ({ item }) => {
         if (item.emty === true) {
-            return <View style={{ flex: 1, margin: 5, }} />;
+            return <View style={{ flex: 1, margin: 3, }} />;
         }
         return (
             <ItemProduct
@@ -74,27 +74,27 @@ export default class HomeScreen extends Component {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
         return this.setState({
             listProductTrend: dataTrend.data.data,
-            // isLoading: false
-        })
-    }
-
-    _getData = async () => {
-        // const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-        // const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
-        const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
-        this._isMounted && this.setState({
-            // listcategoryLv1: datalv1.data.data.content,
-            // listFlashSale: dataFlashSale.data.data.content,
-            listProductTrend: dataTrend.data.data,
             isLoadingTendency: false
-
         })
     }
+
+    // _getData = async () => {
+    //     // const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
+    //     // const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
+    //     const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
+    //     this._isMounted && this.setState({
+    //         // listcategoryLv1: datalv1.data.data.content,
+    //         // listFlashSale: dataFlashSale.data.data.content,
+    //         listProductTrend: dataTrend.data.data,
+    //         isLoadingTendency: false
+
+    //     })
+    // }
 
     componentDidMount() {
         this._getDataCategoryLv1();
         this._getDataFlashSale();
-        this._getData();
+        this._getDataProductTrend();
     }
 
     componentWillUnmount() {
@@ -215,7 +215,7 @@ export default class HomeScreen extends Component {
                                             renderItem={this.renderItem}
                                             numColumns={2}
                                             style={{ flex: 1 }}
-                                            keyExtractor={item => item.id}
+                                            keyExtractor={item => item.id.toString()}
                                         />
 
                                         <TouchableOpacity onPress={() => this._goToHistory()} style={{ marginVertical: 10 }}>

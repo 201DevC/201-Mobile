@@ -43,14 +43,14 @@ export default class ItemProduct extends Component {
                         }
                     />
                     <NumberFormat
-                        value={price}
+                        value={160000}
                         displayType={'text'}
                         thousandSeparator={true}
                         prefix={''}
                         renderText={value => <Text
                             style={styles.txtOldPrice}
                             numberOfLines={1}>
-                            160000 đ
+                            {value} đ
                                 </Text>
                         }
                     />
@@ -60,7 +60,7 @@ export default class ItemProduct extends Component {
                         <Rating readonly startingValue={rating} imageSize={10} />
                         <Text style={styles.txtOrderCount} numberOfLines={1}>({rating_info.total_rated})</Text>
                     </View>
-                    <View style={styles.warpperOrderCount}>
+                    <View style={order_count != 0 ? styles.warpperOrderCount : styles.none}>
                         <FontAwesome size={10} color='#747d8c' name={"tag"} />
                         <Text style={styles.txtOrderCount} numberOfLines={1}>{order_count}</Text>
                     </View>
@@ -68,10 +68,12 @@ export default class ItemProduct extends Component {
 
                 <View style={styles.warpperShopInfoAndShip}>
                     <View style={styles.warpperShopInfo}>
-                        <FontAwesome size={15} color='#ff7f50' name={"shield"} />
+                        {/* <FontAwesome size={15} color='#ff7f50' name={"shield"} /> */}
+                        <Image style={{width:30,height:15}} source={require('../assets/images/check.png')} resizeMode="contain"/>
                         <Text style={styles.txtShopName} numberOfLines={1}>{shop_info.name}</Text>
                     </View>
-                    <FontAwesome size={15} color='#2ed573' name={"truck"} />
+                    {/* <FontAwesome size={15} color='#2ed573' name={"truck"} /> */}
+                    <Image style={{width:25,height:15}} source={require('../assets/images/truck.png')} resizeMode="contain"/>
                 </View>
             </TouchableOpacity>
         );
@@ -151,12 +153,13 @@ const styles = StyleSheet.create({
 
     warpperShopInfoAndShip: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems:'center'
     },
     txtShopName: {
         color: 'black',
         fontSize: 12,
-        marginLeft: 5,
+        marginLeft: 3,
         flex: 0.9,
         color:'#747d8c'
     },
@@ -166,5 +169,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width:'80%'
     },
+    none:{
+        display:'none'
+    }
 
 }); 
