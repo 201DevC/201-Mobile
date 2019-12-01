@@ -28,7 +28,7 @@ const formatData = (data, numColumns) => {
   return data;
 };
 
-export default class SearchScreen extends React.Component {
+export default class SearchScreen extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,21 +42,28 @@ export default class SearchScreen extends React.Component {
   }
 
   _getData = async () => {
-    const { keyWord, offset } = this.state
-    const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${offset}&size=10`);
+    const { keyWord, offset } = this.state;
+    try {
+      const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${offset}&size=10`);
 
-    if (data.data.data.content.length === 0) {
+      if (data.data.data.content.length === 0) {
+        return this.setState({
+          totalResults: 'Không tìm thấy kết quả',
+          isLoading: false,
+        });
+      }
+
       return this.setState({
+        listSearch: data.data.data.content,
+        totalResults: data.data.data.total + ' kết quả',
+        isLoading: false,
+      });
+    } catch {
+      this.setState({
         totalResults: 'Không tìm thấy kết quả',
         isLoading: false,
-      })
+      });
     }
-
-    return this.setState({
-      listSearch: data.data.data.content,
-      totalResults: data.data.data.total + ' kết quả',
-      isLoading: false,
-    })
   }
 
   onEndReached = async () => {
@@ -77,7 +84,7 @@ export default class SearchScreen extends React.Component {
 
   renderFooter = () => {
     const { listSearch, totalResults } = this.state
-    if (listSearch.length === 0 && listSearch.length >= totalResults) {
+    if (listSearch.length === 0 || listSearch.length >= totalResults) {
       return <ActivityIndicator animating={false} />;
     } else {
       return <ActivityIndicator animating={true} />;
@@ -95,20 +102,13 @@ export default class SearchScreen extends React.Component {
   }
 
   _onForcusInput = () => {
-    // const keyWord = this.props.navigation.getParam('keyWord');
-    // if (keyWord) {
-    //   this.setState({
-    //     keyWord,
-    //     isLoading: true,
-    //   });
-    // }
-    // this.setState({
-    //   listSearch: [],
-    //   keyWord: '',
-    //   offset: 0,
-    //   totalResults: '',
-    //   isLoading: false,
-    // })
+    this.setState({
+      listSearch: [],
+      keyWord: '',
+      offset: 0,
+      totalResults: '',
+      isLoading: false,
+    })
   }
 
   _goToProductDetail = (id) => {
@@ -130,32 +130,6 @@ export default class SearchScreen extends React.Component {
 
   _onPressBackButton = () => {
     this.props.navigation.navigate('Home');
-  }
-
-
-
-  onDidFocus = async () => {
-    this.searchTextInput.focus();
-    const keyWord = this.props.navigation.getParam('keyWord');
-    if (keyWord) {
-      await this.setState({
-        keyWord,
-        listSearch: [],
-        keyWord: '',
-        offset: 0,
-        totalResults: '',
-        isLoading: true,
-      });
-      this._getData();
-    } else {
-      this.setState({
-        listSearch: [],
-        keyWord: '',
-        offset: 0,
-        totalResults: '',
-        isLoading: false,
-      })
-    }
   }
 
   render() {
@@ -322,18 +296,8 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     alignItems: 'center'
   },
-  respond: {
-
-  },
-  // warpperReturn: {
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   flex:1
-  // },
   itemInvisible: {
     backgroundColor: 'red',
 
   }
-
-
 });

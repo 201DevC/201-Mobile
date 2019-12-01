@@ -109,7 +109,6 @@ export default class HomeScreen extends Component {
     }
 
     onPressCategory = (name) => {
-        console.log(name);
         this.props.navigation.navigate('Search', {keyWord: name})
     }
 
