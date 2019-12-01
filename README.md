@@ -1,1 +1,1 @@
-file apk: https://expo.io/artifacts/6ab9b383-3076-4724-ba4b-74efe150f7ef
+file apk: https://expo.io/artifacts/2db8b04f-31ba-4502-a5e5-4faa715d4e1a

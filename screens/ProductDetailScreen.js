@@ -44,7 +44,6 @@ export default class ProductDetail extends Component {
 
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
-<<<<<<< HEAD
     const username = await AsyncStorage.getItem('username');
     const data = await axios.get('http://35.240.241.27:8080/product/' + id, {
       params: {
@@ -53,10 +52,6 @@ export default class ProductDetail extends Component {
     });
 
     this._isMounted && this.setState({ detail: data.data.data, isLoading: false });
-=======
-    const data = await axios.get(`http://${IP_API}/product/` + id);
-    return data.data.data;
->>>>>>> 6572b8d1e93449b324f28a7e6e03159e62bac5fe
   }
 
   _getDataRelation = async () => {

@@ -9,11 +9,7 @@ import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
 
 
-<<<<<<< HEAD
 const IP_API = '35.240.241.27:8080';
-=======
-const IP_API = 'http://35.240.241.27:8080/';
->>>>>>> 6572b8d1e93449b324f28a7e6e03159e62bac5fe
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
