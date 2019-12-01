@@ -53,10 +53,10 @@ export default class ChooseLikeProductScreen extends Component {
     }
 
     render() {
-        const {isLoading, listcategory, count} = this.state;
+        const { isLoading, listcategory, count } = this.state;
         const disabled = count < 3 ? true : false;
 
-        return isLoading ? (<View style={styles.container}><ActivityIndicator/></View>) : ( 
+        return isLoading ? (<View style={styles.container}><ActivityIndicator /></View>) : (
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.headerTextWrapper}>
@@ -90,7 +90,10 @@ export default class ChooseLikeProductScreen extends Component {
                         </View>
                     </View>
                 </View>
-                <ScrollView style={styles.body}>
+                <ScrollView
+                    style={styles.body}
+                    showsHorizontalScrollIndicator={false}
+                >
                     <View style={styles.groupListCategory}>
                         {
                             listcategory.map(item => {
@@ -114,10 +117,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         marginTop: Constants.statusBarHeight,
-        
+
     },
     header: {
-        flex: 0.28,
         alignItems: 'center',
         justifyContent: 'center',
         padding: 10
@@ -125,15 +127,15 @@ const styles = StyleSheet.create({
     headerTextWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-between',
-        paddingHorizontal:5
+        justifyContent: 'space-between',
+        paddingHorizontal: 5
     },
     headerText: {
         marginLeft: 5,
         fontSize: 20,
         textAlign: 'center',
         fontWeight: '500',
-        width:'90%'
+        width: '90%'
     },
     txtSlogan: {
         marginTop: 8,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     body: {
-        flex: 0.72,
+        flex: 1,
     },
     headerButtonWrapper: {
         width: '90%',
