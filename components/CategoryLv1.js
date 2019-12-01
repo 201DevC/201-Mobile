@@ -5,9 +5,10 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default class CategoryLv1 extends Component {
     render() {
-        const { data: { name } } = this.props;
+        const { data: { name }, _onPress } = this.props;
         return (
             <TouchableOpacity
+                onPress={_onPress}
                 style={styles.container}>
                 <Text style={styles.text}>{name}</Text>
             </TouchableOpacity>

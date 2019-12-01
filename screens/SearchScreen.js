@@ -9,7 +9,7 @@ import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
 
 
-const IP_API = 'hellodoctor.tech:8080';
+const IP_API = '35.240.241.27:8080';
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -41,14 +41,14 @@ export default class SearchScreen extends React.Component {
     };
   }
 
-
   _getData = async () => {
     const { keyWord, offset } = this.state
     const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${offset}&size=10`);
 
     if (data.data.data.content.length === 0) {
       return this.setState({
-        totalResults: 'Không tìm thấy kết quả'
+        totalResults: 'Không tìm thấy kết quả',
+        isLoading: false,
       })
     }
 
@@ -56,11 +56,8 @@ export default class SearchScreen extends React.Component {
       listSearch: data.data.data.content,
       totalResults: data.data.data.total + ' kết quả',
       isLoading: false,
-
     })
   }
-
-
 
   onEndReached = async () => {
     const { offset, listSearch, keyWord } = this.state;
@@ -88,27 +85,31 @@ export default class SearchScreen extends React.Component {
   };
 
   pressSearch = async () => {
-    if (this.state.keyWord === '') {
-    } else {
+    const keyWord = this.state.keyWord.trim();
+    if (keyWord) {
       this.setState({
         isLoading: true
       })
-      await this._getData()
-      await this.setState({
-        isLoading: false
-      })
+      this._getData();
     }
   }
-  _onForcusInput = () => {
-    this.setState({
-      listSearch: [],
-      keyWord: '',
-      offset: 0,
-      totalResults: '',
-      isLoading: false,
-    })
-  }
 
+  _onForcusInput = () => {
+    // const keyWord = this.props.navigation.getParam('keyWord');
+    // if (keyWord) {
+    //   this.setState({
+    //     keyWord,
+    //     isLoading: true,
+    //   });
+    // }
+    // this.setState({
+    //   listSearch: [],
+    //   keyWord: '',
+    //   offset: 0,
+    //   totalResults: '',
+    //   isLoading: false,
+    // })
+  }
 
   _goToProductDetail = (id) => {
     this.props.navigation.navigate('ProductDetail', { id: id, screen: 'Search' });
@@ -131,14 +132,37 @@ export default class SearchScreen extends React.Component {
     this.props.navigation.navigate('Home');
   }
 
+
+
+  onDidFocus = async () => {
+    this.searchTextInput.focus();
+    const keyWord = this.props.navigation.getParam('keyWord');
+    if (keyWord) {
+      await this.setState({
+        keyWord,
+        listSearch: [],
+        keyWord: '',
+        offset: 0,
+        totalResults: '',
+        isLoading: true,
+      });
+      this._getData();
+    } else {
+      this.setState({
+        listSearch: [],
+        keyWord: '',
+        offset: 0,
+        totalResults: '',
+        isLoading: false,
+      })
+    }
+  }
+
   render() {
-    const { focus } = this.state;
     return (
       <View style={styles.container}>
         <NavigationEvents
-          onDidFocus={() => {
-            this.searchTextInput.focus();
-          }}
+          onDidFocus={() => this.searchTextInput.focus()}
         />
         <View style={styles.header}>
           <View style={styles.tabBar}>
@@ -288,7 +312,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '20%',
     borderColor: "grey",
-    alignItems:'center'
+    alignItems: 'center'
   },
   filter: {
     flexDirection: 'row',
@@ -296,7 +320,7 @@ const styles = StyleSheet.create({
     width: '20%',
     justifyContent: "space-around",
     borderColor: "grey",
-    alignItems:'center'
+    alignItems: 'center'
   },
   respond: {
 

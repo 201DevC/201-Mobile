@@ -107,6 +107,11 @@ export default class HomeScreen extends Component {
         this.props.navigation.openDrawer();
     }
 
+    onPressCategory = (name) => {
+        console.log(name);
+        this.props.navigation.navigate('Search', {keyWord: name})
+    }
+
     render() {
 
         const { isLoading, isLoadingTendency } = this.state
@@ -150,6 +155,7 @@ export default class HomeScreen extends Component {
                                 {
                                     this.state.listcategoryLv1.map(item => {
                                         return <Categorylv1
+                                            _onPress={() => this.onPressCategory(item.name)}
                                             key={item.id}
                                             data={item}
                                         />
