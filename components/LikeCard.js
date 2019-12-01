@@ -31,7 +31,6 @@ export default function LikeCard(props) {
 const styles = StyleSheet.create({
     cardContainer: {
         width: 112,
-        height:165,
         alignItems: "center",
         borderRadius: 8,
         margin: 4,
@@ -43,12 +42,12 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.29,
         shadowRadius: 4.65,
-
         elevation: 4,
+        justifyContent:'space-around',
     },
     imgCard: {
         width: '100%',
-        flex: 0.68,
+        height:120,
         justifyContent: 'center',
         alignItems: "center",
     },
@@ -58,9 +57,9 @@ const styles = StyleSheet.create({
     },
     txtCard: {
         fontSize: 18,
-        flex: 0.32,
-        justifyContent: 'center',
-        textAlign: 'center'
+        minHeight:50,
+        textAlign:'center',
+        lineHeight:25
     },
     overlayContainer: {
         position: 'absolute',

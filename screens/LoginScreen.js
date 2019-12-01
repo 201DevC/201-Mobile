@@ -87,6 +87,9 @@ export default class LoginScreen extends Component {
         }
     }
 
+    // _signInGeneral = async () => {
+    //     this.props.navigation.navigate('Main');
+    // }
     _signInFb = () => {
         this.logInFb();
     }
@@ -217,12 +220,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 70,
         marginBottom: 30,
-        alignItems:'center'
+        alignItems: 'center'
     },
     imgLogo: {
         width: '70%',
         height: '100%',
-        backgroundColor:'blue'
+        backgroundColor: 'blue'
     },
     boxBtnLogin: {
         flexDirection: 'row',

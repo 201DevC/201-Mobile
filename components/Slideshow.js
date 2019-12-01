@@ -20,9 +20,9 @@ export default class App extends Component {
       sliderIndex: 0,
       maxSlider: 2,
       banners: [
-        { _id: '1', imageUrl: 'https://images.unsplash.com/photo-1558980663-3685c1d673c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80' },
-        { _id: '2', imageUrl: 'https://images.unsplash.com/photo-1573070303620-ea2602590e96?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80' },
-        { _id: '3', imageUrl: 'https://images.unsplash.com/photo-1573057497182-49fec46aca84?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80' },
+        { _id: '1', imageUrl: require('../assets/images/banner01.jpg') },
+        { _id: '2', imageUrl: require('../assets/images/banner02.jpg')},
+        { _id: '3', imageUrl: require('../assets/images/banner03.jpg') },
       ],
     }
   }
@@ -70,7 +70,7 @@ export default class App extends Component {
             keyExtractor={item => item._id}
             renderItem={({ item, i }) => (
               <View key={i} style={{ height, width }}>
-                <Image resizeMode='stretch' style={{ height, width }} source={{ uri: item.imageUrl }} />
+                <Image resizeMode='stretch' style={{ height, width }} source={item.imageUrl} />
               </View>
             )}
             onMomentumScrollEnd={(event) => {

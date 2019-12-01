@@ -14,29 +14,28 @@ import {
 } from 'react-native';
 
 import Constants from 'expo-constants';
-import { FontAwesome } from '@expo/vector-icons';
-import TabBarIcon from '../components/TabBarIcon';
+import { FontAwesome, MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 import { Image, Rating } from 'react-native-elements'
-import ProductCard from '../components/ProductCart';
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
+import ItemProduct from '../components/ItemProduct';
 
 
 const width = Dimensions.get('window').width;
-
+const IP_API = "35.240.241.27:8080";
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      focusedHeart: 0,
-      focusedBookmark: 0,
       isRating: 0,
       detail: {},
       listTrend: [],
       listRelation: [],
       isLoading: true,
-      isLoadingTrend: true,
-      isLoadingRelation: true,
+      colorHeart: '#2f3542',
+      colorBookmark: '#2f3542',
+      colorDetailBtn: 'black',
+      colorRatingBtn: '#cdc6c6'
     };
     this._isMounted = false;
     this.backHandler = null;
@@ -44,33 +43,35 @@ export default class ProductDetail extends Component {
 
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get('http://35.240.241.27:8080/product/' + id);
-    this._isMounted && this.setState({ detail: data.data.data, isLoading: false });
+    const data = await axios.get(`http://${IP_API}/product/` + id);
+    return data.data.data;
   }
 
   _getDataRelation = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get(`http://35.240.241.27:8080/product/${id}/relation`);
-    this._isMounted && this.setState({
-      listRelation: data.data.data, isLoadingRelation: false
-    })
+    const data = await axios.get(`http://${IP_API}/product/${id}/relation`);
+    return data.data.data;
+
   }
 
   _getDataTrend = async () => {
-    const data = await axios.get('http://35.240.241.27:8080/product/trend');
-    this._isMounted && this.setState({
-      listTrend: data.data.data, isLoadingTrend: false
-    })
+    const data = await axios.get(`http://${IP_API}/product/trend`);
+    return data.data.data;
   }
 
   _getData = async () => {
-    this._getDataDetail();
-    await this._getDataRelation();
-    this._getDataTrend();
+    Promise.all([this._getDataDetail(), this._getDataRelation(), this._getDataTrend()]).then((values) => {
+      this._isMounted && this.setState({
+        detail: values[0],
+        listRelation: values[1],
+        listTrend: values[2],
+        isLoading: false,
+      })
+    });
   }
 
   _referData = () => {
-    this.setState({ listRelation: [], listTrend: [], isLoading: true, isLoadingRelation: true, isLoadingTrend: true });
+    this.setState({ listRelation: [], listTrend: [], isLoading: true, });
     this._getData();
   }
 
@@ -97,128 +98,63 @@ export default class ProductDetail extends Component {
   }
 
   onPressHeart = () => {
-    const focusedHeart = this.state.focusedHeart ? 0 : 1;
-    this.setState({ focusedHeart })
+    const colorHeart = this.state.colorHeart === '#2f3542' ? '#EA2027' : '#2f3542'
+    this.setState({ colorHeart })
   }
 
   onPressBookmark = () => {
-    const focusedBookmark = this.state.focusedBookmark ? 0 : 1;
-    this.setState({ focusedBookmark })
+    const colorBookmark = this.state.colorBookmark === '#2f3542' ? '#FFC312' : '#2f3542'
+    this.setState({ colorBookmark })
   }
 
   onPressContentBtn = (isRating) => {
-    this.setState({ isRating });
+    if (isRating) {
+      return this.setState({
+        isRating,
+        colorDetailBtn: '#cdc6c6',
+        colorRatingBtn: 'black'
+      });
+    } else {
+      return this.setState({
+        isRating,
+        colorDetailBtn: 'black',
+        colorRatingBtn: '#cdc6c6'
+      });
+    }
+  }
+
+  _goToProductDetail = (id) => {
+    this.props.navigation.push('ProductDetail', { id: id });
+  }
+
+  onPressSearch = () => {
+    this.props.navigation.navigate('Search');
+  }
+
+  onPressHome = () => {
+    this.props.navigation.navigate('Home');
   }
 
 
-
-  like = (focusedHeart, focusedBookmark) => {
-    return (
-      <View style={styles.like}>
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={this.onPressHeart}
-        >
-          <TabBarIcon
-            name='heart-o'
-            focusedColor='#f1797a'
-            defaultColor='black'
-            focused={focusedHeart}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.icon}
-          onPress={this.onPressBookmark}
-        >
-          <TabBarIcon
-            style={styles.icon}
-            name='bookmark'
-            focused={focusedBookmark}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  price = () => {
-    const { detail } = this.state;
-    const old_price = detail ? detail.price_max : '';
-    const sale_price = detail ? detail.price : 0;
-    return (
-      <View>
-        <View style={styles.nameProduct}>
-          <View style={{ flex: 0.5, alignItems: 'flex-start' }}>
-            <Text style={{ fontSize: 28, fontWeight: 'bold' }} numberOfLines={2}>{detail.name}</Text>
-          </View>
-          <View style={{ flex: 0.5, alignItems: 'flex-end' }}>
-            <NumberFormat
-              value={sale_price}
-              displayType={'text'}
-              thousandSeparator={true}
-              prefix={''}
-              renderText={value => <Text
-                style={{ fontSize: 24, fontWeight: 'bold', color: '#f1797a' }}
-                numberOfLines={1}>
-                {value} đ
-                </Text>
-              }
-            />
-          </View>
-        </View>
-        <View style={styles.oldPrice}>
-          <NumberFormat
-            value={old_price}
-            displayType={'text'}
-            thousandSeparator={true}
-            prefix={''}
-            renderText={value => <Text
-              style={[styles.fontSize20, styles.oldPriceText]}
-              numberOfLines={1}>
-              {value} đ
-                </Text>
-            }
-          />
-        </View>
-      </View>
-    );
-  }
-
-  contentBtnWrapper = (colorDetailBtn, colorRatingBtn) => {
-    return (
-      <View style={styles.contentBtnWrapper}>
-        <TouchableOpacity
-          onPress={() => this.onPressContentBtn(0)}
-          style={styles.contentBtn}
-        >
-          <Text style={[styles.contentBtnText, colorDetailBtn]}>Chi tiết</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.onPressContentBtn(1)}
-          style={[
-            styles.contentBtn,
-            { borderLeftColor: 'black', borderLeftWidth: 1, }
-          ]}>
-          <Text style={[styles.contentBtnText, colorRatingBtn]}>Đánh giá</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-
-  recommend = (text, isLoading, data) => {
+  recommend = (text, data) => {
     return (
       <SafeAreaView style={styles.recommend}>
-        <View>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <Text style={styles.recommendHeader}>{text}</Text>
+          <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}>
+            <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}>
+              Xem thêm >
+            </Text>
+          </TouchableOpacity>
         </View>
-        {isLoading && <ActivityIndicator />}
         <FlatList
           data={data}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <ProductCard
-              width={width * 0.48}
-              item={item}
-              onPress={() => this.props.navigation.push('ProductDetail', { id: item.id })}
+            <ItemProduct
+              onPress={() => this._goToProductDetail(item.id)}
+              key={item.id}
+              data={item}
             />
           )
           }
@@ -229,159 +165,366 @@ export default class ProductDetail extends Component {
     );
   }
 
-  render() {
-    const { focusedHeart, focusedBookmark, isRating, isLoading, detail, isLoadingRelation, isLoadingTrend, listRelation, listTrend } = this.state;
-    const total_rated = detail.rating_info ? detail.rating_info.total_rated : 0;
-    const percent_number = detail.rating_info ? detail.rating_info.percent_number : 100;
-    const rating = percent_number / 100 * 5;
+  _rating = () => {
+    const { detail } = this.state
+    // const total_rated = detail.rating_info ? detail.rating_info.total_rated : 0;
+    // const percent_number = detail.rating_info ? detail.rating_info.percent_number : 100;
+    const rating = detail.rating_info.percent_number / 100 * 5;
+    return rating;
+  }
+
+  contentBtnWrapper = (colorDetailBtn, colorRatingBtn) => {
+    return (
+      <View style={styles.contentBtnWrapper}>
+        <TouchableOpacity
+          onPress={() => this.onPressContentBtn(0)}
+          style={styles.contentBtn}
+        >
+          <Text style={[styles.contentBtnText, { color: colorDetailBtn }]}>Chi tiết</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => this.onPressContentBtn(1)}
+          style={[
+            styles.contentBtn,
+            { borderLeftColor: 'black', borderLeftWidth: 1, }
+          ]}>
+          <Text style={[styles.contentBtnText, { color: colorRatingBtn }]}>Đánh giá</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  _content = () => {
+    const { isRating, detail } = this.state;
     let content = (
       <View style={styles.contentWrapper}>
-        <Text>
+        <Text style={styles.txtDetail}>
           {detail.short_description}
         </Text>
       </View>
     );
-    let colorDetailBtn = { color: 'black' };
-    let colorRatingBtn = { color: '#cdc6c6' };
     if (isRating) {
-      colorDetailBtn = { color: '#cdc6c6' };
-      colorRatingBtn = { color: 'black' };
       content = (
         <View style={styles.contentWrapper}>
           <View style={styles.ratingText}>
-            <Text style={{ fontSize: 40, fontWeight: 'bold' }}>{rating.toFixed(1)}</Text>
+            <Text style={{ fontSize: 40, fontWeight: 'bold' }}>{this._rating().toFixed(1)}</Text>
             <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#f1797a' }}>/5</Text>
           </View>
-          <Rating readonly startingValue={rating} />
-          <Text>({total_rated} lượt đánh giá)</Text>
+          <Rating readonly startingValue={this._rating()} />
+          <Text>({detail.rating_info.total_rated} lượt đánh giá)</Text>
         </View>
       );
     }
+    return content;
+  }
+
+
+
+  render() {
+    const { isLoading, detail, listRelation, listTrend, colorHeart, colorBookmark, colorDetailBtn, colorRatingBtn } = this.state;
+    // let content = (
+    //   <View style={styles.contentWrapper}>
+    //     <Text style={styles.txtDetail}>
+    //       {detail.short_description}
+    //     </Text>
+    //   </View>
+    // );
+    // let colorDetailBtn = { color: 'black' };
+    // let colorRatingBtn = { color: '#cdc6c6' };
+    // if (isRating) {
+    //   colorDetailBtn = { color: '#cdc6c6' };
+    //   colorRatingBtn = { color: 'black' };
+    //   content = (
+    //     <View style={styles.contentWrapper}>
+    //       <View style={styles.ratingText}>
+    //         <Text style={{ fontSize: 40, fontWeight: 'bold' }}>{this._rating().toFixed(1)}</Text>
+    //         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#f1797a' }}>/5</Text>
+    //       </View>
+    //       <Rating readonly startingValue={this._rating()} />
+    //       <Text>({detail.rating_info.total_rated} lượt đánh giá)</Text>
+    //     </View>
+    //   );
+    // }
 
     return (
-      <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={this._referData} />
-        }
-        horizontal={false}
-        showsVerticalScrollIndicator={false}
-        style={styles.container}
-      >
-        {
-          isLoading ?
-            <View style={{ alignItems: "center", justifyContent: "center", marginTop: Constants.statusBarHeight + 4 }}>
-              <ActivityIndicator size='large' animating={isLoading} />
-              <Text>Dữ liệu đang tải, vui lòng đợi trong giây lát...</Text>
+      <View style={styles.container}>
+        <View style={styles.warpperTabBar}>
+          <View style={styles.tabBar}>
+            <View style={styles.back}>
+              <TouchableOpacity
+                onPress={this.handleBackPress}
+              >
+                <FontAwesome size={20} name={"chevron-left"} />
+              </TouchableOpacity>
             </View>
-            : <React.Fragment>
-              <View style={styles.header}>
-                <Image
-                  source={{ uri: detail.images[0] }}
-                  resizeMode='cover'
-                  PlaceholderContent={<ActivityIndicator />}
-                  style={{ width: width * 0.8, height: width * 0.8 }}
-                />
+            <TouchableOpacity
+              onPress={this.onPressSearch}
+              style={styles.warpperSearch}
+            >
+              <View style={styles.warpperTxt}>
+                <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
+                <Text style={styles.txtSendo}>Sendo</Text>
               </View>
-              <View style={styles.body}>
-                {this.like(focusedHeart, focusedBookmark)}
-                {this.price(focusedHeart, focusedBookmark)}
-                {this.recommend('Sản phẩm tương tự', isLoadingRelation, listRelation)}
-                {this.contentBtnWrapper(colorDetailBtn, colorRatingBtn)}
-                <View
-                  style={{
-                    borderBottomColor: 'black',
-                    borderBottomWidth: 1,
-                    marginHorizontal: 16,
-                  }}
-                />
-                {content}
-                {this.recommend('Bạn có thể thích', isLoadingTrend, listTrend)}
+              <FontAwesome
+                name='search'
+                size={17}
+                color='grey'
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.warpperBtnHome}
+              onPress={this.onPressHome}>
+              <MaterialCommunityIcons color='#2c3e50' size={28} name={"home-outline"} />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={isLoading} onRefresh={this._referData} />
+          }
+          horizontal={false}
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1 }}
+        >
+          {
+            isLoading ?
+              <View style={{ alignItems: "center", justifyContent: "center", marginTop: Constants.statusBarHeight + 40 }}>
+                <Text>Dữ liệu đang tải, vui lòng đợi trong giây lát...</Text>
               </View>
-            </React.Fragment>
-        }
-      </ScrollView >
+              :
+              <View style={styles.warpperBody}>
+                <View style={styles.header}>
+                  <Image
+                    source={{ uri: detail.images[0] }}
+                    resizeMode='cover'
+                    PlaceholderContent={<ActivityIndicator />}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                  <View style={styles.warpperHeartAndBookmark}>
+                    <TouchableOpacity
+                      style={styles.btnIcon}
+                      onPress={this.onPressHeart}
+                    >
+                      <Entypo color={colorHeart} size={25} name={colorHeart === '#2f3542' ? 'heart-outlined' : 'heart' } />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.btnIcon}
+                      onPress={this.onPressBookmark}
+                    >
+                      <FontAwesome color={colorBookmark} size={25} name={colorBookmark === '#2f3542' ? 'bookmark-o' : 'bookmark' } />
+                      {/* bookmark */}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.body}>
+                  <Text style={styles.txtNameProduct}>{detail.name}</Text>
+                  <View style={styles.warpperPrice}>
+                    <NumberFormat
+                      value={detail.price}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={''}
+                      renderText={value => <Text
+                        style={styles.txtSalePrice}
+                        numberOfLines={1}>
+                        {value} đ
+                        </Text>
+                      }
+                    />
+                    <NumberFormat
+                      value={detail.price}
+                      displayType={'text'}
+                      thousandSeparator={true}
+                      prefix={''}
+                      renderText={value => <Text
+                        style={[styles.fontSize20, styles.txtOldPrice]}
+                        numberOfLines={1}>
+                        {value} đ
+                        </Text>
+                      }
+                    />
+
+                  </View>
+                  <View style={detail.order_count != 0 ? styles.warpperOrderCount : styles.none}>
+                    <FontAwesome size={16} color='#747d8c' name={"tag"} />
+                    <Text style={styles.txtOrderCount} numberOfLines={1}>Đã bán được {detail.order_count} sản phẩm</Text>
+                  </View>
+                  {this.contentBtnWrapper(colorDetailBtn, colorRatingBtn)}
+                  <View
+                    style={{
+                      borderBottomColor: 'black',
+                      borderBottomWidth: 1,
+                      marginHorizontal: 16,
+                    }}
+                  />
+                  {this._content()}
+                  {this.recommend('Sản phẩm tương tự', listRelation)}
+                  <View style={styles.line}></View>
+                  {this.recommend('Bạn có thể thích', listTrend)}
+                </View>
+              </View>
+          }
+        </ScrollView >
+        <View style={styles.warrperFooter}>
+          <TouchableOpacity style={[styles.warpperComment, styles.allFooter]}>
+            <MaterialIcons size={25} color='#34495e' name={"comment"} />
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.warpperCard, styles.allFooter]}>
+            <Text style={styles.txtCard}>Thêm vào giỏ hàng</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.warpperBuyNow, styles.allFooter]}>
+            <Text style={styles.txtBuyNow}>Mua ngay</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 }
 
 
-ProductDetail.navigationOptions = ({ navigation }) => {
-  const tabBarVisible = false;
-  return {
-    header: (
-      <View style={{
-        flex: 0,
-        justifyContent: "center",
-        alignItems: 'flex-start',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        paddingTop: Constants.statusBarHeight + 8,
-        paddingLeft: 8
-      }}>
-        <TouchableOpacity
-          onPress={() => {
-            const screen = navigation.getParam('screen');
-            if (screen) {
-              navigation.navigate(screen);
-            } else {
-              navigation.goBack();
-            }
-          }}
-        >
-          <FontAwesome size={24} name="arrow-left" />
-        </TouchableOpacity>
-      </View >
-    ),
-    tabBarVisible: false,
-  };
+ProductDetail.navigationOptions = {
+  header: null
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: 50,
+    paddingTop: Constants.statusBarHeight + 40,
   },
-  header: {
-    flex: 0.4,
+  warpperTabBar: {
+    width: "100%",
+    paddingTop: Constants.statusBarHeight,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 999,
+    backgroundColor: "#ffdee3",
+    paddingHorizontal: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  },
+  tabBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 10,
+    justifyContent: "space-between",
+    borderRadius: 5,
+    height: 40,
+  },
+  back: {
+    justifyContent: "center"
+  },
+  warpperSearch: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "space-between",
+    height: 42,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginLeft: 15
+  },
+  warpperTxt: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    width: '90%'
+  },
+  txtTimKiem: {
+    color: 'grey',
+    fontSize: 17
+  },
+  txtSendo: {
+    fontWeight: "bold",
+    color: 'red',
+    fontSize: 17,
+    height: '100%'
+  },
+  warpperBtnHome: {
+    width: '10%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: Constants.statusBarHeight + 4,
-
+    marginLeft: 5
+  },
+  warpperBody: {
+    flex: 1,
+    marginTop: Constants.statusBarHeight,
+  },
+  header: {
+    width: Dimensions.get('window').width,
+    height: 320,
+    position: 'relative'
+  },
+  warpperHeartAndBookmark: {
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+    flexDirection: 'row'
   },
   body: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    paddingHorizontal: 10
   },
-  like: {
+  btnIcon: {
+    backgroundColor: '#f1f2f6',
+    marginLeft: 10,
+    borderRadius: 5,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  txtNameProduct: {
+    marginVertical: 5,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  warpperPrice: {
+    minHeight: 40,
+    marginBottom: 5,
+    justifyContent: 'center',
+  },
+  txtSalePrice: {
+    color: '#eb2f06',
+    fontSize: 20,
+  },
+  txtOldPrice: {
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+    fontSize: 14,
+    color: '#a4b0be'
+  },
+  warpperOrderCount: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    height: 32,
+    marginBottom: 5
   },
-  icon: {
-    marginRight: 20,
+  txtOrderCount: {
+    fontSize: 16,
+    color: '#EE5A24',
+    marginLeft: 5
   },
-  nameProduct: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    paddingHorizontal: 16,
-  },
-  oldPrice: {
-    paddingHorizontal: 16,
-    alignItems: 'flex-end',
-  },
+  // oldPrice: {
+  //   paddingHorizontal: 16,
+  //   alignItems: 'flex-end',
+  // },
   contentBtnWrapper: {
-    marginTop: 24,
+    marginTop: 5,
     marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
   contentWrapper: {
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginHorizontal: 16,
-    marginVertical: 24,
+    minHeight: 150,
+    paddingTop: 5
+  },
+  txtDetail: {
+    fontSize: 15
   },
   ratingText: {
     flexDirection: 'row',
@@ -400,25 +543,71 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  oldPriceText: {
-    textDecorationLine: 'line-through',
-    textDecorationStyle: 'solid'
-  },
-  center: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   contentBtnText: {
     fontSize: 20,
     fontWeight: 'bold',
   },
   recommend: {
-    marginVertical: 12,
-    marginHorizontal: 16,
+    marginVertical: 8,
   },
   recommendHeader: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
+    marginBottom: 5
+  },
+  warrperFooter: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    flexDirection: 'row',
+    width: '100%',
+    backgroundColor: '#fff',
+    padding: 8,
+    justifyContent: 'space-between',
+    borderTopWidth: 0.5,
+    borderColor: '#bdc3c7'
+  },
+  allFooter: {
+    borderRadius: 5,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  warpperComment: {
+    width: '15%',
+    height: 40,
+    backgroundColor: '#ced6e0',
+
+  },
+  warpperCard: {
+    width: '50%',
+    backgroundColor: '#ced6e0',
+  },
+  txtCard: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#34495e'
+  },
+  warpperBuyNow: {
+    width: '30%',
+    backgroundColor: '#e74c3c',
+  },
+  txtBuyNow: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'white'
+  },
+  line: {
+    width: '100%',
+    height: 1,
+    backgroundColor: '#bdc3c7',
+    width: Dimensions.get("window").width - 20,
+    marginHorizontal: 10,
+    marginVertical: 10
+  },
+  none: {
+    display: 'none'
   }
 });
+
 

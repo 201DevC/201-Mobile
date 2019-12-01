@@ -9,7 +9,7 @@ import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
 
 
-const IP_API = 'hellodoctor.tech:8080';
+const IP_API = 'http://35.240.241.27:8080/';
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 

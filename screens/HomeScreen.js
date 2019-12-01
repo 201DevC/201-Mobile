@@ -9,6 +9,7 @@ import ItemFlashSale from '../components/ItemFlashSale';
 import Slideshow from '../components/Slideshow';
 import axios from "axios";
 import { FlatList } from 'react-native-gesture-handler';
+// import {PRODUCT} from '../data/product';
 
 const IP_API = "35.240.241.27:8080";
 const formatData = (data, numColumns) => {
@@ -112,7 +113,6 @@ export default class HomeScreen extends Component {
         const { isLoading, isLoadingTendency } = this.state
         return (
             <View style={styles.warpperContainer}>
-
                 <View style={styles.container}>
                     <View style={styles.warpperTabBar}>
                         <View style={styles.tabBar}>
@@ -158,7 +158,7 @@ export default class HomeScreen extends Component {
                             </ScrollView>
                         </View>
                         {isLoading ?
-                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1, marginTop: 30 }}>
+                            <View style={{ justifyContent: "center", alignItems: "center", flex: 1, marginTop: 20 }}>
                                 <ActivityIndicator animating={isLoading} />
                                 <Text>Dữ liệu đang tải, xin vui lòng chờ...</Text>
                             </View>
