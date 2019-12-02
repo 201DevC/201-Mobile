@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Image, Dimensions } from 'react-native';
-
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
@@ -9,7 +8,6 @@ import ItemFlashSale from '../components/ItemFlashSale';
 import Slideshow from '../components/Slideshow';
 import axios from "axios";
 import { FlatList } from 'react-native-gesture-handler';
-// import {PRODUCT} from '../data/product';
 
 const IP_API = "35.240.241.27:8080";
 const formatData = (data, numColumns) => {
@@ -34,6 +32,7 @@ export default class HomeScreen extends Component {
         super(props);
         this.state = {
             isLoading: true,
+            isLoadingTendency: true,
             listcategoryLv1: [],
             listFlashSale: [],
             listProductTrend: []
@@ -41,7 +40,7 @@ export default class HomeScreen extends Component {
         };
         this._isMounted = false;
     }
-    
+
     renderItem = ({ item }) => {
         if (item.emty === true) {
             return <View style={{ flex: 1, margin: 3, }} />;
@@ -57,30 +56,32 @@ export default class HomeScreen extends Component {
 
     _getDataCategoryLv1 = async () => {
         const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-
-        return datalv1.data.data.content;
+        return this.setState({
+            listcategoryLv1: datalv1.data.data.content,
+        })
     }
+
     _getDataFlashSale = async () => {
         const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
-
-        return dataFlashSale.data.data.content;
+        return this.setState({
+            listFlashSale: dataFlashSale.data.data.content,
+            isLoading: false
+        })
     }
 
     _getDataProductTrend = async () => {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
+        return this.setState({
+            listProductTrend: dataTrend.data.data,
+            isLoadingTendency: false
 
-        return dataTrend.data.data;
+        })
     }
 
     _getData = () => {
-        Promise.all([this._getDataCategoryLv1(), this._getDataFlashSale(), this._getDataProductTrend()]).then((values) => {
-            this._isMounted && this.setState({
-                listcategoryLv1: values[0],
-                listFlashSale: values[1],
-                listProductTrend: values[2],
-                isLoading: false,
-            })
-        });
+        this._getDataCategoryLv1();
+        this._getDataFlashSale();
+        this._getDataProductTrend();
     }
 
     componentDidMount() {
@@ -93,7 +94,7 @@ export default class HomeScreen extends Component {
     }
 
     _goToProductDetail = (id) => {
-        this.props.navigation.navigate('ProductDetail', {id: id, screen: 'Home'});
+        this.props.navigation.navigate('ProductDetail', { id: id, screen: 'Home' });
     }
 
     _goToHistory = () => {
@@ -105,15 +106,18 @@ export default class HomeScreen extends Component {
     }
 
     onPressMenu = () => {
-        this.props.navigation.openDrawer();
+        this.props.navigation.navigate('ShoppingCard');
     }
 
     onPressCategory = (name) => {
-        this.props.navigation.navigate('Search', {keyWord: name})
+        this.props.navigation.navigate('Search', { keyWord: name })
+    }
+
+    onPressShowmore = (lv, id, name) => {
+        this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name });
     }
 
     render() {
-
         const { isLoading, isLoadingTendency } = this.state
         return (
             <View style={styles.warpperContainer}>
@@ -154,7 +158,7 @@ export default class HomeScreen extends Component {
                                 {
                                     this.state.listcategoryLv1.map(item => {
                                         return <Categorylv1
-                                            _onPress={() => this.onPressCategory(item.name)}
+                                            _onPress={() => this.onPressShowmore(1, item.id, item.name)}
                                             key={item.id}
                                             data={item}
                                         />
@@ -173,14 +177,15 @@ export default class HomeScreen extends Component {
                                     <View >
                                         <View style={styles.titleFlashSale}>
                                             <Text style={styles.textFlashSale}>Flash Sale</Text>
-                                            <TouchableOpacity style={styles.moreListFlashSale}>
-                                                <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10, }}>
+                                            <TouchableOpacity
+                                                style={styles.moreListFlashSale}
+                                                onPress={() => this.onPressShowmore(3, "", 'Flash Sale')}
+                                            >
+                                                <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10, }} >
                                                     Xem thêm >
                                                 </Text>
                                             </TouchableOpacity>
-
                                         </View>
-
                                         <ScrollView style={styles.warpperFlashSaleItem} horizontal={true} showsHorizontalScrollIndicator={false} >
                                             {
                                                 this.state.listFlashSale.map(item => {
@@ -199,7 +204,10 @@ export default class HomeScreen extends Component {
                                     <View>
                                         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                             <Text style={styles.txtYourLike}>Bạn có thể thích</Text>
-                                            <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}>
+                                            <TouchableOpacity
+                                                style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}
+                                                onPress={() => this.onPressShowmore(4, '', 'Bạn có thể thích')}
+                                            >
                                                 <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}>
                                                     Xem thêm >
                                                 </Text>

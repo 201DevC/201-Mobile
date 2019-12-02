@@ -9,7 +9,7 @@ import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
 
 
-const IP_API = '35.240.241.27:8080';
+const IP_API = '35.240.241.27:8080/';
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -28,7 +28,7 @@ const formatData = (data, numColumns) => {
   return data;
 };
 
-export default class SearchScreen extends React.PureComponent {
+export default class SearchScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,34 +37,30 @@ export default class SearchScreen extends React.PureComponent {
       offset: 0,
       totalResults: '',
       isLoading: false,
-      lastPageReached: true,
     };
   }
 
+
   _getData = async () => {
-    const { keyWord, offset } = this.state;
-    try {
-      const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${offset}&size=10`);
+    const { keyWord, offset } = this.state
+    const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${offset}&size=10`);
 
-      if (data.data.data.content.length === 0) {
-        return this.setState({
-          totalResults: 'Không tìm thấy kết quả',
-          isLoading: false,
-        });
-      }
-
+    if (data.data.data.content.length === 0) {
       return this.setState({
-        listSearch: data.data.data.content,
-        totalResults: data.data.data.total + ' kết quả',
-        isLoading: false,
-      });
-    } catch {
-      this.setState({
         totalResults: 'Không tìm thấy kết quả',
         isLoading: false,
-      });
+      })
     }
+
+    return this.setState({
+      listSearch: data.data.data.content,
+      totalResults: data.data.data.total + ' kết quả',
+      isLoading: false,
+
+    })
   }
+
+
 
   onEndReached = async () => {
     const { offset, listSearch, keyWord } = this.state;
@@ -84,7 +80,7 @@ export default class SearchScreen extends React.PureComponent {
 
   renderFooter = () => {
     const { listSearch, totalResults } = this.state
-    if (listSearch.length === 0 || listSearch.length >= totalResults) {
+    if (listSearch.length === 0 && listSearch.length >= totalResults) {
       return <ActivityIndicator animating={false} />;
     } else {
       return <ActivityIndicator animating={true} />;
@@ -92,15 +88,14 @@ export default class SearchScreen extends React.PureComponent {
   };
 
   pressSearch = async () => {
-    const keyWord = this.state.keyWord.trim();
-    if (keyWord) {
+    if (this.state.keyWord === '') {
+    } else {
       this.setState({
         isLoading: true
       })
-      this._getData();
+      await this._getData()
     }
   }
-
   _onForcusInput = () => {
     this.setState({
       listSearch: [],
@@ -110,6 +105,7 @@ export default class SearchScreen extends React.PureComponent {
       isLoading: false,
     })
   }
+
 
   _goToProductDetail = (id) => {
     this.props.navigation.navigate('ProductDetail', { id: id, screen: 'Search' });
@@ -136,7 +132,9 @@ export default class SearchScreen extends React.PureComponent {
     return (
       <View style={styles.container}>
         <NavigationEvents
-          onDidFocus={() => this.searchTextInput.focus()}
+          onDidFocus={() => {
+            this.searchTextInput.focus();
+          }}
         />
         <View style={styles.header}>
           <View style={styles.tabBar}>
@@ -157,7 +155,7 @@ export default class SearchScreen extends React.PureComponent {
                 placeholder='Tìm kiếm'
                 style={styles.txtSearch}
                 onChangeText={this.onChangeSearch}
-                value={this.state.keyWord}
+                // value={this.state.keyWord}
                 onFocus={this._onForcusInput}
                 onBlur={this.pressSearch}
               />
@@ -296,8 +294,18 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     alignItems: 'center'
   },
+  respond: {
+
+  },
+  // warpperReturn: {
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   flex:1
+  // },
   itemInvisible: {
     backgroundColor: 'red',
 
   }
+
+
 });

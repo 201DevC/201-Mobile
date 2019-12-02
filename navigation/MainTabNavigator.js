@@ -12,6 +12,7 @@ import ShoppingCardScreen from '../screens/ShoppingCardScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
+import ShowMoreScreen from '../screens/ShowMoreScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },

@@ -14,17 +14,6 @@ export default class MenuLevel1Screen extends Component {
     };
   }
 
-  // _itemMenuLv1 = ({ data: { name } }) => {
-  //   return (
-  //     <View>
-  //       <TouchableOpacity
-  //         style={styles.container}>
-  //         <Text style={styles.text}>{name}</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   )
-  // }
-
   _goToMenuLv2 = () => {
     this.props.navigation.navigate('MenuLevel2');
   }

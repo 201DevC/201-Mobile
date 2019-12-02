@@ -10,8 +10,7 @@ import {
   FlatList,
   ActivityIndicator,
   RefreshControl,
-  BackHandler,
-  AsyncStorage
+  BackHandler
 } from 'react-native';
 
 import Constants from 'expo-constants';
@@ -44,13 +43,7 @@ export default class ProductDetail extends Component {
 
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
-    const username = await AsyncStorage.getItem('username');
-    const data = await axios.get('http://35.240.241.27:8080/product/' + id, {
-      params: {
-        userId: username,
-      }
-    });
-
+    const data = await axios.get(`http://${IP_API}/product/` + id);
     return data.data.data;
   }
 
@@ -58,7 +51,6 @@ export default class ProductDetail extends Component {
     const id = this.props.navigation.getParam('id');
     const data = await axios.get(`http://${IP_API}/product/${id}/relation`);
     return data.data.data;
-
   }
 
   _getDataTrend = async () => {
@@ -66,19 +58,18 @@ export default class ProductDetail extends Component {
     return data.data.data;
   }
 
-  _getData = () => {
+  _getData = async () => {
     Promise.all([this._getDataDetail(), this._getDataRelation(), this._getDataTrend()]).then((values) => {
       this._isMounted && this.setState({
         detail: values[0],
         listRelation: values[1],
         listTrend: values[2],
-      }, () => {
-        this._isMounted && this.setState({isLoading: false});
+        isLoading: false,
       })
     });
   }
 
-  _referData = async () => {
+  _referData = () => {
     this.setState({ listRelation: [], listTrend: [], isLoading: true, });
     this._getData();
   }
@@ -174,7 +165,9 @@ export default class ProductDetail extends Component {
   }
 
   _rating = () => {
-    const { detail } = this.state;
+    const { detail } = this.state
+    // const total_rated = detail.rating_info ? detail.rating_info.total_rated : 0;
+    // const percent_number = detail.rating_info ? detail.rating_info.percent_number : 100;
     const rating = detail.rating_info.percent_number / 100 * 5;
     return rating;
   }
@@ -224,8 +217,33 @@ export default class ProductDetail extends Component {
     return content;
   }
 
+
+
   render() {
     const { isLoading, detail, listRelation, listTrend, colorHeart, colorBookmark, colorDetailBtn, colorRatingBtn } = this.state;
+    // let content = (
+    //   <View style={styles.contentWrapper}>
+    //     <Text style={styles.txtDetail}>
+    //       {detail.short_description}
+    //     </Text>
+    //   </View>
+    // );
+    // let colorDetailBtn = { color: 'black' };
+    // let colorRatingBtn = { color: '#cdc6c6' };
+    // if (isRating) {
+    //   colorDetailBtn = { color: '#cdc6c6' };
+    //   colorRatingBtn = { color: 'black' };
+    //   content = (
+    //     <View style={styles.contentWrapper}>
+    //       <View style={styles.ratingText}>
+    //         <Text style={{ fontSize: 40, fontWeight: 'bold' }}>{this._rating().toFixed(1)}</Text>
+    //         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#f1797a' }}>/5</Text>
+    //       </View>
+    //       <Rating readonly startingValue={this._rating()} />
+    //       <Text>({detail.rating_info.total_rated} lượt đánh giá)</Text>
+    //     </View>
+    //   );
+    // }
 
     return (
       <View style={styles.container}>
@@ -286,13 +304,13 @@ export default class ProductDetail extends Component {
                       style={styles.btnIcon}
                       onPress={this.onPressHeart}
                     >
-                      <Entypo color={colorHeart} size={25} name={colorHeart === '#2f3542' ? 'heart-outlined' : 'heart' } />
+                      <Entypo color={colorHeart} size={25} name={colorHeart === '#2f3542' ? 'heart-outlined' : 'heart'} />
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.btnIcon}
                       onPress={this.onPressBookmark}
                     >
-                      <FontAwesome color={colorBookmark} size={25} name={colorBookmark === '#2f3542' ? 'bookmark-o' : 'bookmark' } />
+                      <FontAwesome color={colorBookmark} size={25} name={colorBookmark === '#2f3542' ? 'bookmark-o' : 'bookmark'} />
                       {/* bookmark */}
                     </TouchableOpacity>
                   </View>
@@ -487,6 +505,10 @@ const styles = StyleSheet.create({
     color: '#EE5A24',
     marginLeft: 5
   },
+  // oldPrice: {
+  //   paddingHorizontal: 16,
+  //   alignItems: 'flex-end',
+  // },
   contentBtnWrapper: {
     marginTop: 5,
     marginBottom: 8,

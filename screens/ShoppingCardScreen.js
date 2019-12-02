@@ -23,9 +23,6 @@ export default class MenuLevel1Screen extends Component {
     };
   }
 
-  _goToMenuLv2 = () => {
-    this.props.navigation.navigate('MenuLevel2');
-  }
   _getDataCategoryLv1 = async () => {
     const data = await axios.get(`http://${IP_API}/category/lv1`);
     const listcategoryLv1 = data.data.data.content.map((item) => {
@@ -46,8 +43,12 @@ export default class MenuLevel1Screen extends Component {
       isLoadingLv2: false
     })
   }
-  async componentDidMount() {
-    await this._getDataCategoryLv1()
+  onPressShowmore = (lv, id, name) => {
+    this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name });
+  }
+
+  componentDidMount() {
+    this._getDataCategoryLv1()
   }
 
   _showLv2 = async item => {
@@ -98,6 +99,7 @@ export default class MenuLevel1Screen extends Component {
                     style={{ width: "100%" }}
                     data={this.state.listcategoryLv2}
                     renderItem={({ item }) => <ItemCategoryLv2
+                      onPress={() => this.onPressShowmore(2, item.id, item.name)}
                       data={item}
                     />}
                     keyExtractor={item => item.id}
@@ -128,8 +130,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "black",
     textAlign: 'right',
-    marginRight:20,
-    marginBottom:10
+    marginRight: 20,
+    marginBottom: 10
   },
   warpperCategory: {
     flex: 1,
