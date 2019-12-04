@@ -37,7 +37,8 @@ export default class LoginScreen extends Component {
                 data.birthday = data.birthday.replace(/\//g, '-');
                 const res = await axios.post('http://35.240.241.27:8080/user', data);
                 if (res.data.header.successful) {
-                    const newUser = res.data.data.survey ? '0' : '1';
+                    // const newUser = res.data.data.survey ? '0' : '1';
+                    const newUser = '1';
                     await AsyncStorage.setItem('username', res.data.data.id.toString());
                     await AsyncStorage.setItem('newUser', newUser);
                     this.props.navigation.navigate('AuthLoading');
@@ -74,7 +75,7 @@ export default class LoginScreen extends Component {
             }
             const res = await axios.post('http://35.240.241.27:8080/login', data);
             if (res.data.header.successful) {
-                const newUser = '1';
+                const newUser = res.data.data.survey ? '0' : '1';
                 await AsyncStorage.setItem('username', res.data.data.id.toString());
                 await AsyncStorage.setItem('newUser', newUser);
                 this.props.navigation.navigate('AuthLoading');

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import CardHistory from '../components/CardHistory'
 import axios from "axios";
 
+import { NavigationEvents } from 'react-navigation';
 import { FlatList } from 'react-native-gesture-handler';
 
 const IP_API = "35.240.241.27:8080";
@@ -17,13 +18,36 @@ export default class HistoryScreen extends Component {
     };
   }
 
+  // componentDidMount() {
+  //   this._getData();
+  // }
 
-  async componentDidMount() {
-    const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
+  _getData = async () => {
+    const username = await AsyncStorage.getItem('username');
+
+    const dataFlashSale = await axios.get(`http://${IP_API}/user/${username}/views?offset=0`);
     return this.setState({
       listHistory: dataFlashSale.data.data.content,
       isLoading: false
-    })
+    });
+  }
+
+  _referData = () => {
+    this.setState({
+      listHistory: [],
+      isLoading: true
+    });
+    this._getData();
+  }
+
+  _onPressDeleteBtn = async (productId) => {
+    this.setState({
+      listHistory: [],
+      isLoading: true
+    });
+    const username = await AsyncStorage.getItem('username');
+    await axios.delete(`http://${IP_API}/user/${username}/views/${productId}`);
+    this._getData();
   }
 
   onPressSearch = () => {
@@ -35,14 +59,17 @@ export default class HistoryScreen extends Component {
   }
 
   _goToProductDetail = (id) => {
-    this.props.navigation.navigate('ProductDetail', {id: id, screen: 'History'});
-}
+    this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' });
+  }
 
   render() {
-    const { isLoading } = this.state
+    const { isLoading, listHistory } = this.state
 
     return (
       <View style={styles.container}>
+        <NavigationEvents
+          onDidFocus={() => this._referData()}
+        />
         <View style={styles.warpperTabBar}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
@@ -85,9 +112,10 @@ export default class HistoryScreen extends Component {
               <Text>Dữ liệu đang tải, xin vui lòng chờ...</Text>
             </View> :
               <FlatList
-                data={this.state.listHistory}
+                data={listHistory}
                 renderItem={({ item }) => <CardHistory
                   _onPress={() => this._goToProductDetail(item.id)}
+                  _onPressDeleteBtn={() => this._onPressDeleteBtn(item.id)}
                   key={item.id}
                   data={item}
                 />}
@@ -173,8 +201,6 @@ const styles = StyleSheet.create({
     flex: 1,
 
   }
-
-
 });
 
 

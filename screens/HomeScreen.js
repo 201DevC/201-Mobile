@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    ScrollView,
+    ActivityIndicator,
+    Dimensions,
+    RefreshControl
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
 import Categorylv1 from '../components/CategoryLv1';
 import ItemFlashSale from '../components/ItemFlashSale';
 import Slideshow from '../components/Slideshow';
-import axios from "axios";
+import axios from 'axios';
 import { FlatList } from 'react-native-gesture-handler';
 
 const IP_API = "35.240.241.27:8080";
@@ -36,7 +45,6 @@ export default class HomeScreen extends Component {
             listcategoryLv1: [],
             listFlashSale: [],
             listProductTrend: []
-
         };
         this._isMounted = false;
     }
@@ -84,6 +92,17 @@ export default class HomeScreen extends Component {
         this._getDataProductTrend();
     }
 
+    _referData = () => {
+        this.setState({
+            isLoading: true,
+            isLoadingTendency: true,
+            listcategoryLv1: [],
+            listFlashSale: [],
+            listProductTrend: []
+        });
+        this._getData();
+    }
+
     componentDidMount() {
         this._isMounted = true;
         this._getData();
@@ -114,7 +133,7 @@ export default class HomeScreen extends Component {
     }
 
     onPressShowmore = (lv, id, name) => {
-        this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name });
+        this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name, screen: 'Home' });
     }
 
     render() {
@@ -149,7 +168,13 @@ export default class HomeScreen extends Component {
                             />
                         </View>
                     </View>
-                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
+                    <ScrollView
+                        style={{ flex: 1 }}
+                        showsVerticalScrollIndicator={false}
+                        refreshControl={
+                            <RefreshControl refreshing={isLoading} onRefresh={this._referData} />
+                        }
+                    >
                         <View style={{ backgroundColor: '#ffdee3', borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
                             <View style={styles.header}>
                                 <Slideshow />

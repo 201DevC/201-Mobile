@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, Text, ScrollView, TouchableOpacity, Image, FlatList, ActivityIndicator, BackHandler } from 'react-native';
-import { FontAwesome, MaterialIcons, MaterialCommunityIcons, Entypo, Feather, TextInput } from '@expo/vector-icons';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, ActivityIndicator, BackHandler } from 'react-native';
+import { FontAwesome, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import ItemProduct from '../components/ItemProduct';
 import Constants from 'expo-constants';
 import axios from "axios";
@@ -39,6 +39,7 @@ export default class ShowMoreScreen extends Component {
         this._isMounted = false;
         this.backHandler = null;
     }
+
     renderItem = ({ item }) => {
         if (item.emty === true) {
             return <View style={{ flex: 1, margin: 5, }} />;
@@ -78,9 +79,6 @@ export default class ShowMoreScreen extends Component {
         const lvCate = this.props.navigation.getParam('lvCate');
         const idCate = this.props.navigation.getParam('idCate');
         const title = this.props.navigation.getParam('nameCate');
-        console.log(lvCate);
-        console.log(idCate);
-        console.log(title);
 
         if (lvCate == 3) {
             const data = await axios.get(`http://35.240.241.27:8080/product/trend`);
@@ -89,7 +87,6 @@ export default class ShowMoreScreen extends Component {
                 title,
                 isLoading: false
             })
-            console.log(title)
         } else if (lvCate == 4) {
             const data = await axios.get(`http://35.240.241.27:8080/product/trend`);
             this.setState({
@@ -97,7 +94,6 @@ export default class ShowMoreScreen extends Component {
                 title,
                 isLoading: false
             })
-            console.log(title)
         } else {
             const data = await axios.get(`http://35.240.241.27:8080/product/list?cate${lvCate}=${idCate}&offset=${offset}&size=10`);
 
@@ -107,7 +103,6 @@ export default class ShowMoreScreen extends Component {
                 title,
                 isLoading: false
             });
-            console.log(title)
         }
 
     }
@@ -116,10 +111,8 @@ export default class ShowMoreScreen extends Component {
         const screen = this.props.navigation.getParam('screen');
         if (screen) {
             navigation.navigate(screen);
-            alert("hâh")
         } else {
             navigation.goBack();
-            alert("hihi")
         }
         return true;
     }
@@ -234,7 +227,6 @@ const styles = StyleSheet.create({
         borderBottomEndRadius: 10,
         borderBottomStartRadius: 10,
         paddingTop: Constants.statusBarHeight
-
     },
     tabBar: {
         flexDirection: 'row',
