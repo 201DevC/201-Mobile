@@ -4,12 +4,11 @@ import { TextInput, FlatList } from 'react-native-gesture-handler';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
-import { PRODUCT } from '../data/product';
 import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
+import {REUSE} from '../reuse/Reuse';
 
-
-const IP_API = '35.240.241.27:8080/';
+const IP_API = REUSE.IP_API;
 const formatData = (data, numColumns) => {
   const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: '#ffdee3',
+    backgroundColor: REUSE.MAIN_COLOR,
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',

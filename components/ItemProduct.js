@@ -9,14 +9,17 @@ export default class ItemProduct extends Component {
     constructor(props) {
         super(props);
         this.randomFree = Math.floor(Math.random() * 3);
+        this.state = {
+            styleOldPrice: ""
+        }
     }
 
     render() {
-        const { data: { name, shop_info, price, order_count, images, rating_info } } = this.props;
-        // const new_price = item ? item.price : 0;
-        const total_rated = rating_info ? rating_info.total_rated : 0;
+        const { data: { name, shop_info, price, order_count, images, rating_info, price_max } } = this.props;
         const percent_number = rating_info ? rating_info.percent_number : 100;
         const rating = percent_number / 100 * 5;
+
+
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
@@ -46,12 +49,12 @@ export default class ItemProduct extends Component {
                         }
                     />
                     <NumberFormat
-                        value={160000}
+                        value={price_max}
                         displayType={'text'}
                         thousandSeparator={true}
                         prefix={''}
                         renderText={value => <Text
-                            style={styles.txtOldPrice}
+                            style={price_max==0||price_max==price ? styles.none : styles.txtOldPrice}
                             numberOfLines={1}>
                             {value} đ
                                 </Text>
@@ -87,8 +90,8 @@ export default class ItemProduct extends Component {
 
 const styles = StyleSheet.create({
     cardContainer: {
-        flex:1,
-        maxWidth:Dimensions.get('window').width * 0.5,
+        flex: 1,
+        maxWidth: Dimensions.get('window').width * 0.5,
         margin: 3,
         borderRadius: 5,
         borderColor: '#ecf0f1',

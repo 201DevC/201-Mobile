@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-import { View, Button, StyleSheet, Text, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { View,  StyleSheet, Text, ScrollView, FlatList, ActivityIndicator } from 'react-native';
 import Constants from 'expo-constants';
 import ItemCategoryLv1 from '../components/ItemCategoryLv1';
 import ItemCategoryLv2 from '../components/ItemCategoryLv2';
 import axios from "axios";
-import Categorylv1 from '../components/CategoryLv1';
-import { CATEGORY } from '../service/category';
-import { CATEGORY2 } from '../service/categorylv2';
+import {REUSE} from '../reuse/Reuse';
 
-
-
-const IP_API = "35.240.241.27:8080";
+const IP_API = REUSE.IP_API;
 export default class MenuLevel1Screen extends Component {
   constructor(props) {
     super(props);
@@ -122,7 +118,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: "#ffdee3"
+    backgroundColor: REUSE.MAIN_COLOR
   },
   txtTitle: {
     fontSize: 30,

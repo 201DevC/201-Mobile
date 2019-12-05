@@ -5,7 +5,9 @@ import { Button, Icon, Input } from 'react-native-elements';
 
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
+import {REUSE} from '../reuse/Reuse';
 
+const IP_API = REUSE.IP_API;
 export default class LoginScreen extends Component {
     constructor(props) {
         super(props);
@@ -35,7 +37,7 @@ export default class LoginScreen extends Component {
                 data.gender = data.gender === 'male' ? true : false;
                 data.survey = false;
                 data.birthday = data.birthday.replace(/\//g, '-');
-                const res = await axios.post('http://35.240.241.27:8080/user', data);
+                const res = await axios.post(`http://${IP_API}/user`, data);
                 if (res.data.header.successful) {
                     const newUser = res.data.data.survey ? '0' : '1';
                     await AsyncStorage.setItem('username', res.data.data.id.toString());
@@ -72,7 +74,7 @@ export default class LoginScreen extends Component {
             const data = {
                 username: this.state.username,
             }
-            const res = await axios.post('http://35.240.241.27:8080/login', data);
+            const res = await axios.post(`http://${IP_API}:8080/login`, data);
             if (res.data.header.successful) {
                 const newUser = '1';
                 await AsyncStorage.setItem('username', res.data.data.id.toString());

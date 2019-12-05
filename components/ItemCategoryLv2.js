@@ -5,6 +5,7 @@ export default class ItemCategoryLv2 extends Component {
 
     render() {
         const { data: { name, image } } = this.props;
+        console.log(image)
         return (
             <TouchableOpacity
                 style={styles.warpperItemCategory}
@@ -12,7 +13,7 @@ export default class ItemCategoryLv2 extends Component {
             >
                 <View style={styles.warpperImage}>
                     <Image style={styles.img}
-                        source={{ uri: "http://xemanhdep.com/wp-content/uploads/2016/04/hinh-anh-girl-xinh-dep-nhat-2016-10.jpg" }}
+                        source={{ uri: image == null ? "http://xemanhdep.com/wp-content/uploads/2016/04/hinh-anh-girl-xinh-dep-nhat-2016-10.jpg" : image}}
                         resizeMode="cover"
                     />
                 </View>

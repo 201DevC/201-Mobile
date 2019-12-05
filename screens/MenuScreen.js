@@ -5,7 +5,9 @@ import Categorylv1 from '../components/CategoryLv1';
 import axios from "axios";
 
 
-const IP_API = "hellodoctor.tech:8080";
+import {REUSE} from '../reuse/Reuse';
+
+const IP_API = REUSE.IP_API;
 export default class MenuLevel1Screen extends Component {
   constructor(props) {
     super(props);

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Image } from 'react-native-elements';
-import { Rating } from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 
 export default class ItemFlashSale extends Component {
 
     render() {
-        const { data: { name, shop_info, price, order_count, images } } = this.props;
+        const { data: { name, shop_info, price, order_count, images, price_max } } = this.props;
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
@@ -26,7 +25,7 @@ export default class ItemFlashSale extends Component {
                 </View>
                 <View style={styles.Price}>
                     <NumberFormat
-                        value={price}
+                        value={price_max}
                         displayType={'text'}
                         thousandSeparator={true}
                         prefix={''}

@@ -7,7 +7,9 @@ import axios from "axios";
 
 import { FlatList } from 'react-native-gesture-handler';
 
-const IP_API = "35.240.241.27:8080";
+import {REUSE} from '../reuse/Reuse';
+
+const IP_API = REUSE.IP_API;
 export default class HistoryScreen extends Component {
   constructor(props) {
     super(props);
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 999,
-    backgroundColor: "#ffdee3",
+    backgroundColor: REUSE.MAIN_COLOR,
     paddingHorizontal: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5

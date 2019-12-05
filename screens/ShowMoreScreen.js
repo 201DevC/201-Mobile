@@ -4,9 +4,9 @@ import { FontAwesome, MaterialIcons, MaterialCommunityIcons, Entypo, Feather, Te
 import ItemProduct from '../components/ItemProduct';
 import Constants from 'expo-constants';
 import axios from "axios";
+import {REUSE} from '../reuse/Reuse';
 
-
-const IP_API = "35.240.241.27:8080";
+const IP_API = REUSE.IP_API;
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
 
@@ -55,7 +55,7 @@ export default class ShowMoreScreen extends Component {
     onEndReached = async () => {
         const { offset, lvCate, idCate, listData } = this.state;
         const newoffset = offset + 10;
-        const data = await axios.get(`http://35.240.241.27:8080/product/list?cate${lvCate}=${idCate}&offset=${newoffset}&size=10`);
+        const data = await axios.get(`http://${IP_API}/product/list?cate${lvCate}=${idCate}&offset=${newoffset}&size=10`);
 
         this.setState({
             offset: newoffset,
@@ -99,7 +99,7 @@ export default class ShowMoreScreen extends Component {
             })
             console.log(title)
         } else {
-            const data = await axios.get(`http://35.240.241.27:8080/product/list?cate${lvCate}=${idCate}&offset=${offset}&size=10`);
+            const data = await axios.get(`http://${IP_API}/product/list?cate${lvCate}=${idCate}&offset=${offset}&size=10`);
 
             this.setState({
                 listData: data.data.data.content,
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     header: {
-        backgroundColor: '#ffdee3',
+        backgroundColor: REUSE.MAIN_COLOR,
         position: 'relative',
         justifyContent: 'center',
         alignItems: 'center',

@@ -19,10 +19,9 @@ import { Image, Rating } from 'react-native-elements'
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
 import ItemProduct from '../components/ItemProduct';
+import {REUSE} from '../reuse/Reuse';
 
-
-const width = Dimensions.get('window').width;
-const IP_API = "35.240.241.27:8080";
+const IP_API = REUSE.IP_API;
 export default class ProductDetail extends Component {
   constructor(props) {
     super(props);
@@ -221,29 +220,6 @@ export default class ProductDetail extends Component {
 
   render() {
     const { isLoading, detail, listRelation, listTrend, colorHeart, colorBookmark, colorDetailBtn, colorRatingBtn } = this.state;
-    // let content = (
-    //   <View style={styles.contentWrapper}>
-    //     <Text style={styles.txtDetail}>
-    //       {detail.short_description}
-    //     </Text>
-    //   </View>
-    // );
-    // let colorDetailBtn = { color: 'black' };
-    // let colorRatingBtn = { color: '#cdc6c6' };
-    // if (isRating) {
-    //   colorDetailBtn = { color: '#cdc6c6' };
-    //   colorRatingBtn = { color: 'black' };
-    //   content = (
-    //     <View style={styles.contentWrapper}>
-    //       <View style={styles.ratingText}>
-    //         <Text style={{ fontSize: 40, fontWeight: 'bold' }}>{this._rating().toFixed(1)}</Text>
-    //         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#f1797a' }}>/5</Text>
-    //       </View>
-    //       <Rating readonly startingValue={this._rating()} />
-    //       <Text>({detail.rating_info.total_rated} lượt đánh giá)</Text>
-    //     </View>
-    //   );
-    // }
 
     return (
       <View style={styles.container}>
@@ -398,7 +374,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 999,
-    backgroundColor: "#ffdee3",
+    backgroundColor: REUSE.MAIN_COLOR,
     paddingHorizontal: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,

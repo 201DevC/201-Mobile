@@ -3,6 +3,7 @@ import { View, AsyncStorage, Button, Image, StyleSheet, Text } from 'react-nativ
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import {REUSE} from '../reuse/Reuse';
 
 const color = '#2c3e50'
 
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 999,
-    backgroundColor: "#ffdee3",
+    backgroundColor: REUSE.MAIN_COLOR,
     paddingHorizontal: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,

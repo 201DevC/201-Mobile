@@ -8,8 +8,9 @@ import ItemFlashSale from '../components/ItemFlashSale';
 import Slideshow from '../components/Slideshow';
 import axios from "axios";
 import { FlatList } from 'react-native-gesture-handler';
+import {REUSE} from '../reuse/Reuse';
 
-const IP_API = "35.240.241.27:8080";
+const IP_API = REUSE.IP_API;
 const formatData = (data, numColumns) => {
     const numberOfFullRows = Math.floor(data.length / numColumns);
     let numberOfElementsLastRow = data.length - (numberOfFullRows * numColumns);
@@ -150,11 +151,27 @@ export default class HomeScreen extends Component {
                         </View>
                     </View>
                     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
-                        <View style={{ backgroundColor: '#ffdee3', borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
+                        <View style={{ backgroundColor: REUSE.MAIN_COLOR, borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
                             <View style={styles.header}>
                                 <Slideshow />
                             </View>
                             <ScrollView style={styles.naviLv1} horizontal={true} showsHorizontalScrollIndicator={false} >
+                                <TouchableOpacity
+                                    onPress={this.onPressMenu}
+                                    style={{
+                                        paddingHorizontal: 15,
+                                        paddingVertical: 3,
+                                        borderRadius: 5,
+                                        alignItems: "center",
+                                        marginHorizontal: 5,
+                                        backgroundColor: "#fff"
+                                    }}>
+                                    <Text style={{
+                                        color: "#c47482",
+                                        fontSize: 15,
+                                        fontWeight: 'bold'
+                                    }}>Danh mục</Text>
+                                </TouchableOpacity>
                                 {
                                     this.state.listcategoryLv1.map(item => {
                                         return <Categorylv1
@@ -280,7 +297,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         zIndex: 999,
-        backgroundColor: "#ffdee3",
+        backgroundColor: REUSE.MAIN_COLOR,
         paddingHorizontal: 10,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5

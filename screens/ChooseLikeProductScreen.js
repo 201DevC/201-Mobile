@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, ScrollView, ActivityIndicator, FlatList } from 'react-native';
 import Constants from 'expo-constants'
 import { Button } from 'react-native-elements'
 import { AntDesign } from '@expo/vector-icons';
 import LikeCard from '../components/LikeCard';
 import axios from "axios";
 
+import { REUSE } from '../reuse/Reuse';
+
+const IP_API = REUSE.IP_API;
 export default class ChooseLikeProductScreen extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +20,7 @@ export default class ChooseLikeProductScreen extends Component {
     }
 
     _getDataCategoryLv1 = async () => {
-        const data = await axios.get('http://35.240.241.27:8080/category/lv1?page=1');
+        const data = await axios.get(`http://${IP_API}/category/lv1?page=1`);
         const listcategory = data.data.data.content.map((item) => {
             item.status = 0;
             return item;
@@ -90,7 +93,7 @@ export default class ChooseLikeProductScreen extends Component {
                         </View>
                     </View>
                 </View>
-                <ScrollView
+                {/* <ScrollView
                     style={styles.body}
                     showsHorizontalScrollIndicator={false}
                 >
@@ -105,9 +108,18 @@ export default class ChooseLikeProductScreen extends Component {
                             })
                         }
                     </View>
-
-                </ScrollView>
-
+                </ScrollView> */}
+                <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    data={listcategory}
+                    renderItem={({ item }) => <LikeCard
+                        onPressShowHeart={() => this.onPressItem(item.id)}
+                        data={item}
+                    />}
+                    numColumns={3}
+                    style={{ flex: 1 }}
+                    keyExtractor={item => item.id}
+                />
             </View>
         );
     }
@@ -143,9 +155,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         textAlign: 'center'
     },
-    body: {
-        flex: 1,
-    },
     headerButtonWrapper: {
         width: '90%',
         alignItems: "center",
@@ -159,9 +168,5 @@ const styles = StyleSheet.create({
     btnNextOutline: {
         borderRadius: 8
     },
-    groupListCategory: {
-        flexWrap: "wrap",
-        flexDirection: "row",
-        justifyContent: "space-around"
-    }
+    
 });
