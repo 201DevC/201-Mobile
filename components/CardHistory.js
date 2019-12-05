@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
 import { Rating } from 'react-native-elements';
 import NumberFormat from 'react-number-format';
 
 
 export default class CardHistory extends Component {
     render() {
-        const { data: { name, price, order_count, images }, _onPress } = this.props;
+        const { data: { name, price, order_count, images }, _onPress, _onPressDeleteBtn } = this.props;
         return (
             <View
                 style={styles.container}>
@@ -17,7 +16,6 @@ export default class CardHistory extends Component {
                     <Image
                         style={styles.img}
                         source={{ uri: images[0] }}
-                        // source={require('../assets/images/img_product.jpg')}
                         resizeMode="cover"
                     />
                 </TouchableOpacity>
@@ -39,7 +37,10 @@ export default class CardHistory extends Component {
                                 {value} đ
                                 </Text>
                             } />
-                        <TouchableOpacity style={styles.btnDelete}>
+                        <TouchableOpacity
+                            style={styles.btnDelete}
+                            onPress={_onPressDeleteBtn}
+                        >
                             <Text style={{ fontSize: 14, color: '#ff4757', fontWeight: 'bold' }}>Xóa</Text>
                         </TouchableOpacity>
                     </View>

@@ -10,7 +10,8 @@ import {
   FlatList,
   ActivityIndicator,
   RefreshControl,
-  BackHandler
+  BackHandler,
+  AsyncStorage
 } from 'react-native';
 
 import Constants from 'expo-constants';
@@ -42,7 +43,13 @@ export default class ProductDetail extends Component {
 
   _getDataDetail = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get(`http://${IP_API}/product/` + id);
+    const username = await AsyncStorage.getItem('username');
+    const data = await axios.get(`http://${IP_API}/product/` + id, {
+      params: {
+        userId: username,
+      }
+    });
+
     return data.data.data;
   }
 

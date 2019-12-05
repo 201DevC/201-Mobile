@@ -4,8 +4,7 @@ import Constants from 'expo-constants'
 import { Button } from 'react-native-elements'
 import { AntDesign } from '@expo/vector-icons';
 import LikeCard from '../components/LikeCard';
-import axios from "axios";
-
+import axios from 'axios';
 import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
@@ -34,6 +33,9 @@ export default class ChooseLikeProductScreen extends Component {
 
     onPressContinueBtn = async () => {
         await AsyncStorage.setItem('newUser', '0');
+        const productIdSelected = this.state.listcategory.filter(item => item.status === 1).map(item => item.id);
+        const username = await AsyncStorage.getItem('username');
+        await axios.post(`http://${IP_API}/user/${username}/favorite`, productIdSelected);
         this.props.navigation.navigate('Main');
     }
 
