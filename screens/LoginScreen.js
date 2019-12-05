@@ -75,7 +75,7 @@ export default class LoginScreen extends Component {
             const data = {
                 username: this.state.username,
             }
-            const res = await axios.post(`http://${IP_API}:8080/login`, data);
+            const res = await axios.post(`http://${IP_API}/login`, data);
             if (res.data.header.successful) {
                 const newUser = res.data.data.survey ? '0' : '1';
                 await AsyncStorage.setItem('username', res.data.data.id.toString());

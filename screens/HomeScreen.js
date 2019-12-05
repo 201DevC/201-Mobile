@@ -65,6 +65,7 @@ export default class HomeScreen extends Component {
 
     _getDataCategoryLv1 = async () => {
         const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
+        console.log('cate')
         return this.setState({
             listcategoryLv1: datalv1.data.data.content,
         });
@@ -72,6 +73,7 @@ export default class HomeScreen extends Component {
 
     _getDataFlashSale = async () => {
         const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
+        console.log('sale')
         return this.setState({
             listFlashSale: dataFlashSale.data.data.content,
             isLoading: false
@@ -80,6 +82,7 @@ export default class HomeScreen extends Component {
 
     _getDataProductTrend = async () => {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
+        console.log('trend')
         return this.setState({
             listProductTrend: dataTrend.data.data,
             isLoadingTendency: false
