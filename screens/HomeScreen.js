@@ -67,7 +67,7 @@ export default class HomeScreen extends Component {
         const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
         return this.setState({
             listcategoryLv1: datalv1.data.data.content,
-        })
+        });
     }
 
     _getDataFlashSale = async () => {
@@ -75,7 +75,7 @@ export default class HomeScreen extends Component {
         return this.setState({
             listFlashSale: dataFlashSale.data.data.content,
             isLoading: false
-        })
+        });
     }
 
     _getDataProductTrend = async () => {
@@ -83,8 +83,7 @@ export default class HomeScreen extends Component {
         return this.setState({
             listProductTrend: dataTrend.data.data,
             isLoadingTendency: false
-
-        })
+        });
     }
 
     _getData = () => {

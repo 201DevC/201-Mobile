@@ -20,7 +20,7 @@ import { Image, Rating } from 'react-native-elements'
 import axios from 'axios';
 import NumberFormat from 'react-number-format';
 import ItemProduct from '../components/ItemProduct';
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 export default class ProductDetail extends Component {
@@ -32,6 +32,8 @@ export default class ProductDetail extends Component {
       listTrend: [],
       listRelation: [],
       isLoading: true,
+      isLoadingTrend: true,
+      isLoadingRelation: true,
       colorHeart: '#2f3542',
       colorBookmark: '#2f3542',
       colorDetailBtn: 'black',
@@ -50,33 +52,58 @@ export default class ProductDetail extends Component {
       }
     });
 
-    return data.data.data;
+    return this.setState({
+      detail: data.data.data,
+      isLoading: false
+    });
   }
 
   _getDataRelation = async () => {
     const id = this.props.navigation.getParam('id');
-    const data = await axios.get(`http://${IP_API}/product/${id}/relation`);
-    return data.data.data;
-  }
-
-  _getDataTrend = async () => {
-    const data = await axios.get(`http://${IP_API}/product/trend`);
-    return data.data.data;
-  }
-
-  _getData = async () => {
-    Promise.all([this._getDataDetail(), this._getDataRelation(), this._getDataTrend()]).then((values) => {
-      this._isMounted && this.setState({
-        detail: values[0],
-        listRelation: values[1],
-        listTrend: values[2],
-        isLoading: false,
-      })
+    const username = await AsyncStorage.getItem('username');
+    const data = await axios.get(`http://${IP_API}/product/${id}/relation`, {
+      params: {
+        userId: username,
+      }
+    });
+    const listRelation = data.data.data.filter(item => item !== null);
+    return this.setState({
+      listRelation,
+      isLoadingRelation: false
     });
   }
 
+  _getDataRecommend = async () => {
+    const username = await AsyncStorage.getItem('username');
+    const data = await axios.get(`http://${IP_API}/product/recommend`, {
+      params: {
+        userId: username,
+      }
+    });
+    const listTrend = data.data.data.filter(item => item !== null);
+
+    return this.setState({
+      listTrend,
+      isLoadingTrend: false
+    });
+  }
+
+  _getData = async () => {
+    this._getDataDetail();
+    this._getDataRelation();
+    this._getDataRecommend();
+  }
+
   _referData = () => {
-    this.setState({ listRelation: [], listTrend: [], isLoading: true, });
+    this.setState({
+      isRating: 0,
+      detail: {},
+      listTrend: [],
+      listRelation: [],
+      isLoading: true,
+      isLoadingTrend: true,
+      isLoadingRelation: true
+    });
     this._getData();
   }
 
@@ -140,8 +167,7 @@ export default class ProductDetail extends Component {
     this.props.navigation.navigate('Home');
   }
 
-
-  recommend = (text, data) => {
+  recommend = (text, data, isLoading) => {
     return (
       <SafeAreaView style={styles.recommend}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -152,6 +178,7 @@ export default class ProductDetail extends Component {
             </Text>
           </TouchableOpacity>
         </View>
+        {isLoading && <ActivityIndicator />}
         <FlatList
           data={data}
           showsHorizontalScrollIndicator={false}
@@ -172,8 +199,6 @@ export default class ProductDetail extends Component {
 
   _rating = () => {
     const { detail } = this.state
-    // const total_rated = detail.rating_info ? detail.rating_info.total_rated : 0;
-    // const percent_number = detail.rating_info ? detail.rating_info.percent_number : 100;
     const rating = detail.rating_info.percent_number / 100 * 5;
     return rating;
   }
@@ -223,10 +248,19 @@ export default class ProductDetail extends Component {
     return content;
   }
 
-
-
   render() {
-    const { isLoading, detail, listRelation, listTrend, colorHeart, colorBookmark, colorDetailBtn, colorRatingBtn } = this.state;
+    const {
+      isLoading,
+      detail,
+      listRelation,
+      listTrend,
+      colorHeart,
+      colorBookmark,
+      colorDetailBtn,
+      colorRatingBtn,
+      isLoadingRelation,
+      isLoadingTrend
+    } = this.state;
 
     return (
       <View style={styles.container}>
@@ -340,9 +374,9 @@ export default class ProductDetail extends Component {
                     }}
                   />
                   {this._content()}
-                  {this.recommend('Sản phẩm tương tự', listRelation)}
+                  {this.recommend('Sản phẩm tương tự', listRelation, isLoadingRelation)}
                   <View style={styles.line}></View>
-                  {this.recommend('Bạn có thể thích', listTrend)}
+                  {this.recommend('Bạn có thể thích', listTrend, isLoadingTrend)}
                 </View>
               </View>
           }
