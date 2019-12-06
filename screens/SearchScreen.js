@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
 import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 const formatData = (data, numColumns) => {
@@ -43,17 +43,17 @@ export default class SearchScreen extends React.Component {
   _getData = async () => {
     const { keyWord, offset } = this.state
     const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${offset}&size=10`);
-
+    const listSearch = data.data.data.content.filter(item => item !== null);
     if (data.data.data.content.length === 0) {
       return this.setState({
-        totalResults: 'Không tìm thấy kết quả',
+        totalResults: 'Không tìm thấy',
         isLoading: false,
       })
     }
 
     return this.setState({
-      listSearch: data.data.data.content,
-      totalResults: data.data.data.total + ' kết quả',
+      listSearch,
+      totalResults: data.data.data.total,
       isLoading: false,
 
     })
@@ -65,6 +65,7 @@ export default class SearchScreen extends React.Component {
     const { offset, listSearch, keyWord } = this.state;
     const newoffset = offset + 10;
     const data = await axios.get(`http://${IP_API}/product/list?keyword=${keyWord}&offset=${newoffset}&size=10`);
+
     this.setState({
       offset: newoffset,
       listSearch: listSearch.concat(data.data.data.content),
@@ -79,7 +80,7 @@ export default class SearchScreen extends React.Component {
 
   renderFooter = () => {
     const { listSearch, totalResults } = this.state
-    if (listSearch.length === 0 && listSearch.length >= totalResults) {
+    if (listSearch.length === 0 || listSearch.length >= totalResults) {
       return <ActivityIndicator animating={false} />;
     } else {
       return <ActivityIndicator animating={true} />;
@@ -128,13 +129,14 @@ export default class SearchScreen extends React.Component {
   }
 
   render() {
+    const { totalResults } = this.state;
     return (
       <View style={styles.container}>
-        <NavigationEvents
+        {/* <NavigationEvents
           onDidFocus={() => {
             this.searchTextInput.focus();
           }}
-        />
+        /> */}
         <View style={styles.header}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
@@ -149,7 +151,7 @@ export default class SearchScreen extends React.Component {
               style={styles.warpperSearch}
             >
               <TextInput
-                ref={(input) => { this.searchTextInput = input; }}
+                // ref={(input) => { this.searchTextInput = input; }}
                 autoFocus={true}
                 placeholder='Tìm kiếm'
                 style={styles.txtSearch}
@@ -182,7 +184,8 @@ export default class SearchScreen extends React.Component {
             <Text>Đề cử</Text>
           </View>
           <View style={styles.respond}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{this.state.totalResults}</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#e10100' }}>{totalResults}</Text>
+            <Text style={totalResults === '' ? { display: 'none' } : { fontSize: 16, fontWeight: 'bold' }}> kết quả</Text>
           </View>
           <View style={styles.filter}>
             <FontAwesome
@@ -225,9 +228,10 @@ SearchScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: REUSE.MAIN_COLOR,
   },
   header: {
-    backgroundColor: REUSE.MAIN_COLOR,
+    backgroundColor: REUSE.TABBAR_COLOR,
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
@@ -273,8 +277,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     height: 40,
-    marginBottom: 15,
-    borderColor: 'grey'
+    marginBottom: 10,
+    borderColor: 'grey',
+    backgroundColor: '#fff'
 
   },
   nominations: {
@@ -294,6 +299,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   respond: {
+    flexDirection: 'row',
 
   },
   // warpperReturn: {

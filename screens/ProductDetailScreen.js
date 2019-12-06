@@ -51,7 +51,7 @@ export default class ProductDetail extends Component {
         userId: username,
       }
     });
-
+    console.log(data);
     return this.setState({
       detail: data.data.data,
       isLoading: false
@@ -172,11 +172,11 @@ export default class ProductDetail extends Component {
       <SafeAreaView style={styles.recommend}>
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <Text style={styles.recommendHeader}>{text}</Text>
-          <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}>
+          {/* <TouchableOpacity style={{ flex: 1, alignItems: "flex-end", marginVertical: 10 }}>
             <Text style={{ fontWeight: "bold", fontSize: 16, marginRight: 10 }}>
               Xem thêm >
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {isLoading && <ActivityIndicator />}
         <FlatList

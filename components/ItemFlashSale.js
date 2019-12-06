@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
         color: '#a4b0be'
     },
     txtPrice: {
-        color: '#ff4757',
+        color: '#e10100',
         fontSize: 16,
     }
 

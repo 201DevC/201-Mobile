@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import { REUSE } from '../reuse/Reuse';
 
 export default function LikeCard(props) {
     const { data: { name, image, status }, onPressShowHeart } = props;
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         lineHeight: 25,
+        color:REUSE.TITTLE_COLOR
         
         
     },

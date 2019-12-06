@@ -9,9 +9,6 @@ export default class ItemProduct extends Component {
     constructor(props) {
         super(props);
         this.randomFree = Math.floor(Math.random() * 3);
-        this.state = {
-            styleOldPrice: ""
-        }
     }
 
     render() {
@@ -63,7 +60,7 @@ export default class ItemProduct extends Component {
                 </View>
                 <View style={styles.warpperRateAndOrder}>
                     <View style={styles.warpperRating}>
-                        <Rating readonly startingValue={rating} imageSize={10} />
+                        <Rating readonly startingValue={rating} imageSize={10} type='custom' ratingColor='#e10100' />
                         <Text style={styles.txtOrderCount} numberOfLines={1}>({rating_info.total_rated})</Text>
                     </View>
                     <View style={order_count != 0 ? styles.warpperOrderCount : styles.none}>
@@ -124,7 +121,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     txtPrice: {
-        color: '#eb2f06',
+        color: '#e10100',
         fontSize: 14,
     },
     txtOldPrice: {

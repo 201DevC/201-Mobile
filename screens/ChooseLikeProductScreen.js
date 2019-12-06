@@ -19,8 +19,8 @@ export default class ChooseLikeProductScreen extends Component {
     }
 
     _getDataCategoryLv1 = async () => {
-        const data = await axios.get(`http://${IP_API}/category/lv1?page=1`);
-        const listcategory = data.data.data.content.map((item) => {
+        const data = await axios.get(`http://${IP_API}/category/lv1`);
+        listcategory = data.data.data.content.map((item) => {
             item.status = 0;
             return item;
         });
@@ -90,27 +90,11 @@ export default class ChooseLikeProductScreen extends Component {
                                 raised
                                 containerStyle={styles.btnNext}
                                 buttonStyle={styles.btnNextOutline}
-                                titleStyle={{ color: 'black', fontWeight: "500", fontSize: 16 }}
+                                titleStyle={{ color: REUSE.TITTLE_COLOR, fontWeight: "500", fontSize: 16 }}
                             />
                         </View>
                     </View>
                 </View>
-                {/* <ScrollView
-                    style={styles.body}
-                    showsHorizontalScrollIndicator={false}
-                >
-                    <View style={styles.groupListCategory}>
-                        {
-                            listcategory.map(item => {
-                                return <LikeCard
-                                    key={item.id}
-                                    data={item}
-                                    onPressShowHeart={() => this.onPressItem(item.id)}
-                                />
-                            })
-                        }
-                    </View>
-                </ScrollView> */}
                 <FlatList
                     showsHorizontalScrollIndicator={false}
                     data={listcategory}
@@ -129,7 +113,7 @@ export default class ChooseLikeProductScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: REUSE.MAIN_COLOR,
         marginTop: Constants.statusBarHeight,
 
     },
@@ -149,7 +133,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         fontWeight: '500',
-        width: '90%'
+        width: '90%',
+        color:REUSE.TITTLE_COLOR
     },
     txtSlogan: {
         marginTop: 8,
@@ -165,7 +150,8 @@ const styles = StyleSheet.create({
         width: 160,
         backgroundColor: 'white',
         marginTop: 10,
-        borderRadius: 8
+        borderRadius: 8,
+        
     },
     btnNextOutline: {
         borderRadius: 8
