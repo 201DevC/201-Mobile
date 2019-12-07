@@ -27,7 +27,7 @@ const HomeStack = createStackNavigator(
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: "Trang chủ",
+  tabBarLabel: 'Trang chủ',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -47,7 +47,7 @@ const SearchStack = createStackNavigator(
 );
 
 SearchStack.navigationOptions = {
-  tabBarLabel: "Tìm kiếm",
+  tabBarLabel: 'Tìm kiếm',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -67,7 +67,7 @@ const ShoppingStack = createStackNavigator(
 );
 
 ShoppingStack.navigationOptions = {
-  tabBarLabel: "Giỏ hàng",
+  tabBarLabel: 'Giỏ hàng',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -87,7 +87,7 @@ const HistoryStack = createStackNavigator(
 );
 
 HistoryStack.navigationOptions = {
-  tabBarLabel: "Lịch sử",
+  tabBarLabel: 'Lịch sử',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -107,7 +107,7 @@ const ProfileStack = createStackNavigator(
 );
 
 ProfileStack.navigationOptions = {
-  tabBarLabel: "Tài khoản",
+  tabBarLabel: 'Tài khoản',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -126,6 +126,12 @@ const tabNavigator = createBottomTabNavigator({
   ShoppingStack,
   HistoryStack,
   ProfileStack,
+},{
+  tabBarOptions: {
+    style: {
+      backgroundColor: 'red',
+    }
+  }
 });
 
 tabNavigator.path = '';
