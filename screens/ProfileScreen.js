@@ -37,7 +37,7 @@ export default class ProfileScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.warpperTabBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Tài khoản</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color:REUSE.TITTLE_COLOR }}>Tài khoản</Text>
         </View>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.warpperInfoUser}>
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 999,
-    backgroundColor: REUSE.MAIN_COLOR,
+    backgroundColor: REUSE.TABBAR_COLOR,
     paddingHorizontal: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     width: '90%'
   },
   txtRecord: {
-    color: '#2c3e50',
+    color: '#870f10',
     fontSize: 15,
     textAlign: "left",
     width: '90%',

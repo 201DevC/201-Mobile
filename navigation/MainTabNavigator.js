@@ -11,12 +11,12 @@ import SearchScreen from '../screens/SearchScreen';
 import ShoppingCardScreen from '../screens/ShoppingCardScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import ProductDetailScreen from '../screens/ProductDetailScreen';
-import ShowMoreScreen from '../screens/ShowMoreScreen';
+import { REUSE } from '../reuse/Reuse';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
   default: {},
+  backgroundColor: 'black',
 });
 
 const HomeStack = createStackNavigator(
@@ -32,7 +32,7 @@ HomeStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'home'}
-      focusedColor='#f1797a'
+      focusedColor= {REUSE.TITTLE_COLOR}
     />
   ),
 };
@@ -52,7 +52,7 @@ SearchStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'search'}
-      focusedColor='#f1797a'
+      focusedColor={REUSE.TITTLE_COLOR}
     />
   ),
 };
@@ -72,7 +72,7 @@ ShoppingStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'shopping-cart'}
-      focusedColor='#f1797a'
+      focusedColor={REUSE.TITTLE_COLOR}
     />
   ),
 };
@@ -92,7 +92,7 @@ HistoryStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'history'}
-      focusedColor='#f1797a'
+      focusedColor={REUSE.TITTLE_COLOR}
     />
   ),
 };
@@ -112,7 +112,7 @@ ProfileStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'user'}
-      focusedColor='#f1797a'
+      focusedColor={REUSE.TITTLE_COLOR}
     />
   ),
 };

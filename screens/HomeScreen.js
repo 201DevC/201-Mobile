@@ -7,7 +7,8 @@ import {
     ScrollView,
     ActivityIndicator,
     Dimensions,
-    RefreshControl
+    RefreshControl,
+    AsyncStorage
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -45,14 +46,15 @@ export default class HomeScreen extends Component {
             isLoadingTendency: true,
             listcategoryLv1: [],
             listFlashSale: [],
-            listProductTrend: []
+            listProductTrend: [],
+            listRecommmend: []
         };
         this._isMounted = false;
     }
 
     renderItem = ({ item }) => {
         if (item.emty === true) {
-            return <View style={{ flex: 1, margin: 3, }} />;
+            return <View style={{ flex: 1, margin: 3, padding: 5, }} />;
         }
         return (
             <ItemProduct
@@ -65,32 +67,48 @@ export default class HomeScreen extends Component {
 
     _getDataCategoryLv1 = async () => {
         const datalv1 = await axios.get(`http://${IP_API}/category/lv1`);
-
+        const listcategoryLv1 = datalv1.data.data.content.filter(item => item !== null);
         return this.setState({
-            listcategoryLv1: datalv1.data.data.content,
+            listcategoryLv1,
+        });
+    }
+
+    _getDataRecommend = async () => {
+        const username = await AsyncStorage.getItem('username');
+        const data = await axios.get(`http://${IP_API}/product/recommend`, {
+            params: {
+                userId: username,
+            }
+        });
+        const listRecommmend = data.data.data.filter(item => item !== null);
+        return this.setState({
+            listRecommmend: listRecommmend.slice(0,4),
         });
     }
 
     _getDataFlashSale = async () => {
-        const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0`);
-
+        const dataFlashSale = await axios.get(`http://${IP_API}/flash?offset=0&size=10`);
+        const listFlashSale = dataFlashSale.data.data.content.filter(item => item !== null);
         return this.setState({
-            listFlashSale: dataFlashSale.data.data.content,
+            listFlashSale,
             isLoading: false
+            
         });
     }
 
     _getDataProductTrend = async () => {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
-
+        const listProductTrend = dataTrend.data.data.filter(item => item !== null);
+        
         return this.setState({
-            listProductTrend: dataTrend.data.data,
+            listProductTrend,
             isLoadingTendency: false
         });
     }
 
     _getData = () => {
         this._getDataCategoryLv1();
+        this._getDataRecommend();
         this._getDataFlashSale();
         this._getDataProductTrend();
     }
@@ -178,7 +196,7 @@ export default class HomeScreen extends Component {
                             <RefreshControl refreshing={isLoading} onRefresh={this._referData} />
                         }
                     >
-                        <View style={{ backgroundColor: REUSE.MAIN_COLOR, borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
+                        <View style={{ backgroundColor: REUSE.TABBAR_COLOR, borderBottomEndRadius: 5, borderBottomStartRadius: 5 }}>
                             <View style={styles.header}>
                                 <Slideshow />
                             </View>
@@ -191,12 +209,12 @@ export default class HomeScreen extends Component {
                                         borderRadius: 5,
                                         alignItems: "center",
                                         marginHorizontal: 5,
-                                        backgroundColor: "#fff"
+                                        backgroundColor:'#ce2b2c'
                                     }}>
                                     <Text style={{
-                                        color: "#c47482",
+                                        color: "#fff",
                                         fontSize: 15,
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
                                     }}>Danh mục</Text>
                                 </TouchableOpacity>
                                 {
@@ -258,7 +276,8 @@ export default class HomeScreen extends Component {
                                             </TouchableOpacity>
                                         </View>
                                         <FlatList
-                                            data={formatData(this.state.listFlashSale, 2)}
+                                            // data={formatData(this.state.listRecommmend, 2)}
+                                            data = {this.state.listRecommmend}
                                             renderItem={this.renderItem}
                                             numColumns={2}
                                             style={{ flex: 1 }}
@@ -266,7 +285,7 @@ export default class HomeScreen extends Component {
                                         />
 
                                         <TouchableOpacity onPress={() => this._goToHistory()} style={{ marginVertical: 10 }}>
-                                            <Text style={{ color: "#0984e3", textAlign: "right", paddingHorizontal: 10, fontWeight: 'bold', fontSize: 16 }}>
+                                            <Text style={{ color: "#870f10", textAlign: "right", paddingHorizontal: 10, fontWeight: 'bold', fontSize: 16 }}>
                                                 Dựa trên sản phẩm bạn đã xem >
                                             </Text>
                                         </TouchableOpacity>
@@ -305,7 +324,7 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
     warpperContainer: {
         flex: 1,
-        backgroundColor: '#fff'
+        backgroundColor: REUSE.MAIN_COLOR,
     },
     container: {
         flex: 1,
@@ -324,7 +343,7 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         zIndex: 999,
-        backgroundColor: REUSE.MAIN_COLOR,
+        backgroundColor: REUSE.TABBAR_COLOR,
         paddingHorizontal: 10,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5
@@ -372,23 +391,22 @@ const styles = StyleSheet.create({
     },
     wrapperFlashSale: {
         flex: 0.34,
-        borderBottomColor: "grey"
+        borderBottomColor: "grey",
     },
     titleFlashSale: {
         flexDirection: "row",
         justifyContent: "space-between",
         padding: 5,
-        alignItems: "center"
+        alignItems: "center",
     },
     textFlashSale: {
         fontSize: 20,
-        color: '#c54b6c',
+        color: '#e10100',
         fontWeight: "bold",
-        fontStyle: "italic"
+        fontStyle: "italic",
     },
     wrapperYourLike: {
         flex: 0.6,
-        backgroundColor: '#fff',
         borderBottomColor: "grey"
 
     },
@@ -404,7 +422,8 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: "bold",
         paddingVertical: 5,
-        marginLeft: 10
+        marginLeft: 10,
+        color:'#ce2b2c'
     },
     line: {
         width: '100%',

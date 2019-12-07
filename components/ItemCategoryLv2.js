@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from "react-native";
+import { REUSE } from '../reuse/Reuse';
 
 export default class ItemCategoryLv2 extends Component {
 
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         marginVertical: 2,
         marginHorizontal: 2,
-        backgroundColor: "#ffdee3"
+        backgroundColor: REUSE.MAIN_COLOR
 
     },
     warpperImage: {

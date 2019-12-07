@@ -24,10 +24,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: "center",
         marginHorizontal: 5,
-        backgroundColor:"#fff"
+        backgroundColor:"#ce2b2c"
     },
     text: {
-        color: "#c47482",
+        color: "#fff",
         fontSize: 15,
         fontWeight:'bold'
     }

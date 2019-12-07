@@ -1,8 +1,10 @@
+import { REUSE } from "../reuse/Reuse";
+
 const tintColor = '#2f95dc';
 
 export default {
   tintColor,
-  tabIconDefault: '#ccc',
+  tabIconDefault: 'black',
   tabIconSelected: tintColor,
   tabBar: '#fefefe',
   errorBackground: 'red',

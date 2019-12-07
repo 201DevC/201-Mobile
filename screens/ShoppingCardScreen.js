@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View,  StyleSheet, Text, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, ScrollView, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import ItemCategoryLv1 from '../components/ItemCategoryLv1';
 import ItemCategoryLv2 from '../components/ItemCategoryLv2';
+import { FontAwesome } from '@expo/vector-icons';
 import axios from "axios";
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 export default class MenuLevel1Screen extends Component {
@@ -15,7 +16,7 @@ export default class MenuLevel1Screen extends Component {
       listcategoryLv2: [],
       isLoading: true,
       isLoadingLv2: false,
-      Id: "",
+      Id: "8",
     };
   }
 
@@ -24,7 +25,8 @@ export default class MenuLevel1Screen extends Component {
     const listcategoryLv1 = data.data.data.content.map((item) => {
       item.choose = 0;
       return item
-    })
+    });
+    listcategoryLv1[0].choose = 1;
     return this.setState({
       listcategoryLv1,
       isLoading: false
@@ -42,17 +44,14 @@ export default class MenuLevel1Screen extends Component {
   onPressShowmore = (lv, id, name) => {
     this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name });
   }
-
   componentDidMount() {
-    this._getDataCategoryLv1()
+    this._getDataCategoryLv1();
+    this._getDataCategoryLv2();
   }
-
   _showLv2 = async item => {
     let { listcategoryLv1 } = this.state;
-
     const foundIndex = listcategoryLv1.findIndex(category => category.id === item.id);
     const found = listcategoryLv1[foundIndex];
-
     if (found.choose === 0) {
       listcategoryLv1.map((item) => {
         item.choose = 0;
@@ -67,12 +66,24 @@ export default class MenuLevel1Screen extends Component {
     await this._getDataCategoryLv2();
 
   }
+  _onPressBackButton = () => {
+    this.props.navigation.navigate('Home');
+  }
 
   render() {
     const { isLoading, isLoadingLv2 } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.txtTitle}>Danh mục</Text>
+        <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center', paddingHorizontal: 10 }}>
+          <View style={styles.back}>
+            <TouchableOpacity
+              onPress={this._onPressBackButton}
+            >
+              <FontAwesome size={20} name={'chevron-left'} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.txtTitle}>Danh mục</Text>
+        </View>
         {isLoading ? <ActivityIndicator animating={isLoading} /> :
           <View style={styles.warpperCategory}>
             <ScrollView style={{ width: "25%" }} horizontal={false} showsVerticalScrollIndicator={false} >
@@ -124,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
-    color: "black",
+    color: REUSE.TITTLE_COLOR,
     textAlign: 'right',
     marginRight: 20,
     marginBottom: 10

@@ -1,10 +1,20 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, ActivityIndicator, BackHandler } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    FlatList,
+    ActivityIndicator,
+    BackHandler,
+    AsyncStorage,
+    Dimensions
+} from 'react-native';
 import { FontAwesome, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import ItemProduct from '../components/ItemProduct';
 import Constants from 'expo-constants';
 import axios from "axios";
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 const formatData = (data, numColumns) => {
@@ -24,17 +34,17 @@ const formatData = (data, numColumns) => {
     }
     return data;
 };
+
 export default class ShowMoreScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
             listData: [],
             title: '',
-            idCate: '',
-            lvCate: '',
             offset: 0,
-            totalResults: '',
+            // totalResults: '',
             isLoading: true,
+            isLoadingFooter: true
         };
         this._isMounted = false;
         this.backHandler = null;
@@ -42,7 +52,7 @@ export default class ShowMoreScreen extends Component {
 
     renderItem = ({ item }) => {
         if (item.emty === true) {
-            return <View style={{ flex: 1, margin: 5, }} />;
+            return <View style={{ flex: 1, margin: 3, padding: 5, }} />;
         }
         return (
             <ItemProduct
@@ -54,57 +64,79 @@ export default class ShowMoreScreen extends Component {
     };
 
     onEndReached = async () => {
-        const { offset, lvCate, idCate, listData } = this.state;
-        const newoffset = offset + 10;
-        const data = await axios.get(`http://${IP_API}/product/list?cate${lvCate}=${idCate}&offset=${newoffset}&size=10`);
-
-        this.setState({
-            offset: newoffset,
-            listData: listData.concat(data.data.data.content),
-        });
+        const { offset, listData } = this.state;
+        const lvCate = this.props.navigation.getParam('lvCate');
+        const idCate = this.props.navigation.getParam('idCate');
+        const newoffset = offset + 20;
+        if (lvCate == 3) {
+            const data = await axios.get(`http://${IP_API}/flash?offset=${newoffset}&size=20`);
+            this.setState({
+                offset: newoffset,
+                listData: listData.concat(data.data.data.content),
+            });
+        } else if (lvCate == 2 || lvCate == 1) {
+            const data = await axios.get(`http://${IP_API}/product/list?cate${lvCate}=${idCate}&offset=${newoffset}&size=10`);
+            this.setState({
+                offset: newoffset,
+                listData: listData.concat(data.data.data.content),
+            });
+        } else this.setState({
+            isLoadingFooter: false
+        })
     }
 
     renderFooter = () => {
-        const { listData, totalResults } = this.state
-        if (listData.length === 0 && listData.length >= totalResults) {
-            return <ActivityIndicator animating={false} />;
-        } else {
-            return <ActivityIndicator animating={true} />;
-        }
+        const { listData, isLoadingFooter } = this.state
+        // if (listData.length === 0 && listData.length >= totalResults) {
+        // if (listData.length > 0) {
+
+        // }
+
+        return <ActivityIndicator animating={isLoadingFooter} />;
+        // } else {
+        //     return <ActivityIndicator animating={true} />;
+        // }
     };
 
     _getData = async () => {
         const { offset } = this.state;
-
         const lvCate = this.props.navigation.getParam('lvCate');
         const idCate = this.props.navigation.getParam('idCate');
         const title = this.props.navigation.getParam('nameCate');
-
         if (lvCate == 3) {
-            const data = await axios.get(`http://35.240.241.27:8080/product/trend`);
+            // const data = await axios.get(`http://35.240.241.27:8080/product/trend`);
+            const data = await axios.get(`http://${IP_API}/flash?offset=${offset}&size=20`);
+            const listData = data.data.data.content.filter(item => item !== null);
             this.setState({
-                listData: data.data.data,
+                listData,
                 title,
                 isLoading: false
             })
         } else if (lvCate == 4) {
-            const data = await axios.get(`http://35.240.241.27:8080/product/trend`);
-            this.setState({
-                listData: data.data.data,
+            const username = await AsyncStorage.getItem('username');
+            const data = await axios.get(`http://${IP_API}/product/recommend`, {
+                params: {
+                    userId: username,
+                }
+            });
+            const listData = data.data.data.filter(item => item !== null);
+            return this.setState({
+                listData,
                 title,
                 isLoading: false
-            })
+
+            });
         } else {
-            const data = await axios.get(`http://${IP_API}/product/list?cate${lvCate}=${idCate}&offset=${offset}&size=10`);
+            const data = await axios.get(`http://${IP_API}/product/list?cate${lvCate}=${idCate}&offset=${offset}&size=20`);
+            const listData = data.data.data.content.filter(item => item !== null);
 
             this.setState({
-                listData: data.data.data.content,
-                totalResults: data.data.data.total + ' kết quả',
+                listData,
+                // totalResults: data.data.data.total + ' kết quả',
                 title,
                 isLoading: false
             });
         }
-
     }
     
     handleBackPress = () => {
@@ -143,7 +175,7 @@ export default class ShowMoreScreen extends Component {
 
 
     render() {
-        const { title, totalResults, isLoading } = this.state;
+        const { title, isLoading } = this.state;
         if (isLoading) {
             return <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
                 <ActivityIndicator animating={isLoading} />
@@ -176,7 +208,7 @@ export default class ShowMoreScreen extends Component {
                         </View>
 
                     </View>
-                    <View style={styles.warpperFill}>
+                    {/* <View style={styles.warpperFill}>
                         <View style={styles.nominations}>
                             <FontAwesome
                                 name='caret-down'
@@ -196,7 +228,7 @@ export default class ShowMoreScreen extends Component {
                             />
                             <Text>Lọc</Text>
                         </View>
-                    </View>
+                    </View> */}
                     <FlatList
                         data={formatData(this.state.listData, 2)}
                         renderItem={this.renderItem}
@@ -206,6 +238,7 @@ export default class ShowMoreScreen extends Component {
                         onEndReached={this.onEndReached}
                         onEndReachedThreshold={1}
                         ListFooterComponent={this.renderFooter}
+                        showsVerticalScrollIndicator={false}
                     />
                 </View>
             );
@@ -218,10 +251,11 @@ ShowMoreScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: REUSE.MAIN_COLOR,
     },
     header: {
-        backgroundColor: REUSE.MAIN_COLOR,
+        backgroundColor: REUSE.TABBAR_COLOR,
         position: 'relative',
         justifyContent: 'center',
         alignItems: 'center',

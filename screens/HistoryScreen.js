@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import CardHistory from '../components/CardHistory'
@@ -20,16 +20,13 @@ export default class HistoryScreen extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   this._getData();
-  // }
-
   _getData = async () => {
     const username = await AsyncStorage.getItem('username');
 
-    const dataFlashSale = await axios.get(`http://${IP_API}/user/${username}/views?offset=0`);
+    const dataHistory = await axios.get(`http://${IP_API}/user/${username}/views?offset=0`);
+    const listHistory = dataHistory.data.data.content.filter(item => item !== null);
     return this.setState({
-      listHistory: dataFlashSale.data.data.content,
+      listHistory,
       isLoading: false
     });
   }
@@ -61,8 +58,26 @@ export default class HistoryScreen extends Component {
     this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' });s
   }
 
+  _onPessDeleteAll = () => {
+    Alert.alert(
+      'Xóa lịch sử',
+      'Bạn muốn xóa hết lịch sử ?',
+      [
+        {
+          text: 'Hủy',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        { text: 'Xóa', 
+        onPress: () => console.log('OK Pressed') },
+      ],
+      { cancelable: false },
+    );
+  }
+
   render() {
     const { isLoading, listHistory } = this.state
+
 
     return (
       <View style={styles.container}>
@@ -95,14 +110,16 @@ export default class HistoryScreen extends Component {
           </View>
         </View>
         <View style={styles.warpperTitles}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#870f10' }}>
             Lịch sử xem hàng
           </Text>
-          <FontAwesome
-            name='ellipsis-v'
-            size={20}
-            color='grey'
-          />
+          <TouchableOpacity onPress={this._onPessDeleteAll} style={{ width: '10%', alignItems: 'flex-end' }}>
+            <FontAwesome
+              name='ellipsis-v'
+              size={20}
+              color='black'
+            />
+          </TouchableOpacity>
         </View>
         <View style={styles.warpperList}>
           {
@@ -135,7 +152,8 @@ HistoryScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Constants.statusBarHeight + 60
+    paddingTop: Constants.statusBarHeight + 60,
+    backgroundColor: REUSE.MAIN_COLOR
   },
   warpperTabBar: {
     width: "100%",
@@ -144,7 +162,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 999,
-    backgroundColor: REUSE.MAIN_COLOR,
+    backgroundColor: REUSE.TABBAR_COLOR,
     paddingHorizontal: 10,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5
@@ -194,7 +212,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#bdc3c7'
+    borderBottomColor: '#bdc3c7',
+    marginBottom: 5,
+    backgroundColor: '#fff'
   },
   warpperList: {
     flex: 1,
