@@ -45,8 +45,8 @@ export default class ProfileScreen extends Component {
               <Image resizeMode='contain' style={styles.imgUser} source={require('../assets/images/user.png')} />
             </View>
             <View style={styles.warpperTxt}>
-              <Text style={{ fontSize: 20, textTransform: 'uppercase', fontWeight: 'bold', color:'#7f8c8d' }}>tri nha</Text>
-              <Text style={{ fontSize: 15, marginTop:10, color:'#7f8c8d' }}>trinha@gmail.com</Text>
+              <Text style={{ fontSize: 20, textTransform: 'uppercase', fontWeight: 'bold', color:'#7f8c8d' }}>DevC 201</Text>
+              <Text style={{ fontSize: 15, marginTop:10, color:'#7f8c8d' }}>devc201@coderschool.com</Text>
             </View>
           </View>
           <View style={styles.warpperBody}>

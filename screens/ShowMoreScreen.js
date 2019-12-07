@@ -275,10 +275,11 @@ const styles = StyleSheet.create({
     },
     back: {
         justifyContent: 'center',
+        width:'10%',
     },
     txtTitle: {
         flex: 1,
-        marginLeft: 20,
+        // marginLeft: 20,
         fontSize: 20,
         fontWeight: 'bold'
     },

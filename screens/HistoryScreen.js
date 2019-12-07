@@ -176,7 +176,8 @@ const styles = StyleSheet.create({
     height: 40,
   },
   back: {
-    justifyContent: "center"
+    justifyContent: "center",
+    width:'10%'
   },
   warpperSearch: {
     backgroundColor: "white",
@@ -187,7 +188,6 @@ const styles = StyleSheet.create({
     height: 42,
     paddingHorizontal: 10,
     borderRadius: 5,
-    marginLeft: 15
   },
   warpperTxt: {
     flexDirection: "row",
