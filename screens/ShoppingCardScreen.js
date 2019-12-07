@@ -12,110 +12,18 @@ export default class MenuLevel1Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      listcategoryLv1: [],
-      listcategoryLv2: [],
-      isLoading: true,
-      isLoadingLv2: false,
-      Id: "8",
+     
     };
   }
 
-  _getDataCategoryLv1 = async () => {
-    const data = await axios.get(`http://${IP_API}/category/lv1`);
-    const listcategoryLv1 = data.data.data.content.map((item) => {
-      item.choose = 0;
-      return item
-    });
-    listcategoryLv1[0].choose = 1;
-    return this.setState({
-      listcategoryLv1,
-      isLoading: false
-    })
-  }
-
-  _getDataCategoryLv2 = async () => {
-    const { Id } = this.state
-    const data = await axios.get(`http://${IP_API}/category/lv2?parentId=${Id}`);
-    return this.setState({
-      listcategoryLv2: data.data.data.content,
-      isLoadingLv2: false
-    })
-  }
-  onPressShowmore = (lv, id, name) => {
-    this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name });
-  }
-  componentDidMount() {
-    this._getDataCategoryLv1();
-    this._getDataCategoryLv2();
-  }
-  _showLv2 = async item => {
-    let { listcategoryLv1 } = this.state;
-    const foundIndex = listcategoryLv1.findIndex(category => category.id === item.id);
-    const found = listcategoryLv1[foundIndex];
-    if (found.choose === 0) {
-      listcategoryLv1.map((item) => {
-        item.choose = 0;
-      })
-      found.choose = 1;
-    }
-    await this.setState({
-      Id: item.id,
-      listcategoryLv2: [],
-      isLoadingLv2: true
-    })
-    await this._getDataCategoryLv2();
-
-  }
-  _onPressBackButton = () => {
-    this.props.navigation.navigate('Home');
-  }
+  
 
   render() {
-    const { isLoading, isLoadingLv2 } = this.state;
     return (
       <View style={styles.container}>
-        <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center', paddingHorizontal: 10 }}>
-          <View style={styles.back}>
-            <TouchableOpacity
-              onPress={this._onPressBackButton}
-            >
-              <FontAwesome size={20} name={'chevron-left'} />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.txtTitle}>Danh mục</Text>
+       <View style={styles.warpperTabBar}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color:REUSE.TITTLE_COLOR }}>Giỏ hàng</Text>
         </View>
-        {isLoading ? <ActivityIndicator animating={isLoading} /> :
-          <View style={styles.warpperCategory}>
-            <ScrollView style={{ width: "25%" }} horizontal={false} showsVerticalScrollIndicator={false} >
-              {
-                this.state.listcategoryLv1.map(item => {
-                  return <ItemCategoryLv1
-                    onPress={() => this._showLv2(item)}
-                    key={item.id}
-                    data={item}
-                  />
-                })
-              }
-            </ScrollView>
-            <View style={{ width: "75%" }}>
-              {/* <Text style={{fontSize:20, textAlign:"center"}}>{nameLv1}</Text> */}
-              {
-                isLoadingLv2 ? <ActivityIndicator animating={isLoadingLv2} />
-                  :
-                  <FlatList
-                    style={{ width: "100%" }}
-                    data={this.state.listcategoryLv2}
-                    renderItem={({ item }) => <ItemCategoryLv2
-                      onPress={() => this.onPressShowmore(2, item.id, item.name)}
-                      data={item}
-                    />}
-                    keyExtractor={item => item.id}
-                    numColumns={3}
-                  />
-              }
-            </View>
-          </View>
-        }
 
       </View>
     );
@@ -131,21 +39,19 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     backgroundColor: REUSE.MAIN_COLOR
   },
-  txtTitle: {
-    fontSize: 30,
-    fontWeight: "bold",
-    textAlign: "center",
-    color: REUSE.TITTLE_COLOR,
-    textAlign: 'right',
-    marginRight: 20,
-    marginBottom: 10
+  warpperTabBar: {
+    width: "100%",
+    paddingTop: Constants.statusBarHeight,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    zIndex: 999,
+    backgroundColor: REUSE.TABBAR_COLOR,
+    paddingHorizontal: 10,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  warpperCategory: {
-    flex: 1,
-    flexDirection: "row",
-  },
-  pressStyles: {
-    backgroundColor: "#ff7675"
-  }
-
 });

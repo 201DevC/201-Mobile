@@ -362,13 +362,15 @@ const styles = StyleSheet.create({
     },
     buger: {
         justifyContent: "center",
+        width:'10%',
+        height:'100%'
     },
     warpperSearch: {
         flexDirection: "row",
         alignItems: "center",
         opacity: 0.8,
         flex: 1,
-        justifyContent: "space-around"
+        justifyContent: "space-around",
     },
     warpperTxt: {
         flexDirection: "row"
@@ -404,6 +406,7 @@ const styles = StyleSheet.create({
         color: '#e10100',
         fontWeight: "bold",
         fontStyle: "italic",
+        minWidth:150,
     },
     wrapperYourLike: {
         flex: 0.6,

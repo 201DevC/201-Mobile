@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
   },
   back: {
     justifyContent: 'center',
+    width:'10%'
   },
   warpperSearch: {
     backgroundColor: 'white',
@@ -262,7 +263,6 @@ const styles = StyleSheet.create({
     height: 42,
     paddingHorizontal: 10,
     borderRadius: 5,
-    marginLeft: 15
   },
   txtSearch: {
     fontSize: 17,

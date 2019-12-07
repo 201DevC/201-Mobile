@@ -6,9 +6,11 @@ import {
   ScrollView,
   FlatList,
   ActivityIndicator,
-  BackHandler
+  BackHandler,
+  TouchableOpacity
 } from 'react-native';
 import Constants from 'expo-constants';
+import { FontAwesome } from '@expo/vector-icons';
 import ItemCategoryLv1 from '../components/ItemCategoryLv1';
 import ItemCategoryLv2 from '../components/ItemCategoryLv2';
 import axios from "axios";
@@ -23,7 +25,7 @@ export default class CategoryScreen extends Component {
       listcategoryLv2: [],
       isLoading: true,
       isLoadingLv2: false,
-      Id: "",
+      Id: "8",
     };
     this._isMounted = false;
     this.backHandler = null;
@@ -35,6 +37,7 @@ export default class CategoryScreen extends Component {
       item.choose = 0;
       return item
     })
+    listcategoryLv1[0].choose = 1;
     this._isMounted && this.setState({
       listcategoryLv1,
       isLoading: false
@@ -68,7 +71,8 @@ export default class CategoryScreen extends Component {
   componentDidMount() {
     this._isMounted = true;
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-    this._getDataCategoryLv1()
+    this._getDataCategoryLv1();
+    this._getDataCategoryLv2();
   }
 
   componentWillUnmount() {
@@ -101,7 +105,16 @@ export default class CategoryScreen extends Component {
     const { isLoading, isLoadingLv2 } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.txtTitle}>Danh mục</Text>
+        <View style={{ flexDirection: 'row', justifyContent: "space-between", alignItems: 'center', paddingHorizontal: 10 }}>
+          <View style={styles.back}>
+            <TouchableOpacity
+              onPress={this.handleBackPress}
+            >
+              <FontAwesome size={20} name={'chevron-left'} />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.txtTitle}>Danh mục</Text>
+        </View>
         {isLoading ? <ActivityIndicator animating={isLoading} /> :
           <View style={styles.warpperCategory}>
             <ScrollView style={{ width: "25%" }} horizontal={false} showsVerticalScrollIndicator={false} >
@@ -149,6 +162,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Constants.statusBarHeight,
     backgroundColor: REUSE.MAIN_COLOR
+  }, back: {
+    width: '20%'
   },
   txtTitle: {
     fontSize: 30,
