@@ -16,7 +16,8 @@ export default class HistoryScreen extends Component {
     super(props);
     this.state = {
       listHistory: [],
-      isLoading: true
+      isLoading: true,
+      isShowTooltip: false,
     };
   }
 
@@ -46,6 +47,12 @@ export default class HistoryScreen extends Component {
     this.setState({ listHistory });
   }
 
+  _onPressDeleteAll = async () => {
+    const username = await AsyncStorage.getItem('username');
+    await axios.delete(`http://${IP_API}/user/${username}/views`);
+    this.setState({ listHistory: [], isShowTooltip: false });
+  }
+
   onPressSearch = () => {
     this.props.navigation.navigate('Search');
   }
@@ -55,29 +62,16 @@ export default class HistoryScreen extends Component {
   }
 
   _goToProductDetail = (id) => {
-    this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' });s
+    this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' }); s
   }
 
-  _onPessDeleteAll = () => {
-    Alert.alert(
-      'Xóa lịch sử',
-      'Bạn muốn xóa hết lịch sử ?',
-      [
-        {
-          text: 'Hủy',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
-        },
-        { text: 'Xóa', 
-        onPress: () => console.log('OK Pressed') },
-      ],
-      { cancelable: false },
-    );
+  _onPressTootip = () => {
+    const isShowTooltip = !this.state.isShowTooltip;
+    this.setState({ isShowTooltip });
   }
 
   render() {
-    const { isLoading, listHistory } = this.state
-
+    const { isLoading, listHistory, isShowTooltip } = this.state;
 
     return (
       <View style={styles.container}>
@@ -113,13 +107,32 @@ export default class HistoryScreen extends Component {
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#870f10' }}>
             Lịch sử xem hàng
           </Text>
-          <TouchableOpacity onPress={this._onPessDeleteAll} style={{ width: '10%', alignItems: 'flex-end' }}>
-            <FontAwesome
-              name='ellipsis-v'
-              size={20}
-              color='black'
-            />
-          </TouchableOpacity>
+
+          {/* <TouchableOpacity
+            style={{ width: '10%', alignItems: 'flex-end' }}
+            onPress={this._onPressTootip}
+          > */}
+          {/* <Tooltip
+              popover={
+                <TouchableOpacity
+                  onPress={this._onPressDeleteAll}
+                >
+                  <Text>Xóa tất cả</Text>
+                </TouchableOpacity>
+              }
+              // toggleOnPress={isShowTooltip}
+              withOverlay={false}
+              backgroundColor='white'
+              // onPress={this._onPressTootip}
+              // containerStyle={{ width: 50, alignItems: 'flex-end' }}
+            >
+              <FontAwesome
+                name='ellipsis-v'
+                size={20}
+                color='black'
+              />
+            </Tooltip> */}
+          {/* </TouchableOpacity> */}
         </View>
         <View style={styles.warpperList}>
           {

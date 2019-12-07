@@ -121,10 +121,10 @@ ProfileStack.path = '';
 
 
 const tabNavigator = createBottomTabNavigator({
+  HistoryStack,
   HomeStack,
   SearchStack,
   ShoppingStack,
-  HistoryStack,
   ProfileStack,
 },{
   tabBarOptions: {
