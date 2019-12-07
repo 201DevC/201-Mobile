@@ -6,7 +6,9 @@ import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import AuthNavigator from './AuthNavigator';
 import ChooseLikeProductScreen from '../screens/ChooseLikeProductScreen';
 import ProductDetailStack from './ProductDetailNavigator';
-import ShowMoreScreen from '../screens/ShowMoreScreen';
+// import ShowMoreScreen from '../screens/ShowMoreScreen';  
+import ShowMoreStack from './ShowMoreNavigator';
+import CategoryStack from './CategoryNavigator';
 
 export default createAppContainer(
   createSwitchNavigator({
@@ -17,7 +19,9 @@ export default createAppContainer(
     Auth: AuthNavigator,
     ChooseLikeProduct: ChooseLikeProductScreen,
     ProductDetailStack: ProductDetailStack,    
-    ShowMore : ShowMoreScreen
+    // ShowMore : ShowMoreScreen
+    ShowMoreStack: ShowMoreStack,
+    CategoryStack: CategoryStack
   },
   {
     initialRouteName: 'AuthLoading',

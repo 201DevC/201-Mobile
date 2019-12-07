@@ -8,7 +8,7 @@ import axios from "axios";
 import { NavigationEvents } from 'react-navigation';
 import { FlatList } from 'react-native-gesture-handler';
 
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 export default class HistoryScreen extends Component {
@@ -43,13 +43,10 @@ export default class HistoryScreen extends Component {
   }
 
   _onPressDeleteBtn = async (productId) => {
-    this.setState({
-      listHistory: [],
-      isLoading: true
-    });
     const username = await AsyncStorage.getItem('username');
     await axios.delete(`http://${IP_API}/user/${username}/views/${productId}`);
-    this._getData();
+    const listHistory = this.state.listHistory.filter(item => item.id !== productId);
+    this.setState({ listHistory });
   }
 
   onPressSearch = () => {
@@ -61,7 +58,7 @@ export default class HistoryScreen extends Component {
   }
 
   _goToProductDetail = (id) => {
-    this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' });
+    this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' });s
   }
 
   render() {

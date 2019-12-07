@@ -1,7 +1,8 @@
 import { createStackNavigator } from 'react-navigation';
 import { Platform } from 'react-native';
-import ShowMoreScreen from '../screens/ShowMoreScreen';
+import CategoryScreen from '../screens/CategoryScreen';
 import ProductDetailScreen from '../screens/ProductDetailScreen';
+import ShowMoreScreen from '../screens/ShowMoreScreen';
 
 const config = Platform.select({
     web: { headerMode: 'screen' },
@@ -10,6 +11,7 @@ const config = Platform.select({
 
 export default createStackNavigator(
     {
+        Category: CategoryScreen,
         ShowMore: ShowMoreScreen,
         ProductDetail: ProductDetailScreen
     },

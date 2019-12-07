@@ -106,6 +106,7 @@ export default class ShowMoreScreen extends Component {
         }
 
     }
+    
     handleBackPress = () => {
         const { navigation } = this.props;
         const screen = this.props.navigation.getParam('screen');
@@ -137,7 +138,7 @@ export default class ShowMoreScreen extends Component {
     }
 
     _goToProductDetail = (id) => {
-        this.props.navigation.navigate('ProductDetail', { id: id, screen: 'Home' });
+        this.props.navigation.navigate('ProductDetail', { id: id});
     }
 
 

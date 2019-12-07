@@ -5,7 +5,6 @@ export default class ItemCategoryLv2 extends Component {
 
     render() {
         const { data: { name, image } } = this.props;
-        console.log(image)
         return (
             <TouchableOpacity
                 style={styles.warpperItemCategory}

@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import { View,  StyleSheet, Text, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  FlatList,
+  ActivityIndicator,
+  BackHandler
+} from 'react-native';
 import Constants from 'expo-constants';
 import ItemCategoryLv1 from '../components/ItemCategoryLv1';
 import ItemCategoryLv2 from '../components/ItemCategoryLv2';
 import axios from "axios";
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 export default class CategoryScreen extends Component {
@@ -17,6 +25,8 @@ export default class CategoryScreen extends Component {
       isLoadingLv2: false,
       Id: "",
     };
+    this._isMounted = false;
+    this.backHandler = null;
   }
 
   _getDataCategoryLv1 = async () => {
@@ -25,7 +35,7 @@ export default class CategoryScreen extends Component {
       item.choose = 0;
       return item
     })
-    return this.setState({
+    this._isMounted && this.setState({
       listcategoryLv1,
       isLoading: false
     })
@@ -34,17 +44,36 @@ export default class CategoryScreen extends Component {
   _getDataCategoryLv2 = async () => {
     const { Id } = this.state
     const data = await axios.get(`http://${IP_API}/category/lv2?parentId=${Id}`);
-    return this.setState({
+    this._isMounted && this.setState({
       listcategoryLv2: data.data.data.content,
       isLoadingLv2: false
     })
   }
+
   onPressShowmore = (lv, id, name) => {
     this.props.navigation.navigate('ShowMore', { lvCate: lv, idCate: id, nameCate: name });
   }
 
+  handleBackPress = () => {
+    const { navigation } = this.props;
+    const screen = this.props.navigation.getParam('screen');
+    if (screen) {
+      navigation.navigate(screen);
+    } else {
+      navigation.goBack();
+    }
+    return true;
+  }
+
   componentDidMount() {
+    this._isMounted = true;
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
     this._getDataCategoryLv1()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+    this.backHandler.remove()
   }
 
   _showLv2 = async item => {
@@ -110,7 +139,8 @@ export default class CategoryScreen extends Component {
     );
   }
 }
-MenuLevel1Screen.navigationOptions = {
+
+CategoryScreen.navigationOptions = {
   header: null
 }
 
