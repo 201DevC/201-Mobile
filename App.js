@@ -1,6 +1,6 @@
-import { AppLoading } from 'expo';
+gufugfghfghfghf:WWimport { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
-import * as Font from 'expo-font';
+isdasdasdasdsamport * as Font from 'expo-font';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
