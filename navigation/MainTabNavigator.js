@@ -8,7 +8,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import SearchScreen from '../screens/SearchScreen';
-import ShoppingCardScreen from '../screens/ShoppingCardScreen';
+import ShoppingScreen from '../screens/ShoppingScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { REUSE } from '../reuse/Reuse';
@@ -32,7 +32,7 @@ HomeStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={'home'}
-      focusedColor= {REUSE.TITTLE_COLOR}
+      focusedColor={REUSE.TITTLE_COLOR}
     />
   ),
 };
@@ -61,7 +61,7 @@ SearchStack.path = '';
 
 const ShoppingStack = createStackNavigator(
   {
-    ShoppingCard: ShoppingCardScreen,
+    ShoppingCard: ShoppingScreen,
   },
   config
 );
@@ -121,15 +121,15 @@ ProfileStack.path = '';
 
 
 const tabNavigator = createBottomTabNavigator({
-  HistoryStack,
   HomeStack,
   SearchStack,
   ShoppingStack,
+  HistoryStack,
   ProfileStack,
-},{
+}, {
   tabBarOptions: {
     style: {
-      backgroundColor:REUSE.TABBAR_COLOR,
+      backgroundColor: REUSE.TABBAR_COLOR,
     }
   }
 });

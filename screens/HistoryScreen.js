@@ -1,24 +1,25 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, Text, StyleSheet, AsyncStorage, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import Constants from 'expo-constants';
 import { FontAwesome } from '@expo/vector-icons';
 import CardHistory from '../components/CardHistory'
 import axios from "axios";
 
 import { NavigationEvents } from 'react-navigation';
-import { FlatList } from 'react-native-gesture-handler';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
-export default class HistoryScreen extends Component {
+export default class HistoryScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       listHistory: [],
       isLoading: true,
-      isShowTooltip: false,
     };
+
+    this._menu = null;
   }
 
   _getData = async () => {
@@ -48,9 +49,12 @@ export default class HistoryScreen extends Component {
   }
 
   _onPressDeleteAll = async () => {
-    const username = await AsyncStorage.getItem('username');
-    await axios.delete(`http://${IP_API}/user/${username}/views`);
-    this.setState({ listHistory: [], isShowTooltip: false });
+    if (this.state.listHistory.length > 0) {
+      const username = await AsyncStorage.getItem('username');
+      await axios.delete(`http://${IP_API}/user/${username}/views`);
+      this.setState({ listHistory: [], isShowTooltip: false });
+    }
+    this.hideMenu();
   }
 
   onPressSearch = () => {
@@ -65,20 +69,27 @@ export default class HistoryScreen extends Component {
     this.props.navigation.navigate('ProductDetail', { id: id, screen: 'History' }); s
   }
 
-  _onPressTootip = () => {
-    const isShowTooltip = !this.state.isShowTooltip;
-    this.setState({ isShowTooltip });
-  }
+  setMenuRef = ref => {
+    this._menu = ref;
+  };
+
+  hideMenu = () => {
+    this._menu.hide();
+  };
+
+  showMenu = () => {
+    this._menu.show();
+  };
 
   render() {
-    const { isLoading, listHistory, isShowTooltip } = this.state;
+    const { isLoading, listHistory } = this.state;
 
     return (
       <View style={styles.container}>
         <NavigationEvents
           onDidFocus={() => this._referData()}
         />
-        <View style={styles.warpperTabBar}>
+        <View style={styles.wrapperTabBar}>
           <View style={styles.tabBar}>
             <View style={styles.back}>
               <TouchableOpacity
@@ -89,9 +100,9 @@ export default class HistoryScreen extends Component {
             </View>
             <TouchableOpacity
               onPress={this.onPressSearch}
-              style={styles.warpperSearch}
+              style={styles.wrapperSearch}
             >
-              <View style={styles.warpperTxt}>
+              <View style={styles.wrapperTxt}>
                 <Text style={styles.txtTimKiem}>Tìm kiếm trên </Text>
                 <Text style={styles.txtSendo}>Sendo</Text>
               </View>
@@ -103,10 +114,29 @@ export default class HistoryScreen extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.warpperTitles}>
+        <View style={styles.wrapperTitles}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#870f10' }}>
             Lịch sử xem hàng
           </Text>
+
+
+          <Menu
+            ref={this.setMenuRef}
+            button={
+              <TouchableOpacity
+                onPress={this.showMenu}
+                style={{ width: 50, alignItems: 'flex-end' }}
+              >
+                <FontAwesome
+                  name='ellipsis-v'
+                  size={20}
+                  color='black'
+                />
+              </TouchableOpacity>
+            }
+          >
+            <MenuItem onPress={this._onPressDeleteAll}>Xóa tất cả</MenuItem>
+          </Menu>
 
           {/* <TouchableOpacity
             style={{ width: '10%', alignItems: 'flex-end' }}
@@ -134,7 +164,7 @@ export default class HistoryScreen extends Component {
             </Tooltip> */}
           {/* </TouchableOpacity> */}
         </View>
-        <View style={styles.warpperList}>
+        <View style={styles.wrapperList}>
           {
             isLoading ? <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
               <ActivityIndicator animating={isLoading} />
@@ -168,7 +198,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight + 60,
     backgroundColor: REUSE.MAIN_COLOR
   },
-  warpperTabBar: {
+  wrapperTabBar: {
     width: "100%",
     paddingTop: Constants.statusBarHeight,
     position: "absolute",
@@ -190,9 +220,9 @@ const styles = StyleSheet.create({
   },
   back: {
     justifyContent: "center",
-    width:'10%'
+    width: '10%'
   },
-  warpperSearch: {
+  wrapperSearch: {
     backgroundColor: "white",
     flexDirection: "row",
     alignItems: "center",
@@ -202,7 +232,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
   },
-  warpperTxt: {
+  wrapperTxt: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -217,7 +247,7 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 17
   },
-  warpperTitles: {
+  wrapperTitles: {
     flexDirection: "row",
     width: '100%',
     paddingHorizontal: 15,
@@ -229,9 +259,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     backgroundColor: '#fff'
   },
-  warpperList: {
+  wrapperList: {
     flex: 1,
-
   }
 });
 

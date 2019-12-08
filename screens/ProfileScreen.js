@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, Button, Image, StyleSheet, Text } from 'react-native';
+import { View, AsyncStorage, TouchableOpacity, ScrollView, Image, StyleSheet, Text } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import {REUSE} from '../reuse/Reuse';
 
 const color = '#2c3e50'
@@ -13,8 +12,6 @@ export default class ProfileScreen extends Component {
     this.state = {
     };
   }
-
-
 
   onPressLogoutBtn = async () => {
     await AsyncStorage.removeItem('username');

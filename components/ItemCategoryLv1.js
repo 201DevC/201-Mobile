@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { REUSE } from '../reuse/Reuse';
 
 export default class ItemCategoryLv1 extends Component {
@@ -10,12 +10,12 @@ export default class ItemCategoryLv1 extends Component {
     render() {
         const { data: { name, image, choose } } = this.props;
         return (
-            <TouchableOpacity style={choose == 0 ? styles.warpperItemCategory : styles.warpperItemCategoryChoose } onPress={this.props.onPress}>
+            <TouchableOpacity style={choose == 0 ? styles.wrapperItemCategory : styles.wrapperItemCategoryChoose } onPress={this.props.onPress}>
                 <Image style={styles.img}
                     source={{ uri: image }}
                     resizeMode="cover"
                 />
-                <View style={styles.warpperTxt}>
+                <View style={styles.wrapperTxt}>
                     <Text style={choose == 0 ? styles.txtCategory : styles.txtCategoryChoose} numberOfLines={2}>{name}</Text>
                 </View>
             </TouchableOpacity>
@@ -24,7 +24,7 @@ export default class ItemCategoryLv1 extends Component {
 }
 
 const styles = StyleSheet.create({
-    warpperItemCategory: {
+    wrapperItemCategory: {
         width: "100%",
         height: 120,
         justifyContent: "center",
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         marginVertical:2,
         backgroundColor:'#ce2b2c',
     },
-    warpperItemCategoryChoose:{
+    wrapperItemCategoryChoose:{
         width: "100%",
         height: 120,
         justifyContent: "center",
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60
     },
-    warpperTxt:{
+    wrapperTxt:{
         width:"100%",
         justifyContent: "center",
         alignItems: "center"

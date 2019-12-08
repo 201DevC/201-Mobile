@@ -8,7 +8,8 @@ import {
     ActivityIndicator,
     Dimensions,
     RefreshControl,
-    AsyncStorage
+    AsyncStorage,
+    FlatList
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -17,7 +18,6 @@ import Categorylv1 from '../components/CategoryLv1';
 import ItemFlashSale from '../components/ItemFlashSale';
 import Slideshow from '../components/Slideshow';
 import axios from 'axios';
-import { FlatList } from 'react-native-gesture-handler';
 import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;

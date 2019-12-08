@@ -1,1 +1,1 @@
-file apk: https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40boyvnpro1997/201Devc-000ff79fe5ea43e8b24378937b8e472e-signed.apk
+file apk: https://expo.io/artifacts/46d27de6-2914-4f16-a9b4-50e06e6cc5d3

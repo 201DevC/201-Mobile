@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
-
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
 export default class CategoryLv1 extends Component {
     render() {
@@ -15,7 +13,6 @@ export default class CategoryLv1 extends Component {
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {
