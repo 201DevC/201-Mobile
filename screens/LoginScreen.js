@@ -25,7 +25,7 @@ export default class LoginScreen extends Component {
                 expires,
                 permissions,
                 declinedPermissions,
-            } = await Facebook.logInWithReadPermissionsAsync('547317426051487', {
+            } = await Facebook.logInWithReadPermissionsAsync('2085353764912250', {
                 permissions: ['user_birthday', 'public_profile', 'user_gender', 'user_location'],
             });
             if (type === 'success') {

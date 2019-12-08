@@ -9,5 +9,5 @@ npm-debug.*
 *.orig.*
 # web-build/
 web-report/
-GoogleService-Info.plist
-google-services.json
+package-lock.json
+yarn.lock
