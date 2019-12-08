@@ -18,6 +18,9 @@ export default class ShoppingScreen extends Component {
        <View style={styles.warpperTabBar}>
           <Text style={{ fontWeight: 'bold', fontSize: 20, color:REUSE.TITTLE_COLOR }}>Giỏ hàng</Text>
         </View>
+        <View>
+          
+        </View>
       </View>
     );
   }

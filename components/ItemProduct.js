@@ -25,7 +25,7 @@ export default class ItemProduct extends Component {
                 <View style={styles.imgCardProduct}>
                     <Image containerStyle={styles.img}
                         source={{ uri: images[0] }}
-                        resizeMode="cover"
+                        resizeMode="stretch"
                     />
 
                 </View >

@@ -13,8 +13,8 @@
     "orientation": "portrait",
     "icon": "./assets/images/sendo.png",
     "splash": {
-      "image": "./assets/images/SaverSendo.jpg",
-      "resizeMode": "contain",
+      "image": "./assets/images/SaverSendo.png",
+      "resizeMode": "stretch",
       "backgroundColor": "#ffffff"
     },
     "updates": {

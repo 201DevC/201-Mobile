@@ -6,7 +6,7 @@ import {
   ScrollView,
   Dimensions,
   Image,
-} from 'react-native'
+} from 'react-native';
 
 const { width } = Dimensions.get('window');
 const height = width * 0.44;
