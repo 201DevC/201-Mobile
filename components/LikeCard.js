@@ -13,15 +13,15 @@ export default function LikeCard(props) {
                     source={{ uri: image }}
                     resizeMode="contain" />
             </View>
-            <View style={styles.warpperTxt}>
+            <View style={styles.wrapperTxt}>
                 <Text style={styles.txtCard} numberOfLines={2}>{name}</Text>
             </View>
-            <TouchableOpacity style={styles.warpperShowHeart}  onPress={onPressShowHeart} >
+            <TouchableOpacity style={styles.wrapperShowHeart}  onPress={onPressShowHeart} >
                 <AntDesign
                     name="heart"
                     style={status == 1 ? styles.heart : { opacity: 0 }}
                 />
-                <View style={status == 1 ? styles.warpperOverlay : { opacity: 0 }}/>
+                <View style={status == 1 ? styles.wrapperOverlay : { opacity: 0 }}/>
             </TouchableOpacity>
         </View>
     );
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: "100%",
     },
-    warpperTxt: {
+    wrapperTxt: {
         justifyContent: "center",
         alignItems: "center",
         width: '100%',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
         
         
     },
-    warpperShowHeart: {
+    wrapperShowHeart: {
         position:'absolute',
         top:0,
         right:0,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         zIndex:999,
         color:'red'
     },
-    warpperOverlay:{
+    wrapperOverlay:{
         backgroundColor: 'black',
         position:'absolute',
         top:0,

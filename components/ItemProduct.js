@@ -32,7 +32,7 @@ export default class ItemProduct extends Component {
                 <View style={styles.NameProduct}>
                     <Text style={styles.txtNameProduct} numberOfLines={2}>{name}</Text>
                 </View>
-                <View style={styles.warpperPrice}>
+                <View style={styles.wrapperPrice}>
                     <NumberFormat
                         value={price}
                         displayType={'text'}
@@ -58,19 +58,19 @@ export default class ItemProduct extends Component {
                         }
                     />
                 </View>
-                <View style={styles.warpperRateAndOrder}>
-                    <View style={styles.warpperRating}>
+                <View style={styles.wrapperRateAndOrder}>
+                    <View style={styles.wrapperRating}>
                         <Rating readonly startingValue={rating} imageSize={10} type='custom' ratingColor='#e10100' />
                         <Text style={styles.txtOrderCount} numberOfLines={1}>({rating_info.total_rated})</Text>
                     </View>
-                    <View style={order_count != 0 ? styles.warpperOrderCount : styles.none}>
+                    <View style={order_count != 0 ? styles.wrapperOrderCount : styles.none}>
                         <FontAwesome size={10} color='#747d8c' name={"tag"} />
                         <Text style={styles.txtOrderCount} numberOfLines={1}>{order_count}</Text>
                     </View>
                 </View>
 
-                <View style={styles.warpperShopInfoAndShip}>
-                    <View style={styles.warpperShopInfo}>
+                <View style={styles.wrapperShopInfoAndShip}>
+                    <View style={styles.wrapperShopInfo}>
                         {/* <FontAwesome size={15} color='#ff7f50' name={"shield"} /> */}
                         <Image style={{ width: 30, height: 15 }} source={require('../assets/images/check.png')} resizeMode="contain" />
                         <Text style={styles.txtShopName} numberOfLines={1}>{shop_info.name}</Text>
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         fontSize: 15,
     },
-    warpperPrice: {
+    wrapperPrice: {
         minHeight: 35,
         justifyContent: 'center'
     },
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#a4b0be'
     },
-    warpperRateAndOrder: {
+    wrapperRateAndOrder: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
@@ -146,18 +146,18 @@ const styles = StyleSheet.create({
         color: '#747d8c'
 
     },
-    warpperRating: {
+    wrapperRating: {
         flexDirection: 'row',
         alignItems: 'center'
 
     },
 
-    warpperOrderCount: {
+    wrapperOrderCount: {
         flexDirection: 'row',
         alignItems: 'center'
     },
 
-    warpperShopInfoAndShip: {
+    wrapperShopInfoAndShip: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
         flex: 0.9,
         color: '#747d8c'
     },
-    warpperShopInfo: {
+    wrapperShopInfo: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',

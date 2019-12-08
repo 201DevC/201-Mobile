@@ -12,7 +12,7 @@ export default class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '14696583431883801',
+            username: 'guestguest',
             password: '',
         };
     }

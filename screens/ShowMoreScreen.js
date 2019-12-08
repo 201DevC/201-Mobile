@@ -86,7 +86,7 @@ export default class ShowMoreScreen extends Component {
     }
 
     renderFooter = () => {
-        const { listData, isLoadingFooter } = this.state
+        const { isLoadingFooter } = this.state
         // if (listData.length === 0 && listData.length >= totalResults) {
         // if (listData.length > 0) {
 
@@ -104,7 +104,6 @@ export default class ShowMoreScreen extends Component {
         const idCate = this.props.navigation.getParam('idCate');
         const title = this.props.navigation.getParam('nameCate');
         if (lvCate == 3) {
-            // const data = await axios.get(`http://35.240.241.27:8080/product/trend`);
             const data = await axios.get(`http://${IP_API}/flash?offset=${offset}&size=20`);
             const listData = data.data.data.content.filter(item => item !== null);
             this.setState({

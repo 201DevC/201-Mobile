@@ -1,10 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
-import { TextInput, FlatList } from 'react-native-gesture-handler';
+import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, TextInput, FlatList } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import ItemProduct from '../components/ItemProduct';
-import { NavigationEvents } from 'react-navigation';
 import axios from 'axios';
 import { REUSE } from '../reuse/Reuse';
 

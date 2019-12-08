@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text, ScrollView, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text} from 'react-native';
 import Constants from 'expo-constants';
-import ItemCategoryLv1 from '../components/ItemCategoryLv1';
-import ItemCategoryLv2 from '../components/ItemCategoryLv2';
-import { FontAwesome } from '@expo/vector-icons';
-import axios from "axios";
 import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
-export default class MenuLevel1Screen extends Component {
+export default class ShoppingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,20 +12,18 @@ export default class MenuLevel1Screen extends Component {
     };
   }
 
-  
-
   render() {
     return (
       <View style={styles.container}>
        <View style={styles.warpperTabBar}>
           <Text style={{ fontWeight: 'bold', fontSize: 20, color:REUSE.TITTLE_COLOR }}>Giỏ hàng</Text>
         </View>
-
       </View>
     );
   }
 }
-MenuLevel1Screen.navigationOptions = {
+
+ShoppingScreen.navigationOptions = {
   header: null
 }
 

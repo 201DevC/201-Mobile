@@ -8,16 +8,16 @@ export default class ItemCategoryLv2 extends Component {
         const { data: { name, image } } = this.props;
         return (
             <TouchableOpacity
-                style={styles.warpperItemCategory}
+                style={styles.wrapperItemCategory}
                 onPress={this.props.onPress}
             >
-                <View style={styles.warpperImage}>
+                <View style={styles.wrapperImage}>
                     <Image style={styles.img}
                         source={{ uri: image == null ? "http://xemanhdep.com/wp-content/uploads/2016/04/hinh-anh-girl-xinh-dep-nhat-2016-10.jpg" : image}}
                         resizeMode="cover"
                     />
                 </View>
-                <View style={styles.warpperTxt}>
+                <View style={styles.wrapperTxt}>
                     <Text style={styles.txtCategory} numberOfLines={2}>{name}</Text>
                 </View>
             </TouchableOpacity>
@@ -27,7 +27,7 @@ export default class ItemCategoryLv2 extends Component {
 
 
 const styles = StyleSheet.create({
-    warpperItemCategory: {
+    wrapperItemCategory: {
         flex: 1,
         height: 100,
         justifyContent: "center",
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         backgroundColor: REUSE.MAIN_COLOR
 
     },
-    warpperImage: {
+    wrapperImage: {
         flex: 0.6,
         width: '100%',
         justifyContent: "center",
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 50
     },
-    warpperTxt: {
+    wrapperTxt: {
         flex: 0.4,
         width: "100%",
         justifyContent: "center",
