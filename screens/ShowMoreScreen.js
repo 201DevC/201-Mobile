@@ -42,7 +42,6 @@ export default class ShowMoreScreen extends Component {
             listData: [],
             title: '',
             offset: 0,
-            // totalResults: '',
             isLoading: true,
             isLoadingFooter: true
         };
@@ -87,15 +86,7 @@ export default class ShowMoreScreen extends Component {
 
     renderFooter = () => {
         const { isLoadingFooter } = this.state
-        // if (listData.length === 0 && listData.length >= totalResults) {
-        // if (listData.length > 0) {
-
-        // }
-
         return <ActivityIndicator animating={isLoadingFooter} />;
-        // } else {
-        //     return <ActivityIndicator animating={true} />;
-        // }
     };
 
     _getData = async () => {
@@ -131,7 +122,6 @@ export default class ShowMoreScreen extends Component {
 
             this.setState({
                 listData,
-                // totalResults: data.data.data.total + ' kết quả',
                 title,
                 isLoading: false
             });
@@ -207,27 +197,6 @@ export default class ShowMoreScreen extends Component {
                         </View>
 
                     </View>
-                    {/* <View style={styles.warpperFill}>
-                        <View style={styles.nominations}>
-                            <FontAwesome
-                                name='caret-down'
-                                size={17}
-                                color='grey'
-                            />
-                            <Text>Đề cử</Text>
-                        </View>
-                        <View style={styles.respond}>
-                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{totalResults}</Text>
-                        </View>
-                        <View style={styles.filter}>
-                            <FontAwesome
-                                name='filter'
-                                size={17}
-                                color='grey'
-                            />
-                            <Text>Lọc</Text>
-                        </View>
-                    </View> */}
                     <FlatList
                         data={formatData(this.state.listData, 2)}
                         renderItem={this.renderItem}

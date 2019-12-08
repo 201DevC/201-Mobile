@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, AsyncStorage, TouchableOpacity, ScrollView, Image, StyleSheet, Text } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const color = '#2c3e50'
 
@@ -10,11 +10,20 @@ export default class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: 'DevC 201'
     };
+  }
+
+  async componentDidMount() {
+    const name = await AsyncStorage.getItem('name');
+    if (name) {
+      this.setState({ name });
+    }
   }
 
   onPressLogoutBtn = async () => {
     await AsyncStorage.removeItem('username');
+    await AsyncStorage.removeItem('name');
     this.props.navigation.navigate('AuthLoading');
   }
 
@@ -31,10 +40,12 @@ export default class ProfileScreen extends Component {
   }
 
   render() {
+    const { name } = this.state;
+
     return (
       <View style={styles.container}>
         <View style={styles.warpperTabBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20, color:REUSE.TITTLE_COLOR }}>Tài khoản</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: REUSE.TITTLE_COLOR }}>Tài khoản</Text>
         </View>
         <ScrollView style={{ flex: 1 }}>
           <View style={styles.warpperInfoUser}>
@@ -42,8 +53,15 @@ export default class ProfileScreen extends Component {
               <Image resizeMode='contain' style={styles.imgUser} source={require('../assets/images/user.png')} />
             </View>
             <View style={styles.warpperTxt}>
-              <Text style={{ fontSize: 20, textTransform: 'uppercase', fontWeight: 'bold', color:'#7f8c8d' }}>DevC 201</Text>
-              <Text style={{ fontSize: 15, marginTop:10, color:'#7f8c8d' }}>devc201@coderschool.com</Text>
+              <Text style={{
+                fontSize: 20,
+                textTransform: 'uppercase',
+                fontWeight: 'bold',
+                color: '#7f8c8d'
+              }}>
+                {name}
+              </Text>
+              <Text style={{ fontSize: 15, marginTop: 10, color: '#7f8c8d' }}>devc201@coderschool.com</Text>
             </View>
           </View>
           <View style={styles.warpperBody}>

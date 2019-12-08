@@ -130,11 +130,6 @@ export default class SearchScreen extends React.Component {
     const { totalResults } = this.state;
     return (
       <View style={styles.container}>
-        {/* <NavigationEvents
-          onDidFocus={() => {
-            this.searchTextInput.focus();
-          }}
-        /> */}
         <View style={styles.header}>
           <View style={styles.tabBar}>
             <View style={styles.back}>

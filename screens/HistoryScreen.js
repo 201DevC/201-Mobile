@@ -137,32 +137,6 @@ export default class HistoryScreen extends PureComponent {
           >
             <MenuItem onPress={this._onPressDeleteAll}>Xóa tất cả</MenuItem>
           </Menu>
-
-          {/* <TouchableOpacity
-            style={{ width: '10%', alignItems: 'flex-end' }}
-            onPress={this._onPressTootip}
-          > */}
-          {/* <Tooltip
-              popover={
-                <TouchableOpacity
-                  onPress={this._onPressDeleteAll}
-                >
-                  <Text>Xóa tất cả</Text>
-                </TouchableOpacity>
-              }
-              // toggleOnPress={isShowTooltip}
-              withOverlay={false}
-              backgroundColor='white'
-              // onPress={this._onPressTootip}
-              // containerStyle={{ width: 50, alignItems: 'flex-end' }}
-            >
-              <FontAwesome
-                name='ellipsis-v'
-                size={20}
-                color='black'
-              />
-            </Tooltip> */}
-          {/* </TouchableOpacity> */}
         </View>
         <View style={styles.wrapperList}>
           {

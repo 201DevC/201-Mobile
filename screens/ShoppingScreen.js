@@ -19,10 +19,14 @@ export default class ShoppingScreen extends Component {
           <Text style={{ fontWeight: 'bold', fontSize: 20, color: REUSE.TITTLE_COLOR }}>Giỏ hàng</Text>
         </View>
         <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
-          <Image style={{width:250,height:250}}
-            source={require("../assets/images/emoji.png")}
-            resizeMode="cover"
+          <Image style={{width:300,height:270}}
+            // source={require("../assets/images/emoji.png")}
+            source={{uri: 'https://scontent.fsgn1-1.fna.fbcdn.net/v/t1.0-9/p960x960/55944983_802426570138250_9072073022055120896_o.jpg?_nc_cat=102&_nc_ohc=ZCYCcKCthx0AQnQXO-XEAnBgr7HgbvrK0V6KXH4HQlJd5hUMQVCCUG4yQ&_nc_ht=scontent.fsgn1-1.fna&oh=178fb1dac7a956981d026c238c9ad8dd&oe=5E757804'}}
+            resizeMode="stretch"
           />
+          <Text>
+            Ứng dụng đang bảo trì ...
+          </Text>
         </View>
       </View>
     );

@@ -14,7 +14,7 @@
     "icon": "./assets/images/sendo.png",
     "splash": {
       "image": "./assets/images/SaverSendo.png",
-      "resizeMode": "stretch",
+      "resizeMode": "contain",
       "backgroundColor": "#ee2724"
     },
     "updates": {
@@ -25,7 +25,6 @@
     ],
     "ios": {
       "supportsTablet": true
-
     },
     "android": {
       "package": "com.devc.devc201"

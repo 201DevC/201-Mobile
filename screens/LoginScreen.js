@@ -5,7 +5,7 @@ import { Button, Icon, Input } from 'react-native-elements';
 
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
-import {REUSE} from '../reuse/Reuse';
+import { REUSE } from '../reuse/Reuse';
 
 const IP_API = REUSE.IP_API;
 export default class LoginScreen extends Component {
@@ -25,14 +25,15 @@ export default class LoginScreen extends Component {
                 expires,
                 permissions,
                 declinedPermissions,
-            } = await Facebook.logInWithReadPermissionsAsync('547317426051487', {
+            } = await Facebook.logInWithReadPermissionsAsync('2085353764912250', {
                 permissions: ['user_birthday', 'public_profile', 'user_gender', 'user_location'],
             });
+
             if (type === 'success') {
                 // Get the user's name using Facebook's Graph API
                 const response = await axios.get(`https://graph.facebook.com/me?fields=birthday,location,gender,name&access_token=${token}`);
                 // format data
-                const data = response.data;
+                let data = response.data;
                 data.username = data.id;
                 data.gender = data.gender === 'male' ? true : false;
                 data.survey = false;
@@ -42,6 +43,9 @@ export default class LoginScreen extends Component {
                     // const newUser = res.data.data.survey ? '0' : '1';
                     const newUser = '1';
                     await AsyncStorage.setItem('username', res.data.data.id.toString());
+                    if (res.data.data.name) {
+                        await AsyncStorage.setItem('name', res.data.data.name);
+                    }
                     await AsyncStorage.setItem('newUser', newUser);
                     this.props.navigation.navigate('AuthLoading');
                 } else {
@@ -79,6 +83,9 @@ export default class LoginScreen extends Component {
             if (res.data.header.successful) {
                 const newUser = res.data.data.survey ? '0' : '1';
                 await AsyncStorage.setItem('username', res.data.data.id.toString());
+                if (res.data.data.name) {
+                    await AsyncStorage.setItem('name', res.data.data.name);
+                }
                 await AsyncStorage.setItem('newUser', newUser);
                 this.props.navigation.navigate('AuthLoading');
             } else {
