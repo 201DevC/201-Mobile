@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text} from 'react-native';
+import { View, StyleSheet, Text, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { REUSE } from '../reuse/Reuse';
 
@@ -8,18 +8,21 @@ export default class ShoppingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
+
     };
   }
 
   render() {
     return (
       <View style={styles.container}>
-       <View style={styles.warpperTabBar}>
-          <Text style={{ fontWeight: 'bold', fontSize: 20, color:REUSE.TITTLE_COLOR }}>Giỏ hàng</Text>
+        <View style={styles.warpperTabBar}>
+          <Text style={{ fontWeight: 'bold', fontSize: 20, color: REUSE.TITTLE_COLOR }}>Giỏ hàng</Text>
         </View>
-        <View>
-          
+        <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+          <Image style={{width:250,height:250}}
+            source={require("../assets/images/emoji.png")}
+            resizeMode="cover"
+          />
         </View>
       </View>
     );

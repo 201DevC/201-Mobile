@@ -15,7 +15,7 @@
     "splash": {
       "image": "./assets/images/SaverSendo.png",
       "resizeMode": "stretch",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ee2724"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

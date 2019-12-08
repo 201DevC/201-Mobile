@@ -44,6 +44,7 @@ export default class HomeScreen extends Component {
         this.state = {
             isLoading: true,
             isLoadingTendency: true,
+            isLoadingRecomend: true,
             listcategoryLv1: [],
             listFlashSale: [],
             listProductTrend: [],
@@ -82,7 +83,8 @@ export default class HomeScreen extends Component {
         });
         const listRecommmend = data.data.data.filter(item => item !== null);
         return this.setState({
-            listRecommmend: listRecommmend.slice(0,4),
+            listRecommmend: listRecommmend.slice(0, 4),
+            isLoadingRecomend: false
         });
     }
 
@@ -92,14 +94,14 @@ export default class HomeScreen extends Component {
         return this.setState({
             listFlashSale,
             isLoading: false
-            
+
         });
     }
 
     _getDataProductTrend = async () => {
         const dataTrend = await axios.get(`http://${IP_API}/product/trend`);
         const listProductTrend = dataTrend.data.data.filter(item => item !== null);
-        
+
         return this.setState({
             listProductTrend,
             isLoadingTendency: false
@@ -158,7 +160,7 @@ export default class HomeScreen extends Component {
     }
 
     render() {
-        const { isLoading, isLoadingTendency } = this.state
+        const { isLoading, isLoadingTendency, isLoadingRecomend } = this.state
         return (
             <View style={styles.warpperContainer}>
                 <View style={styles.container}>
@@ -209,7 +211,7 @@ export default class HomeScreen extends Component {
                                         borderRadius: 5,
                                         alignItems: "center",
                                         marginHorizontal: 5,
-                                        backgroundColor:'#ce2b2c'
+                                        backgroundColor: '#ce2b2c'
                                     }}>
                                     <Text style={{
                                         color: "#fff",
@@ -275,20 +277,24 @@ export default class HomeScreen extends Component {
                                                 </Text>
                                             </TouchableOpacity>
                                         </View>
-                                        <FlatList
-                                            // data={formatData(this.state.listRecommmend, 2)}
-                                            data = {this.state.listRecommmend}
-                                            renderItem={this.renderItem}
-                                            numColumns={2}
-                                            style={{ flex: 1 }}
-                                            keyExtractor={item => item.id.toString()}
-                                        />
+                                        {isLoadingRecomend ? <ActivityIndicator animating={isLoadingRecomend} /> :
 
+                                            <FlatList
+                                                // data={formatData(this.state.listRecommmend, 2)}
+                                                data={this.state.listRecommmend}
+                                                renderItem={this.renderItem}
+                                                numColumns={2}
+                                                style={{ flex: 1 }}
+                                                keyExtractor={item => item.id.toString()}
+                                            />
+                                        }
                                         <TouchableOpacity onPress={() => this._goToHistory()} style={{ marginVertical: 10 }}>
                                             <Text style={{ color: "#870f10", textAlign: "right", paddingHorizontal: 10, fontWeight: 'bold', fontSize: 16 }}>
                                                 Dựa trên sản phẩm bạn đã xem >
                                             </Text>
                                         </TouchableOpacity>
+
+
                                     </View>
                                 </View>
                                 <View style={styles.line}></View>
@@ -362,8 +368,8 @@ const styles = StyleSheet.create({
     },
     buger: {
         justifyContent: "center",
-        width:'10%',
-        height:'100%'
+        width: '10%',
+        height: '100%'
     },
     warpperSearch: {
         flexDirection: "row",
@@ -406,7 +412,7 @@ const styles = StyleSheet.create({
         color: '#e10100',
         fontWeight: "bold",
         fontStyle: "italic",
-        minWidth:150,
+        minWidth: 150,
     },
     wrapperYourLike: {
         flex: 0.6,
@@ -426,7 +432,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         paddingVertical: 5,
         marginLeft: 10,
-        color:'#ce2b2c'
+        color: '#ce2b2c'
     },
     line: {
         width: '100%',
