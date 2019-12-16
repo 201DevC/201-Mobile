@@ -1,7 +1,7 @@
 
 export const REUSE =
 {
-    IP_API : "35.240.241.27:8080",
+    IP_API : "35.240.148.28:8080",
     MAIN_COLOR: '#fff4f1',
     TABBAR_COLOR : '#fddad2',
     TITTLE_COLOR : '#870f10'
